@@ -1,88 +1,37 @@
 interface DividerProps {
     sectionName: string;
     className?: string;
-    x1?: number;
-    y1?: number;
-    x2?: number;
-    y2?: number;
 }
 
-const Divider = ({ sectionName, className, x1=240, y1=60, x2=410, y2=60 }: DividerProps) => {
+const Divider = ({ sectionName, className }: DividerProps) => {
     return (
-        <svg
-            viewBox="0 35 1000 40"
-            className={`w-full text-foreground pt-5 `}
-            xmlns="http://www.w3.org/2000/svg"
+        <div
+            className={`relative w-full flex items-center justify-center pt-20 pb-16 ${className}`}
         >
-            {/* Left line */}
-            <line
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="currentColor"
-                strokeWidth="2"
-            />
+            {/* Horizontal rails */}
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center">
+                <div className="h-0.5 grow bg-linear-to-r from-transparent via-primary/40 to-primary/70" />
+                <div className="w-32 md:w-48" />
+                <div className="h-0.5 grow bg-linear-to-l from-transparent via-primary/40 to-primary/70" />
+            </div>
 
-            {/* Right line */}
-            <line
-                x1={x1+350}
-                y1={y1}
-                x2={x2+350}
-                y2={y2}
-                stroke="currentColor"
-                strokeWidth="2"
-            />
+            {/* Title */}
+            <div className="relative z-10 flex items-center gap-4 px-4 bottom-2 bg-background">
+                <span className="font-mono text-xl text-primary/30 select-none">
+                    {"{"}
+                </span>
 
-            {/* Left droplet */}
-            <g transform="translate(231 53) rotate(90) ">
-                <path
-                    d="M0 0c0-2 1-3.9 3-5.5s3.5-4 4-6.5c.5 2.5 2 4.9 4 6.5C13 -3.9 14-2 14 0a7 7 0 1 1-14 0z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                />
-            </g>
+                <h2 className="text-2xl md:text-3xl font-mono font-semibold uppercase tracking-[0.35em] text-primary">
+                    {"<"}
+                    {sectionName}
+                    {"/>"}
+                </h2>
 
-            {/* Right droplet */}
-            <g transform="translate(769 67) rotate(270)">
-                <path
-                    d="M0 0c0-2 1-3.9 3-5.5s3.5-4 4-6.5c.5 2.5 2 4.9 4 6.5C13-3.9 14-2 14 0a7 7 0 1 1-14 0z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                />
-            </g>
-
-            {/* Center label background */}
-
-            {/* Section name */}
-            <text
-                x="500"
-                y="61"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="font-bold text-xl font-mitr fill-current"
-            >
-                {sectionName}
-            </text>
-
-            {/* Top star (aligned relative to divider) */}
-            <path
-                d={`M${x2+11} 49 l3 8 8 3-8 3-3 8-3-8-8-3 8-3z`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-            />
-
-            {/* Bottom star (mirrored) */}
-            <path
-                d={`M${x2+168} 71 l3-8 8-3-8-3-3-8-3 8-8 3 8 3z`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-            />
-        </svg>
+                <span className="font-mono text-xl text-primary/30 select-none">
+                    {"}"}
+                </span>
+            </div>
+        </div>
     );
 };
 

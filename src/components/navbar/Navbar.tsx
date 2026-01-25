@@ -1,93 +1,64 @@
 "use client";
-
-import { useState } from "react";
-import { Volume2, VolumeOff, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { HeroFirstName } from "@/Data/Data";
-
-const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-    // { name: "Test", href: "/test" },
-];
+import Link from "next/link";
 
 const Navbar = () => {
-    const [isMute, setIsMute] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-
+   
+    
     return (
-        <nav className="absolute top-6 left-1/2 -translate-x-1/2 w-screen max-w-5xl z-50">
-            <div className="relative bg-navbar backdrop-blur-md rounded-2xl px-6 py-3 shadow-lg">
+        <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-4xl z-100 ">
+            <div className="bg-background/60 backdrop-blur-xl border border-primary rounded-full px-6 py-2 shadow-2xl">
                 <div className="flex items-center justify-between">
-                    <div className="text-xl font-bold font-nunito tracking-tight">
+                    <div className="text-lg font-bold tracking-tighter">
                         {HeroFirstName}
-                    </div>
-                    <div className="hidden md:flex font-nunito items-center gap-8">
-                        {navLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.href}
-                                className="text-sm font-medium hover:text-primary transition-colors"
-                            >
-                                {link.name}
-                            </a>
-                        ))}
+                        <span className="text-primary">.</span>
                     </div>
 
-                    {/* Right controls */}
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => setIsMute((v) => !v)}
-                            className="p-2 rounded-full hover:bg-muted transition-colors"
-                            aria-label={isMute ? "Unmute" : "Mute"}
-                        >
-                            {isMute ? (
-                                <VolumeOff size={20} />
-                            ) : (
-                                <Volume2 size={20} />
-                            )}
-                        </button>
+                    <div className="hidden md:flex items-center gap-6">
+                        {["Home", "About", "Skills", "Projects", "Contact"].map(
+                            (item) => (
+                                <Link
+                                    key={item}
+                                    href={`#${item.toLowerCase()}`}
+                                    className="text-xs font-medium uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                    {item}
+                                </Link>
+                            ),
+                        )}
+                    </div>
 
+                    <div className="flex items-center gap-3">
                         <ThemeToggle />
-
-                        {/* Hamburger (mobile only) */}
                         <button
-                            onClick={() => setMenuOpen((v) => !v)}
-                            className="md:hidden p-2 rounded-full hover:bg-muted transition-colors"
-                            aria-label="Toggle menu"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="md:hidden p-2 text-muted-foreground"
                         >
                             {menuOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
                 </div>
 
-                {/* Mobile menu */}
-                <div
-                    className={`
-            md:hidden overflow-hidden transition-all duration-300 ease-out
-            ${menuOpen ? "max-h-96 mt-4 opacity-100" : "max-h-0 opacity-0"}
-            `}
-                >
-                    <div className="flex flex-col gap-3 font-nunito">
-                        {navLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.href}
-                                onClick={() => setMenuOpen(false)}
-                                className="
-                    rounded-lg px-3 py-2 text-sm font-medium
-                    hover:bg-muted hover:text-primary
-                    transition-colors
-                "
-                            >
-                                {link.name}
-                            </a>
-                        ))}
+                {/* Mobile Menu */}
+                {menuOpen && (
+                    <div className="md:hidden absolute top-full left-0 right-0 mt-4 p-4 bg-background/95 border border-border rounded-2xl flex flex-col gap-4">
+                        {["About", "Skills", "Projects", "Contact"].map(
+                            (item) => (
+                                <a
+                                    key={item}
+                                    href={`#${item.toLowerCase()}`}
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    {item}
+                                </a>
+                            ),
+                        )}
                     </div>
-                </div>
+                )}
             </div>
         </nav>
     );

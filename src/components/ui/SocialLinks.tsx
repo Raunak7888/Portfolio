@@ -1,6 +1,6 @@
 "use client";
 
-import { GithubSvg, XSvg, GmailSvg, InstagramSvg, LinkedInSvg } from "@/components/ui/Icons";
+import { GithubSvg, GmailSvg, InstagramSvg, LinkedInSvg } from "@/components/ui/Icons";
 import Link from "next/link";
 
 type SocialItem = {

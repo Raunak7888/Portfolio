@@ -2,6 +2,8 @@
 
 import { ThemeProvider } from "next-themes";
 import { useMounted } from "@/hooks/useMounted";
+import { Toaster } from "@/components/ui/sonner"
+
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const mounted = useMounted();
@@ -17,6 +19,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             disableTransitionOnChange
         >
             {children}
+            <Toaster richColors/>
         </ThemeProvider>
     );
 }

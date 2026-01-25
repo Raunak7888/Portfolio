@@ -14,8 +14,16 @@ import {
     Lemon,
     Piedra,
     Poetsen_One,
+    Bungee,
+    JetBrains_Mono,
 } from "next/font/google";
 import { Providers } from "@/components/Provider";
+
+const bungee = Bungee({
+    variable: "--font-bungee",
+    subsets: ["latin"],
+    weight: ["400"],
+});
 
 const nunito = Nunito({
     variable: "--font-nunito",
@@ -79,6 +87,11 @@ const poetsen = Poetsen_One({
     variable: "--font-poetsen",
 });
 
+export const google = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
+
 export const metadata: Metadata = {
     title: "Raunak Yadav",
     description:
@@ -93,7 +106,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${outfit.className} ${krona.variable} ${aclonica.variable} ${mogra.variable} ${modak.variable} ${lemon.variable} ${piedra.variable} ${poetsen.variable} antialiased ${mitr.variable} ${modak.variable} ${jersey.variable} ${luckiest.variable} ${madimi.variable} ${nunito.variable}`}
+                className={`${outfit.className} ${bungee.variable} ${google.variable} ${krona.variable} ${aclonica.variable} ${mogra.variable} ${modak.variable} ${lemon.variable} ${piedra.variable} ${poetsen.variable} antialiased ${mitr.variable} ${modak.variable} ${jersey.variable} ${luckiest.variable} ${madimi.variable} ${nunito.variable}`}
             >
                 <Providers>{children}</Providers>
             </body>

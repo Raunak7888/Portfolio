@@ -1,149 +1,144 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import Divider from "../Divider";
 import ContactButton from "./ContactButton";
-import MessageImage from "./MessageImage";
-import { useState } from "react";
+
+type ContactForm = {
+    name: string;
+    email: string;
+    message: string;
+};
 
 const ContactSection = () => {
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { isSubmitting, errors },
+    } = useForm<ContactForm>();
 
-    const sendEmail = async () => {
-        const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form),
-        });
+    const onSubmit = async (data: ContactForm) => {
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
 
-        if (!res.ok) {
-            alert("Failed to send message");
-            return;
+            if (!res.ok) throw new Error();
+
+            toast.success("Message sent!", {
+                description: "I'll be in touch soon.",
+            });
+            reset();
+        } catch {
+            toast.error("Send failed", {
+                description: "Please try again later.",
+            });
         }
-
-        alert("Message sent");
-        setForm({ name: "", email: "", message: "" });
     };
 
     return (
-        <div className="w-full bg-background px-4 sm:px-6">
+        <section className="relative w-full py-12 px-4 sm:px-8">
             <Divider sectionName="Contact me" />
-
-            {/* Outer shell */}
-            <div
-                className="
-                mx-auto my-10
-                max-w-6xl
-                rounded-4xl
-                bg-linear-to-tl from-background/50 to-foreground/50
-                p-0.5
-                h-140
-                "
-            >
-                {/* Inner container */}
-                <div
-                    className="
-                    w-full
-                    rounded-4xl
-                    h-full
-                    bg-linear-to-br from-background to-foreground/40
-                    flex flex-col lg:flex-row
-                    "
-                >
-                    {/* Image */}
-                    <div
-                        className="
-                        w-full lg:w-1/2
-                        flex items-center justify-center
-                        p-6
-                        border-b lg:border-b-0 lg:border-r
-                        border-foreground/20
-                        "
-                    >
-                        <MessageImage />
+            <div className="mx-auto max-w-6xl mt-10">
+                <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start">
+                    {/* Content Side: Text & Image */}
+                    <div className="w-full lg:w-5/12 space-y-6 text-center lg:text-left">
+                        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                            Available for new projects
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-bold font-madimi tracking-tight leading-tight">
+                            Let&apos;s build <br />
+                            <span className="text-primary">
+                                something great.
+                            </span>
+                        </h2>
+                        <p className="text-lg text-foreground/60 max-w-md mx-auto lg:mx-0">
+                            Have a question or just want to chat? Drop me a
+                            message and I’ll get back to you within 24 hours.
+                        </p>
                     </div>
+                    {/* Form Side: The Glass Card */}
+                    <div className="w-full lg:w-7/12">
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="relative p-6 sm:p-10 rounded-[2.5rem] border border-foreground/10 bg-card/40 backdrop-blur-xl shadow-2xl space-y-6"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                {/* Name Field */}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-sm font-semibold ml-2 opacity-70">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        {...register("name", {
+                                            required: "Name is required",
+                                        })}
+                                        autoComplete="off"
+                                        placeholder="Jane Doe"
+                                        className="w-full px-6 py-4 rounded-2xl bg-foreground/5 border border-transparent focus:border-primary/50 focus:bg-background transition-all outline-none"
+                                    />
+                                    {errors.name && (
+                                        <span className="text-xs text-red-500 ml-2">
+                                            {errors.name.message}
+                                        </span>
+                                    )}
+                                </div>
 
-                    {/* Form */}
-                    <div
-                        className="
-                        w-full lg:w-1/2
-                        flex flex-col items-center justify-center
-                        p-6 sm:p-8
-                        font-madimi
-                        "
-                    >
-                        <div className="text-3xl sm:text-4xl font-bold mb-4">
-                            Let&apos;s Talk
-                        </div>
+                                {/* Email Field */}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-sm font-semibold ml-2 opacity-70">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        {...register("email", {
+                                            required: "Email is required",
+                                            pattern: {
+                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                message:
+                                                    "Invalid email address",
+                                            },
+                                        })}
+                                        autoComplete="off"
+                                        placeholder="jane@example.com"
+                                        className="w-full px-6 py-4 rounded-2xl bg-foreground/5 border border-transparent focus:border-primary/50 focus:bg-background transition-all outline-none"
+                                    />
+                                    {errors.email && (
+                                        <span className="text-xs text-red-500 ml-2">
+                                            {errors.email.message}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
 
-                        <div className="text-center text-lg sm:text-xl">
-                            Have an <span className="text-primary">Idea</span>,{" "}
-                            <span className="text-primary">Question</span>, or
-                            just want to
-                        </div>
-
-                        <div className="text-center text-lg sm:text-xl mb-6">
-                            <span className="text-primary">say Hi</span>? Drop a
-                            message below!
-                        </div>
-
-                        {/* Inputs wrapper only controls width */}
-                        <div className="w-full max-w-md">
-                            <input
-                                type="text"
-                                placeholder="Your Name"
-                                value={form.name}
-                                onChange={(e) =>
-                                    setForm({ ...form, name: e.target.value })
-                                }
-                                className="w-full p-3 px-5 mb-4 rounded-full border 
-                                border-foreground/20 bg-card text-foreground 
-                                placeholder-foreground/50 focus:outline-none focus:ring-2
-                                focus:ring-primary 
-                                shadow-[inset_2px_4px_6px_rgba(0,0,0,0.2),inset_-2px_-4px_6px_rgba(255,255,255,0.1)]
-                                "
-                            />
-
-                            <input
-                                type="email"
-                                placeholder="Your Email"
-                                value={form.email}
-                                onChange={(e) =>
-                                    setForm({ ...form, email: e.target.value })
-                                }
-                                className="w-full p-3 px-5 mb-4 rounded-full border
-                                border-foreground/20 bg-card text-foreground 
-                                placeholder-foreground/50 focus:outline-none focus:ring-2
-                                focus:ring-primary
-                                shadow-[inset_2px_4px_6px_rgba(0,0,0,0.2),inset_-2px_-4px_6px_rgba(255,255,255,0.1)]
-                                "
-                            />
-
-                            <textarea
-                                placeholder="Your Message"
-                                value={form.message}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        message: e.target.value,
-                                    })
-                                }
-                                className="w-full p-3 px-5 mb-4 rounded-2xl border
-                                border-foreground/20 bg-card text-foreground 
-                                placeholder-foreground/50 focus:outline-none 
-                                focus:ring-2 focus:ring-primary h-24
-                                shadow-[inset_2px_4px_6px_rgba(0,0,0,0.2),inset_-2px_-4px_6px_rgba(255,255,255,0.1)]"
-                            />
-                        </div>
-
-                        <ContactButton
-                            handleContact={sendEmail}
-                        />
+                            {/* Message Field */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold ml-2 opacity-70">
+                                    Your Message
+                                </label>
+                                <textarea
+                                    {...register("message", {
+                                        required: "Message cannot be empty",
+                                    })}
+                                    placeholder="Tell me about your project..."
+                                    rows={5}
+                                    className="w-full px-6 py-4 rounded-3xl bg-foreground/5 border border-transparent focus:border-primary/50 focus:bg-background transition-all outline-none resize-none"
+                                />
+                            </div>
+                            <div className="pt-4 flex justify-center items-center">
+                                <ContactButton
+                                    handleContact={handleSubmit(onSubmit)}
+                                    isSending={isSubmitting}
+                                />
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 
