@@ -3,7 +3,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    --background: #ffffff;
+    --background: #f6f7f9;
     --foreground: #0a0a0a;
     --card: #ffffff;
     --card-foreground: #0a0a0a;
@@ -345,4 +345,71 @@ body {
 
 .animate-float-slow-reverse {
     animation: float-reverse 8s ease-in-out infinite;
+}
+
+/* Fix for React Flow Controls in Dark/Light Mode */
+.react-flow__controls {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.react-flow__controls-button {
+    background: var(--card) !important;
+    fill: var(--foreground) !important; /* This colors the SVG icon */
+    border-bottom: 1px solid var(--border) !important;
+    transition: all 0.2s ease;
+}
+
+.react-flow__controls-button:hover {
+    background: var(--primary) !important;
+    fill: white !important; /* Icon turns white on primary hover */
+}
+
+.react-flow__controls-button svg {
+    fill: inherit !important;
+}
+@keyframes dash {
+    from {
+        stroke-dashoffset: 20;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.react-flow__edge-path {
+    stroke-dasharray: 5;
+    animation: dash 1s linear infinite;
+    stroke-width: 2.5;
+}
+
+/* Fix for Controls */
+.react-flow__controls-button {
+    background: var(--card) !important;
+    fill: var(--foreground) !important;
+    border-color: var(--border) !important;
+}
+
+@keyframes flow-line {
+    from {
+        stroke-dashoffset: 100;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.react-flow__edge-path {
+    stroke-dasharray: 10;
+    stroke-dashoffset: 0;
+    animation: flow-line 2s linear infinite;
+}
+
+/* Make handles invisible but functional */
+.react-flow__handle {
+    opacity: 0;
+    width: 10px !important;
+    height: 10px !important;
 }

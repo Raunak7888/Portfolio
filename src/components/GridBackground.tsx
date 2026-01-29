@@ -26,7 +26,7 @@ export const GridBackground = ({ children }: { children: React.ReactNode }) => {
             />
 
             {/* 3. Global Ambient Glow */}
-            <div className="fixed top-[-10%] left-1/2 -translate-x-1/2 w-full max-w-[1200px] h-[600px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+            <div className="fixed top-[-10%] left-1/2 -translate-x-1/2 w-full max-w-300 h-150 bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
             <div className="relative z-10 w-full">{children}</div>
         </div>

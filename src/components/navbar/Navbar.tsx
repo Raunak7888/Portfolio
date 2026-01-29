@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { HeroFirstName } from "@/Data/Data";
 import Link from "next/link";
+import ThemeColorDropdown from "./AccentChanger";
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -32,8 +33,9 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                         <ThemeToggle />
+                        <ThemeColorDropdown />
                         <button
                             onClick={() => setMenuOpen(!menuOpen)}
                             className="md:hidden p-2 text-muted-foreground"

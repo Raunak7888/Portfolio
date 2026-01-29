@@ -6,7 +6,7 @@ interface DividerProps {
 const Divider = ({ sectionName, className }: DividerProps) => {
     return (
         <div
-            className={`relative w-full flex items-center justify-center pt-20 pb-16 ${className}`}
+            className={`relative w-full flex items-center justify-center pt-10 pb-10 `}
         >
             {/* Horizontal rails */}
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center">
@@ -16,12 +16,12 @@ const Divider = ({ sectionName, className }: DividerProps) => {
             </div>
 
             {/* Title */}
-            <div className="relative z-10 flex items-center gap-4 px-4 bottom-2 bg-background">
+            <div className={`relative z-10 flex items-center gap-4 px-4 bg-background ${className}`}>
                 <span className="font-mono text-xl text-primary/30 select-none">
                     {"{"}
                 </span>
 
-                <h2 className="text-2xl md:text-3xl font-mono font-semibold uppercase tracking-[0.35em] text-primary">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-google font-semibold  text-primary">
                     {"<"}
                     {sectionName}
                     {"/>"}

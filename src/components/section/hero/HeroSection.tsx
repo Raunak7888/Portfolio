@@ -13,8 +13,8 @@ export default function HeroSection() {
         >
             <Navbar />
 
-            <div className="relative z-10 flex-1 flex items-center justify-center w-full max-w-7xl px-6">
-                {/* <HeroContent /> */}
+            <div className="relative z-10 flex-1 flex items-center justify-center w-full max-w-7xl mt-20 sm:mt-0 px-6">
+                <HeroContent />
             </div>
         </section>
     );
