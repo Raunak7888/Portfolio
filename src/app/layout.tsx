@@ -88,8 +88,8 @@ const poetsen = Poetsen_One({
 });
 
 export const google = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+    subsets: ["latin"],
+    variable: "--font-mono",
 });
 
 export const metadata: Metadata = {

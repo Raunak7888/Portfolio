@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { runThemeTransition } from "@/components/ThemeTransitionLayer";
 
 const COLORS = [
     { name: "Deep Purple", value: "#7C3AED" },
@@ -43,7 +44,7 @@ const ThemeColorPicker = () => {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 5 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 flex flex-col gap-2 p-1.5 rounded-full bg-background/40 backdrop-blur-xl border border-foreground/5 shadow-2xl z-10"
+                        className="absolute top-full z-1001 left-1/2 -translate-x-1/2 flex flex-col gap-2 p-1.5 rounded-full bg-background/40 backdrop-blur-xl border border-foreground/5 shadow-2xl"
                     >
                         {COLORS.filter((c) => c.value !== color).map((c, i) => (
                             <motion.button
@@ -51,7 +52,11 @@ const ThemeColorPicker = () => {
                                 initial={{ opacity: 0, scale: 0.5 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: i * 0.05 }}
-                                onClick={() => setColor(c.value)}
+                                onClick={() =>
+                                    runThemeTransition("accent", () => {
+                                        setColor(c.value);
+                                    })
+                                }
                                 className="w-5 h-5 rounded-full transition-all hover:scale-125 active:scale-90"
                                 style={{ backgroundColor: c.value }}
                                 title={c.name}

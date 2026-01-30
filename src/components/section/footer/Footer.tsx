@@ -1,4 +1,4 @@
-import { SocialIcons } from "../ui/SocialLinks";
+import { SocialIcons } from "../../ui/SocialLinks";
 import data from "@/Data/Data.json"
 
 const Footer = () => {

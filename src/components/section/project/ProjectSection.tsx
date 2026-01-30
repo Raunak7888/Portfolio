@@ -198,7 +198,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, isEven }) => {
 
 const ProjectSection: React.FC = () => {
     return (
-        <section className="relative px-6 overflow-hidden bg-background">
+        <section className="relative px-6 overflow-hidden ">
             <Divider sectionName="Projects" />
 
             <div className="absolute top-0 left-1/4 w-125 h-125 bg-primary/5 rounded-full blur-[120px] -z-10" />

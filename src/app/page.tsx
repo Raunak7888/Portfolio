@@ -7,7 +7,7 @@ import AboutSection from "@/components/section/about/AboutSection";
 import ContactSection from "@/components/section/contact/ContactSection";
 import HeroSection from "@/components/section/hero/HeroSection";
 import { useMounted } from "@/hooks/useMounted";
-import Footer from "@/components/footer/Footer";
+import Footer from "@/components/section/footer/Footer";
 
 export default function Home() {
     const mounted = useMounted();
