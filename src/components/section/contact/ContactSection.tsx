@@ -78,7 +78,7 @@ const ContactSection = () => {
                     z: -500,
                     opacity: 0,
                     rotateY: 45,
-                    duration: 1.5,
+                    duration: 1,
                     ease: "expo.inOut",
                 },
                 "-=0.7",
@@ -145,7 +145,7 @@ const ContactSection = () => {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full py-20 px-4 sm:px-8 overflow-hidden bg-background"
+            className="relative w-full py-20 px-4 sm:px-8 overflow-hidden "
             style={{ perspective: "1500px" }}
         >
             <Divider sectionName="Contact" />

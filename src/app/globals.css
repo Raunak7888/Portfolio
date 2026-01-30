@@ -413,3 +413,16 @@ body {
     width: 10px !important;
     height: 10px !important;
 }
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+html {
+  scroll-behavior: smooth;
+}

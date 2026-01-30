@@ -73,8 +73,8 @@ const SkillGraph = () => {
                     onEdgesChange={onEdgesChange}
                     nodeTypes={nodeTypes}
                     fitView
+                    zoomOnScroll={false}
                     fitViewOptions={{ padding: 0.2 }}
-                    panOnScroll
                     nodesConnectable={false}
                 >
                     <Controls

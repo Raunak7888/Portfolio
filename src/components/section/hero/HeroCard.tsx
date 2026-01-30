@@ -148,7 +148,7 @@ export default function HeroContent() {
                     {data.heroSection.description}
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="flex gap-6 pt-4">
+                <motion.div variants={itemVariants} className="flex gap-6 pt-4 w-fit max-[440px]:flex-col ">
                     <div
                         className="h-12 flex items-center px-4 border-2
                             backdrop-blur-sm border-primary rounded-full"
