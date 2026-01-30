@@ -1,6 +1,11 @@
 "use client";
 
-import { GithubSvg, GmailSvg, InstagramSvg, LinkedInSvg } from "@/components/ui/Icons";
+import {
+    GithubSvg,
+    GmailSvg,
+    InstagramSvg,
+    LinkedInSvg,
+} from "@/components/ui/Icons";
 import Link from "next/link";
 
 type SocialItem = {
@@ -11,13 +16,17 @@ type SocialItem = {
 
 const SOCIALS: SocialItem[] = [
     { href: "https://github.com", label: "GitHub", icon: <GithubSvg /> },
-    { href: "https://www.linkedin.com/", label: "Twitter / X", icon: <LinkedInSvg /> },
+    {
+        href: "https://www.linkedin.com/",
+        label: "Twitter / X",
+        icon: <LinkedInSvg />,
+    },
     {
         href: "https://www.instagram.com/",
         label: "Instagram",
         icon: <InstagramSvg />,
     },
-    { href: "mailto:you@example.com", label: "Email", icon: <GmailSvg /> },
+    { href: "mailto:forlearning8080@gmail.com", label: "Email", icon: <GmailSvg /> },
 ];
 
 export const SocialIcons = ({

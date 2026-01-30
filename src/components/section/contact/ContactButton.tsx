@@ -40,16 +40,17 @@ const ContactButton: React.FC<ContactButtonProps> = ({
                     </>
                 ) : (
                     <>
-                        <span className="translate-x-0 group-hover:-translate-x-1 transition-transform duration-300">
+                        <span className="translate-x-0 group-hover:-translate-x-1 transition-transform duration-300 group-hover:opacity-0 ">
                             Send Message
                         </span>
-                        <Send 
+                        <Send
                             className="
                                 w-5 h-5 
                                 transition-all duration-300 ease-out
-                                group-hover:translate-x-2 group-hover:-translate-y-1
+                                group-hover:-translate-x-6/2
                                 group-active:translate-x-4 group-active:-translate-y-2
-                            " 
+                                hover:relative hover:
+                            "
                         />
                     </>
                 )}

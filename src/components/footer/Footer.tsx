@@ -1,4 +1,5 @@
 import { SocialIcons } from "../ui/SocialLinks";
+import data from "@/Data/Data.json"
 
 const Footer = () => {
     return (
@@ -23,13 +24,13 @@ const Footer = () => {
                     <span>© {new Date().getFullYear()}</span>
 
                     <span className="text-foreground font-semibold">
-                        Raunak Yadav
+                        {data.hero.fullName}
                     </span>
 
                     <span className="hidden sm:inline text-border mx-1">—</span>
 
                     <span className="w-full sm:w-auto">
-                        Everything’s open source. Take it, build better.
+                        {data.footer.note}
                     </span>
                 </div>
 

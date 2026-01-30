@@ -2,9 +2,9 @@
 import {  useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
-import { HeroFirstName } from "@/Data/Data";
 import Link from "next/link";
 import ThemeColorDropdown from "./AccentChanger";
+import Data from "@/Data/Data.json"
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -15,7 +15,7 @@ const Navbar = () => {
             <div className="bg-background/60 backdrop-blur-xl border border-primary rounded-full px-6 py-2 shadow-2xl">
                 <div className="flex items-center justify-between">
                     <div className="text-lg font-bold tracking-tighter">
-                        {HeroFirstName}
+                        {Data.hero.firstName}
                         <span className="text-primary">.</span>
                     </div>
 

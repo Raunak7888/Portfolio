@@ -1,0 +1,431 @@
+{
+    "hero": {
+        "firstName": "Raunak",
+        "secondName": "Yadav",
+        "fullName": "Raunak Yadav"
+    },
+    "heroSection": {
+        "description": "A Java-focused Full-Stack Engineer specializing in high-performance backends and clean, maintainable frontends. I build software that solves real problems without the fluff.",
+        "socialLinks": {
+            "githubUrl": "https://github.com/Raunak7888",
+            "linkedInUrl": "https://x.com/RaunakYada51596",
+            "instagramUrl": "https://www.instagram.com/raunakyadav7888",
+            "gmailUrl": "https://mail.google.com/mail/?view=cm&fs=1&to=raunakyadav7888@gmail.com"
+        },
+        "viewSourceGithubLinkUrl": "https://github.com/Raunak7888/Portfolio"
+    },
+    "about": {
+        "endingLine": "Engineered for long-term stability and human readability under change. ",
+        "segments": [
+            {
+                "id": "01",
+                "title": "How I Think",
+                "label": "Clarity",
+                "text": "I focus on writing code that is easy to understand and hard to break. I value clear logic and correctness over clever shortcuts, so the software I build remains reliable as it grows."
+            },
+            {
+                "id": "02",
+                "title": "How I Build",
+                "label": "Foundations",
+                "text": "I work primarily with Java and Spring, learning how backend systems are structured. I pay attention to API design, data flow, and concurrency basics to build predictable services."
+            },
+            {
+                "id": "03",
+                "title": "How I Learn",
+                "label": "Iteration",
+                "text": "I learn by implementing concepts end-to-end. Instead of memorizing patterns, I build small projects, experiment with edge cases, and refine my understanding through iteration."
+            },
+            {
+                "id": "04",
+                "title": "Where I’m Going",
+                "label": "Growth",
+                "text": "I am currently strengthening my fundamentals in data structures, system design, and distributed systems to prepare for building larger and more complex applications."
+            }
+        ]
+    },
+    "projects": [
+        {
+            "id": "eco-track-pro",
+            "title": "EcoTrack Pro",
+            "category": "Full-Stack Development",
+            "badge": "Most Innovative",
+            "accent": "#ff0000",
+            "iconKey": "globe",
+            "highlights": [
+                "Architected a real-time dashboard tracking 50+ global supply chain nodes.",
+                "Integrated OpenWeather API to correlate environmental data with logistics.",
+                "Reduced data processing latency by 45% using Redis caching."
+            ],
+            "description": "An enterprise-grade carbon footprint monitor designed for logistics giants to track Scope 3 emissions.",
+            "tech": ["React", "TypeScript", "Node.js", "PostgreSQL", "Redis"],
+            "link": "https://demo.com",
+            "github": "https://github.com/user/repo",
+            "images": [
+                "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2400&auto=format&fit=crop"
+            ]
+        },
+        {
+            "id": "sentinul-ai",
+            "title": "Sentinul AI",
+            "category": "Machine Learning / Security",
+            "badge": "Trending",
+            "accent": "#FF7F00",
+            "iconKey": "shield",
+            "highlights": [
+                "Trained Random Forest models on 1M+ anonymized transaction records.",
+                "Deployed as a containerized microservice via Docker and Kubernetes.",
+                "Achieved a 99.2% precision rate in identifying fraudulent credit patterns."
+            ],
+            "description": "A real-time fraud detection engine that identifies anomalous transaction patterns using ML models.",
+            "tech": ["Python", "FastAPI", "Scikit-Learn", "Docker"],
+            "link": "https://demo.com",
+            "github": "https://github.com/user/repo",
+            "images": [
+                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop"
+            ]
+        },
+        {
+            "id": "nexus-stream",
+            "title": "Nexus Stream",
+            "category": "System Architecture",
+            "badge": "High Performance",
+            "accent": "#f59e0b",
+            "iconKey": "zap",
+            "highlights": [
+                "Engineered a Kafka-based pipeline for asynchronous event streaming.",
+                "Optimized WebSocket handshakes to support 10k+ concurrent users.",
+                "Implemented horizontal scaling strategies via Kubernetes HPA."
+            ],
+            "description": "A high-concurrency video streaming backend built to handle massive traffic spikes.",
+            "tech": ["Go", "Kafka", "MongoDB", "Kubernetes"],
+            "link": "https://demo.com",
+            "github": "https://github.com/user/repo",
+            "images": [
+                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2400&auto=format&fit=crop"
+            ]
+        }
+    ],
+    "skills": {
+        "tech_types": ["Language", "Framework", "Database", "Tool", "Security"],
+        "nodes": [
+            {
+                "id": "javascript",
+                "type": "tech",
+                "position": { "x": -150, "y": 240 },
+                "data": {
+                    "label": "JavaScript",
+                    "icon_id": "SiJavascript",
+                    "category": "Language",
+                    "scalability": "Moderate",
+                    "debuggability": "Moderate",
+                    "consistency": "Low",
+                    "description": "Dynamic, event-driven language powering the web; flexible but prone to runtime errors without strong constraints."
+                }
+            },
+            {
+                "id": "typescript",
+                "type": "tech",
+                "position": { "x": -150, "y": 340 },
+                "data": {
+                    "label": "TypeScript",
+                    "icon_id": "SiTypescript",
+                    "category": "Language",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Statically typed superset of JavaScript that improves correctness, refactoring safety, and large-scale maintainability."
+                }
+            },
+            {
+                "id": "java",
+                "type": "tech",
+                "position": { "x": -150, "y": 440 },
+                "data": {
+                    "label": "Java",
+                    "icon_id": "FaJava",
+                    "category": "Language",
+                    "scalability": "Very High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Strongly typed, JVM-based language designed for long-running, concurrent, and production-grade backend systems."
+                }
+            },
+            {
+                "id": "python",
+                "type": "tech",
+                "position": { "x": -150, "y": 540 },
+                "data": {
+                    "label": "Python",
+                    "icon_id": "SiPython",
+                    "category": "Language",
+                    "scalability": "Moderate",
+                    "debuggability": "Moderate",
+                    "consistency": "Moderate",
+                    "description": "High-level language emphasizing readability and rapid development, commonly used for scripting, automation, and data tasks."
+                }
+            },
+            {
+                "id": "react",
+                "type": "tech",
+                "position": { "x": 30, "y": 285 },
+                "data": {
+                    "label": "React",
+                    "icon_id": "SiReact",
+                    "category": "Framework",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "Component-based UI library enabling declarative interfaces and reusable view logic."
+                }
+            },
+            {
+                "id": "nextjs",
+                "type": "tech",
+                "position": { "x": 350, "y": 285 },
+                "data": {
+                    "label": "Next.js",
+                    "icon_id": "SiNextdotjs",
+                    "category": "Framework",
+                    "scalability": "Very High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "React framework providing routing, SSR, and production-grade tooling for full-stack web applications."
+                }
+            },
+            {
+                "id": "tailwind",
+                "type": "tech",
+                "position": { "x": 200, "y": 240 },
+                "data": {
+                    "label": "Tailwind CSS",
+                    "icon_id": "SiTailwindcss",
+                    "category": "Framework",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Utility-first CSS framework that enforces design consistency and eliminates ad-hoc styling."
+                }
+            },
+            {
+                "id": "springboot",
+                "type": "tech",
+                "position": { "x": 30, "y": 440 },
+                "data": {
+                    "label": "Spring Boot",
+                    "icon_id": "SiSpringboot",
+                    "category": "Framework",
+                    "scalability": "Very High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Opinionated Java framework for building secure, scalable, and production-ready backend services."
+                }
+            },
+            {
+                "id": "postgresql",
+                "type": "tech",
+                "position": { "x": 200, "y": 390 },
+                "data": {
+                    "label": "PostgreSQL",
+                    "icon_id": "SiPostgresql",
+                    "category": "Database",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "Very High",
+                    "description": "Relational database emphasizing correctness, strong constraints, and complex query capabilities."
+                }
+            },
+            {
+                "id": "redis",
+                "type": "tech",
+                "position": { "x": 200, "y": 490 },
+                "data": {
+                    "label": "Redis",
+                    "icon_id": "SiRedis",
+                    "category": "Database",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "Moderate",
+                    "description": "In-memory data store optimized for caching, rate limiting, and fast ephemeral data access."
+                }
+            },
+            {
+                "id": "docker",
+                "type": "tech",
+                "position": { "x": 350, "y": 440 },
+                "data": {
+                    "label": "Docker",
+                    "icon_id": "SiDocker",
+                    "category": "Tool",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "Containerization platform ensuring consistent runtime environments across development and production."
+                }
+            },
+            {
+                "id": "git",
+                "type": "tech",
+                "position": { "x": -350, "y": 390 },
+                "data": {
+                    "label": "Git",
+                    "icon_id": "SiGit",
+                    "category": "Tool",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "Distributed version control system enabling collaboration, history tracking, and safe iteration."
+                }
+            },
+            {
+                "id": "jwt",
+                "type": "tech",
+                "position": { "x": 125, "y": 540 },
+                "data": {
+                    "label": "JWT",
+                    "icon_id": "SiJsonwebtokens",
+                    "category": "Security",
+                    "scalability": "High",
+                    "debuggability": "Low",
+                    "consistency": "Moderate",
+                    "description": "Stateless token format for authentication; simple to scale but risky without strict expiration and rotation."
+                }
+            },
+            {
+                "id": "oauth2",
+                "type": "tech",
+                "position": { "x": 125, "y": 340 },
+                "data": {
+                    "label": "OAuth 2.0",
+                    "icon_id": "TbBrandOauth",
+                    "category": "Security",
+                    "scalability": "Very High",
+                    "debuggability": "Low",
+                    "consistency": "High",
+                    "description": "Authorization framework enabling secure delegated access between services and identity providers."
+                }
+            }
+        ],
+        "edges": [
+            {
+                "id": "e-js-react",
+                "source": "javascript",
+                "target": "react",
+                "animated": true
+            },
+            {
+                "id": "e-ts-react",
+                "source": "typescript",
+                "target": "react",
+                "animated": true
+            },
+            {
+                "id": "e-react-tailwind",
+                "source": "react",
+                "target": "tailwind",
+                "animated": true
+            },
+            {
+                "id": "e-react-nextjs",
+                "source": "react",
+                "target": "nextjs",
+                "animated": true
+            },
+            {
+                "id": "e-tailwind-nextjs",
+                "source": "tailwind",
+                "target": "nextjs",
+                "animated": true
+            },
+            {
+                "id": "e-java-spring",
+                "source": "java",
+                "target": "springboot",
+                "animated": true
+            },
+            {
+                "id": "e-spring-postgres",
+                "source": "springboot",
+                "target": "postgresql",
+                "animated": true
+            },
+            {
+                "id": "e-spring-redis",
+                "source": "springboot",
+                "target": "redis",
+                "animated": true
+            },
+            {
+                "id": "e-postgres-docker",
+                "source": "postgresql",
+                "target": "docker",
+                "animated": true
+            },
+            {
+                "id": "e-redis-docker",
+                "source": "redis",
+                "target": "docker",
+                "animated": true
+            },
+            {
+                "id": "e-spring-jwt",
+                "source": "springboot",
+                "target": "jwt",
+                "animated": true
+            },
+            {
+                "id": "e-spring-oauth2",
+                "source": "springboot",
+                "target": "oauth2",
+                "animated": true
+            },
+            {
+                "id": "e-spring-docker",
+                "source": "springboot",
+                "target": "docker",
+                "animated": true
+            },
+            {
+                "id": "e-oauth2-nextjs",
+                "source": "oauth2",
+                "target": "nextjs",
+                "animated": true
+            },
+            {
+                "id": "e-git-js",
+                "source": "git",
+                "target": "javascript",
+                "animated": true
+            },
+            {
+                "id": "e-git-ts",
+                "source": "git",
+                "target": "typescript",
+                "animated": true
+            },
+            {
+                "id": "e-git-java",
+                "source": "git",
+                "target": "java",
+                "animated": true
+            },
+            {
+                "id": "e-git-python",
+                "source": "git",
+                "target": "python",
+                "animated": true
+            }
+        ]
+    },
+    "footer": {
+        "note": "Everything’s open source. Take it, build better."
+    }
+}

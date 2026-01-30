@@ -1,38 +1,27 @@
 import React from "react";
 import Divider from "../Divider";
 import { ShieldCheck, Cpu, Map, Terminal, Brain, Layers } from "lucide-react";
+import data from "@/Data/Data.json";
+
+// 1. Define Types for your JSON data
+interface SegmentData {
+    id: string;
+    title: string;
+    label: string;
+    text: string;
+}
 
 const AboutSection = () => {
-    const segments = [
-        {
-            id: "01",
-            title: "How I Think",
-            label: "Clarity",
-            icon: <ShieldCheck className="w-5 h-5 text-primary" />,
-            text: "I focus on writing code that is easy to understand and hard to break. I value clear logic and correctness over clever shortcuts, so the software I build remains reliable as it grows.",
-        },
-        {
-            id: "02",
-            title: "How I Build",
-            label: "Foundations",
-            icon: <Cpu className="w-5 h-5 text-primary" />,
-            text: "I work primarily with Java and Spring, learning how backend systems are structured. I pay attention to API design, data flow, and concurrency basics to build predictable services.",
-        },
-        {
-            id: "03",
-            title: "How I Learn",
-            label: "Iteration",
-            icon: <Brain className="w-5 h-5 text-primary" />,
-            text: "I learn by implementing concepts end-to-end. Instead of memorizing patterns, I build small projects, experiment with edge cases, and refine my understanding through iteration.",
-        },
-        {
-            id: "04",
-            title: "Where I’m Going",
-            label: "Growth",
-            icon: <Map className="w-5 h-5 text-primary" />,
-            text: "I am currently strengthening my fundamentals in data structures, system design, and distributed systems to prepare for building larger and more complex applications.",
-        },
-    ];
+    // 2. Icon Lookup Table: Matches JSON 'id' to the Lucide Component
+    const iconMap: Record<string, React.ReactNode> = {
+        "01": <ShieldCheck className="w-5 h-5 text-primary" />,
+        "02": <Cpu className="w-5 h-5 text-primary" />,
+        "03": <Brain className="w-5 h-5 text-primary" />,
+        "04": <Map className="w-5 h-5 text-primary" />,
+    };
+
+    // 3. Destructure the data from JSON
+    const { endingLine, segments } = data.about;
 
     return (
         <section className="relative w-full min-h-screen flex flex-col text-foreground overflow-hidden">
@@ -54,14 +43,11 @@ const AboutSection = () => {
                         </div>
                     </div>
 
-                    {segments.map((s) => (
+                    {/* 4. Map through the JSON segments */}
+                    {segments.map((s: SegmentData) => (
                         <div
                             key={s.id}
-                            className={`
-                                group relative p-8 lg:p-14 bg-background 
-                                hover:bg-white/2 transition-colors duration-500
-                                flex flex-col gap-6
-                            `}
+                            className="group relative p-8 lg:p-14 bg-background hover:bg-white/2 transition-colors duration-500 flex flex-col gap-6"
                         >
                             {/* Card Header */}
                             <div className="flex flex-col gap-3">
@@ -78,7 +64,7 @@ const AboutSection = () => {
 
                             {/* Status Tag */}
                             <div className="flex items-center gap-3 bg-foreground/5 self-start px-3 py-1.5 rounded-md border border-foreground/10">
-                                {s.icon}
+                                {iconMap[s.id]}
                                 <span className="text-[10px] font-mono font-semibold uppercase text-zinc-500 tracking-widest">
                                     {s.label}
                                 </span>
@@ -89,7 +75,7 @@ const AboutSection = () => {
                                 {s.text}
                             </p>
 
-                            {/* Decorative Corner (Hover Effect) */}
+                            {/* Decorative Corner */}
                             <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Layers className="w-4 h-4 text-blue-400/20" />
                             </div>
@@ -99,12 +85,12 @@ const AboutSection = () => {
             </div>
 
             {/* Technical Footer */}
-
-            <div className="w-full md:text-right border-l-2 flex items-center justify-end md:border-l-0 md:border-r-2 border-primary/40 pl-4 md:pl-0 md:pr-4 order-1 md:order-2">
-                <p className="font-poetsen max-w-xs text-[11px] text-zinc-500 leading-tight">
-                    Engineered for long-term stability and human readability
-                    under change.
-                </p>
+            <div className="w-full flex items-center justify-end px-6 pb-6">
+                <div className="md:text-right border-l-2 md:border-l-0 md:border-r-2 border-primary/40 pl-4 md:pl-0 md:pr-4">
+                    <p className="font-poetsen max-w-xs text-[11px] text-zinc-500 leading-tight">
+                        {endingLine}
+                    </p>
+                </div>
             </div>
         </section>
     );

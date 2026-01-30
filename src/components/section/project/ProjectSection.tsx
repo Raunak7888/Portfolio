@@ -11,94 +11,31 @@ import { FaGithub } from "react-icons/fa";
 import Divider from "../Divider";
 import Image from "next/image";
 import Link from "next/link";
+import projectData from "@/Data/Data.json";
 
-// 1. Define the Interface for Type Safety
+// 1. Refined Interface for JSON Data
 interface Project {
+    id: string;
     title: string;
     category: string;
     badge: string;
     accent: string;
+    iconKey: string;
     highlights: string[];
     description: string;
     tech: string[];
     link: string;
     github: string;
     images: string[];
-    icon: React.ReactNode;
 }
 
-const projects: Project[] = [
-    {
-        title: "EcoTrack Pro",
-        category: "Full-Stack Development",
-        badge: "Most Innovative",
-        accent: "#ff0000",
-        highlights: [
-            "Architected a real-time dashboard tracking 50+ global supply chain nodes.",
-            "Integrated OpenWeather API to correlate environmental data with logistics.",
-            "Reduced data processing latency by 45% using Redis caching.",
-        ],
-        description:
-            "An enterprise-grade carbon footprint monitor designed for logistics giants to track Scope 3 emissions.",
-        tech: ["React", "TypeScript", "Node.js", "PostgreSQL", "Redis"],
-        link: "https://demo.com",
-        github: "https://github.com/user/repo",
-        images: [
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2400&auto=format&fit=crop",
-        ],
-        icon: <Globe size={20} />,
-    },
-    {
-        title: "Sentinul AI",
-        category: "Machine Learning / Security",
-        badge: "Trending",
-        accent: "#FF7F00",
-        highlights: [
-            "Trained Random Forest models on 1M+ anonymized transaction records.",
-            "Deployed as a containerized microservice via Docker and Kubernetes.",
-            "Achieved a 99.2% precision rate in identifying fraudulent credit patterns.",
-        ],
-        description:
-            "A real-time fraud detection engine that identifies anomalous transaction patterns using ML models.",
-        tech: ["Python", "FastAPI", "Scikit-Learn", "Docker"],
-        link: "https://demo.com",
-        github: "https://github.com/user/repo",
-        images: [
-            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop",
-        ],
-        icon: <Shield size={20} />,
-    },
-    {
-        title: "Nexus Stream",
-        category: "System Architecture",
-        badge: "High Performance",
-        accent: "#f59e0b",
-        highlights: [
-            "Engineered a Kafka-based pipeline for asynchronous event streaming.",
-            "Optimized WebSocket handshakes to support 10k+ concurrent users.",
-            "Implemented horizontal scaling strategies via Kubernetes HPA.",
-        ],
-        description:
-            "A high-concurrency video streaming backend built to handle massive traffic spikes.",
-        tech: ["Go", "Kafka", "MongoDB", "Kubernetes"],
-        link: "https://demo.com",
-        github: "https://github.com/user/repo",
-        images: [
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2400&auto=format&fit=crop",
-        ],
-        icon: <Zap size={20} />,
-    },
-];
-// 2. Apply Types to the Component Props
+// 2. Icon Mapping Dictionary
+const iconMap: Record<string, React.ReactNode> = {
+    globe: <Globe size={20} />,
+    shield: <Shield size={20} />,
+    zap: <Zap size={20} />,
+};
+
 interface ProjectCardProps {
     project: Project;
     isEven: boolean;
@@ -188,7 +125,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, isEven }) => {
 
                 <div className="absolute -top-4 -right-4 bg-background shadow-xl px-4 py-2 rounded-full flex items-center gap-2 border border-foreground/20 backdrop-blur-md z-30">
                     <span style={{ color: project.accent }}>
-                        {project.icon}
+                        {iconMap[project.iconKey]}
                     </span>
                     <span className="text-xs font-bold uppercase tracking-widest text-foreground">
                         {project.badge}
@@ -269,9 +206,9 @@ const ProjectSection: React.FC = () => {
 
             <div className="max-w-7xl pt-5 pb-35 mx-auto">
                 <div className="space-y-48">
-                    {projects.map((project, index) => (
+                    {projectData.projects.map((project, index) => (
                         <ProjectCard
-                            key={project.title}
+                            key={project.id}
                             project={project}
                             isEven={index % 2 === 0}
                         />

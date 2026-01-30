@@ -1,7 +1,7 @@
 "use client";
 
 import { GridBackground } from "@/components/GridBackground";
-    import ProjectSection from "@/components/section/project/ProjectSection";
+import ProjectSection from "@/components/section/project/ProjectSection";
 import SkillGraph from "@/components/section/skill/SkillGraph";
 import AboutSection from "@/components/section/about/AboutSection";
 import ContactSection from "@/components/section/contact/ContactSection";
@@ -17,7 +17,6 @@ export default function Home() {
     return (
         <div className="min-h-screen w-full relative bg-background overflow-hidden">
             <GridBackground>
-                {/* <Navbar />   */}
                 <main className="relative w-screen min-h-screen" id="home">
                     <HeroSection />
                 </main>
@@ -30,16 +29,19 @@ export default function Home() {
                     <SkillGraph />
                 </section>
 
-                <section className="relative w-screen min-h-screen" id="skills">
+                <section className="relative w-screen min-h-screen" id="projects">
                     <ProjectSection />
                 </section>
 
-                <section className="relative w-screen min-h-screen" id="contact">
+                <section
+                    className="relative w-screen min-h-screen"
+                    id="contact"
+                >
                     <ContactSection />
                 </section>
 
                 <footer>
-                    <Footer/>
+                    <Footer />
                 </footer>
             </GridBackground>
         </div>
