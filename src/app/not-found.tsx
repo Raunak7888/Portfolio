@@ -63,7 +63,7 @@ export default function NotFound() {
                         Lost in the Matrix.
                     </h1>
                     <p className="mt-6 text-base leading-7 text-foreground/60 font-medium">
-                        The coordinate <span className="text-primary/80 font-mono">"{`{unknown_route}`}"</span> 
+                        The coordinate <span className="text-primary/80 font-mono">&quot;{`{unknown_route}`}&quot;</span> 
                         does not exist in our current database. It may have been purged or relocated.
                     </p>
                 </motion.div>
