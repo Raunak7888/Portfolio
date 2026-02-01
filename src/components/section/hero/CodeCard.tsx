@@ -198,7 +198,7 @@ const HeroVisualStack = () => {
         setDraggedId(null);
 
         const thrown =
-            Math.abs(info.velocity.x) > 700 || Math.abs(info.offset.x) > 1000;
+            Math.abs(info.velocity.x) > 10000 || Math.abs(info.offset.x) > 1000;
 
         if (thrown) {
             setCards((prev) => prev.filter((c) => c.id !== id));

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import Divider from "../Divider";
 import ContactButton from "./ContactButton";
-
+import { motion, Variants } from "framer-motion";
 type ContactForm = {
     name: string;
     email: string;
@@ -15,9 +15,9 @@ type ContactForm = {
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+    // const contentRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
-    const headingRef = useRef<HTMLHeadingElement>(null);
+    // const headingRef = useRef<HTMLHeadingElement>(null);
 
     const {
         register,
@@ -53,41 +53,44 @@ const ContactSection = () => {
         });
     };
 
-    useLayoutEffect(() => {
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 60%",
-                    toggleActions: "play none none reverse",
-                },
-            });
+    const textVariants:Variants = {
+        hidden: {
+            opacity: 0,
+            y: 50,
+            rotateX: -45,
+        },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            transition: {
+                delay: i * 0.1,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1], // Custom expo out
+            },
+        }),
+    } as const;
 
-            // 2. BEAST ENTRANCE: Cinematic reveal
-            tl.from(".beast-text", {
-                y: 50,
-                opacity: 0,
-                rotateX: -45,
-                stagger: 0.1,
+    // Variants for the Form Container
+    const formVariants:Variants = {
+        hidden: {
+            opacity: 0,
+            scale: 0.8,
+            z: -200,
+            rotateY: 25,
+        },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            z: 0,
+            rotateY: 0,
+            transition: {
+                delay: 0.4,
                 duration: 1,
-                ease: "expo.out",
-            }).from(
-                formRef.current,
-                {
-                    scale: 0.7,
-                    z: -500,
-                    opacity: 0,
-                    rotateY: 45,
-                    duration: 1,
-                    ease: "expo.inOut",
-                },
-                "-=0.7",
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
+                ease: [0.16, 1, 0.3, 1],
+            },
+        },
+    } as const;
     const onSubmit = async (data: ContactForm) => {
         try {
             const res = await fetch("/api/contact", {
@@ -145,23 +148,30 @@ const ContactSection = () => {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full py-20 px-4 sm:px-8 overflow-hidden "
-            style={{ perspective: "1500px" }}
+            className="relative w-full py-20 px-4 sm:px-8 overflow-hidden"
         >
             <Divider sectionName="Contact" />
 
             <div className="mx-auto max-w-6xl mt-16">
                 <div className="flex flex-col lg:flex-row gap-16 items-center lg:items-start">
                     {/* Content Side */}
-                    <div
-                        ref={contentRef}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: false, amount: 0.3 }} // amount: 0.3 means 30% of section visible triggers it
                         className="w-full lg:w-5/12 space-y-8 text-center lg:text-left"
                     >
-                        <div className="beast-text inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20 tracking-tighter uppercase">
+                        <motion.div
+                            variants={textVariants}
+                            custom={0}
+                            className="beast-text inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20 tracking-tighter uppercase"
+                        >
                             Available for new projects
-                        </div>
-                        <h2
-                            ref={headingRef}
+                        </motion.div>
+
+                        <motion.h2
+                            variants={textVariants}
+                            custom={1}
                             className="beast-text text-5xl md:text-8xl font-black font-madimi tracking-tighter leading-[0.9] uppercase"
                         >
                             Let&apos;s build <br />
@@ -172,15 +182,25 @@ const ContactSection = () => {
                             <span className="text-primary underline decoration-2 underline-offset-8">
                                 great.
                             </span>
-                        </h2>
-                        <p className="beast-text text-lg text-foreground/50 max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">
+                        </motion.h2>
+
+                        <motion.p
+                            variants={textVariants}
+                            custom={2}
+                            className="beast-text text-lg text-foreground/50 max-w-md mx-auto lg:mx-0 font-medium leading-relaxed"
+                        >
                             System is ready for input. Transmit your message
                             below to initiate communication.
-                        </p>
-                    </div>
-
+                        </motion.p>
+                    </motion.div>
                     {/* Form Side */}
-                    <div className="w-full lg:w-7/12">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: false, amount: 0.3 }}
+                        variants={formVariants}
+                        className="w-full lg:w-7/12"
+                    >
                         <form
                             ref={formRef}
                             onMouseMove={handleMouseMove}
@@ -243,7 +263,7 @@ const ContactSection = () => {
                                 <ContactButton isSending={isSubmitting} />
                             </div>
                         </form>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

@@ -69,11 +69,7 @@ export default function HeroContent() {
             tl.to(
                 name,
                 {
-                    scrambleText: {
-                        text: data.hero.fullName,
-                        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                        speed: 0.4,
-                    },
+                    text: data.hero.fullName,
                     duration: 1.2,
                     ease: "none",
                 },
@@ -100,7 +96,7 @@ export default function HeroContent() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid lg:grid-cols-12 gap-12 items-center w-full"
+            className="grid lg:grid-cols-12 select-none gap-12 items-center w-full"
         >
             {/* Left */}
             <div className="lg:col-span-7 space-y-8 relative top-3 text-left">

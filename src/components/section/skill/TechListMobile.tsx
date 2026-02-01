@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import type { Node } from "@xyflow/react";
-import { TECH_TYPE, type TechCategory, type TechNodeData } from "./graph-data";
+import { type TechCategory, type TechNodeData } from "./graph-data";
 import { ChevronRight } from "lucide-react";
 import { TYPE_STYLES } from "./type-styles";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 type Tab = "All" | TechCategory;
 
@@ -16,32 +17,54 @@ export const TechListMobile = ({
     onOpen: (TechNode: TechNodeData) => void;
 }) => {
     const [activeTab, setActiveTab] = useState<Tab>("All");
-    const categories: Tab[] = [
-        "All",
-        "Language",
-        "Framework",
-        "Database",
-        "Tool",
-        "Security",
-    ];
 
-    const filteredNodes =
-        activeTab === "All"
-            ? nodes
-            : nodes.filter((n) => n.data.type === activeTab);
+    const categories: Tab[] = ["All", "Language", "Framework", "Database", "Tool", "Security"];
+
+    const filteredNodes = activeTab === "All"
+        ? nodes
+        : nodes.filter((n) => n.data.type === activeTab);
+
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
+        },
+    };
+
+    const itemVariants: Variants = {
+        hidden: { 
+            opacity: 0, 
+            y: 30, 
+            scale: 0.9 
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { 
+                type: "spring", 
+                stiffness: 120, 
+                damping: 20 
+            },
+        },
+    };
 
     return (
-        <div className="flex flex-col gap-6 p-4 lg:hidden">
-            {/* 1. Category Scroller */}
+        <div className="flex flex-col gap-4 p-4 lg:hidden overflow-hidden   ">
+            {/* Category Scroller */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                 {categories.map((cat) => (
                     <button
                         key={cat}
                         onClick={() => setActiveTab(cat)}
-                        className={`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap border ${
+                        className={`px-4 py-1.5 rounded-full text-[11px] font-bold transition-all whitespace-nowrap border ${
                             activeTab === cat
-                                ? "bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/20"
-                                : "bg-muted/50 border-transparent text-muted-foreground"
+                                ? "bg-primary border-primary text-primary-foreground shadow-lg scale-105"
+                                : "bg-background border-foreground/10 text-foreground/50"
                         }`}
                     >
                         {cat}
@@ -49,85 +72,72 @@ export const TechListMobile = ({
                 ))}
             </div>
 
-            {/* 2. Bento Grid */}
-            <div className="grid grid-cols-2 gap-4">
-                {filteredNodes.map((n, idx) => {
-                    const isFeature = idx % 3 === 0;
-                    // Extract styles based on the node category
-                    const { bg, border, legend } = TYPE_STYLES[n.data.type];
+            {/* Bento Grid */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }} 
+                className="grid grid-cols-2 gap-3"
+            >
+                <AnimatePresence mode="popLayout">
+                    {filteredNodes.map((n, idx) => {
+                        const isFeature = idx % 3 === 0;
+                        const { legend } = TYPE_STYLES[n.data.type as keyof typeof TYPE_STYLES] || TYPE_STYLES.Tool;
 
-                    return (
-                        <button
-                            key={n.id}
-                            onClick={() => onOpen(n.data)}
-                            className={`
-                                group relative overflow-hidden rounded-4xl border bg-background p-5 
-                                transition-all active:scale-95 text-left h-40
-                                ${isFeature ? "col-span-2 " : "col-span-1 max-[440]:col-span-2"}
-                                ${border} /* Applied dynamic border class */
-                            `}
-                        >
-                            {/* Ambient Glow using dynamic bg */}
-                            <div
-                                className={`absolute -right-4 -top-4 h-24 w-24 rounded-full opacity-[0.08] blur-2xl group-hover:opacity-20 transition-opacity ${bg}`}
-                            />
-
-                            <div
-                                className={`flex ${
-                                    isFeature
-                                        ? "flex-row items-center gap-6 "
-                                        : "min-[440]:flex-col min-[440]:justify-between min-[440]:h-full max-[440]:flex-row max-[440]:items-center max-[440px]:gap-6"
-                                }`}
+                        return (
+                            <motion.button
+                                key={n.id}
+                                layout
+                                variants={itemVariants}
+                                onClick={() => onOpen(n.data)}
+                                className={`
+                                    group relative overflow-hidden rounded-3xl border bg-background p-4 
+                                    transition-all active:scale-95 text-left h-28 border-foreground/10
+                                    ${isFeature ? "col-span-2 h-32" : "col-span-1"}
+                                `}
                             >
-                                {/* Icon Container using dynamic legend color */}
                                 <div
-                                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-card shadow-sm text-3xl transition-transform group-hover:scale-110"
-                                    style={{
-                                        color: legend,
-                                        border: `2px solid ${legend}`,
-                                    }}
-                                >
-                                    {n.data.icon}
-                                </div>
+                                    className="absolute -right-4 -top-4 h-20 w-20 rounded-full opacity-[0.05] blur-2xl transition-opacity group-hover:opacity-20"
+                                    style={{ backgroundColor: legend }}
+                                />
 
-                                <div className="flex flex-col overflow-hidden">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground/50">
-                                        {n.data.type}
-                                    </span>
-                                    {/* Title using dynamic legend color */}
-                                    <span
-                                        className="text-xl font-black tracking-tight mt-0.5"
-                                        style={{ color: legend }}
-                                    >
-                                        {n.data.label}
-                                    </span>
-                                </div>
-
-                                {/* Interaction Indicator */}
-                                <div
-                                    className="ml-auto bg-muted/50 absolute  top-2/3 right-5 p-2 rounded-full text-muted-foreground transition-all group-hover:text-white"
-                                    style={{
-                                        backgroundColor: `var(--group-hover-bg, transparent)`,
-                                    }}
-                                >
-                                    {/* Using inline style for the hover background logic if Tailwind doesn't support group-hover with hex
-                                    <style jsx>{`
-                                        button:hover .chevron-bg {
-                                            background-color: ${legend};
-                                            color: white;
-                                        }
-                                    `}</style> */}
+                                <div className={`flex h-full relative z-10 ${isFeature ? "flex-row items-center gap-4" : "flex-col justify-between"}`}>
                                     <div
-                                        className={`chevron-bg p-2 rounded-full transition-colors ${bg} not-hover:bg-background text-foreground`}
+                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background border shadow-sm text-xl transition-transform group-hover:scale-110"
+                                        style={{
+                                            color: legend,
+                                            borderColor: `${legend}33`,
+                                            backgroundColor: `${legend}10`,
+                                        }}
                                     >
-                                        <ChevronRight size={20} />
+                                        {n.data.icon}
+                                    </div>
+
+                                    <div className="flex flex-col overflow-hidden">
+                                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-foreground/40">
+                                            {n.data.type}
+                                        </span>
+                                        <span className="text-base font-bold tracking-tight truncate text-foreground">
+                                            {n.data.label}
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        className={`
+                                        absolute bottom-0 right-0 p-1.5 rounded-full border border-foreground/5 transition-all
+                                        ${isFeature ? "top-1/2 -translate-y-1/2 bottom-auto" : ""}
+                                        bg-background text-foreground/30 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary
+                                    `}
+                                    >
+                                        <ChevronRight size={14} />
                                     </div>
                                 </div>
-                            </div>
-                        </button>
-                    );
-                })}
-            </div>
+                            </motion.button>
+                        );
+                    })}
+                </AnimatePresence>
+            </motion.div>
         </div>
     );
 };

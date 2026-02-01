@@ -1,290 +1,217 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ExternalLink, Shield, Zap, Globe, ChevronLeft, ChevronRight } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import gsap from "gsap";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    ExternalLink,
+    Shield,
+    Zap,
+    Globe,
+    ChevronLeft,
+    ChevronRight,
+} from "lucide-react";
 import Divider from "../Divider";
 import projectData from "@/Data/Data.json";
+
+/* ===================== TYPES ===================== */
 
 interface Project {
     id: string;
     title: string;
     category: string;
-    badge: string;
     accent: string;
     iconKey: string;
     highlights: string[];
     description: string;
-    tech: string[];
     link: string;
-    github: string;
     images: string[];
 }
 
 const iconMap: Record<string, React.ReactNode> = {
-    globe: <Globe size={20} />,
-    shield: <Shield size={20} />,
-    zap: <Zap size={20} />,
+    globe: <Globe size={18} />,
+    shield: <Shield size={18} />,
+    zap: <Zap size={18} />,
 };
 
-const ProjectCard: React.FC<{
+/* ===================== PROJECT CARD ===================== */
+
+function ProjectCard({
+    project,
+    isEven,
+}: {
     project: Project;
     isEven: boolean;
-    cardRef: (el: HTMLDivElement | null) => void;
-}> = ({ project, isEven, cardRef }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-   
-    const nextSlide = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setCurrentIndex((prev) =>
-            prev === project.images.length - 1 ? 0 : prev + 1,
-        );
-    };
-
-    const prevSlide = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setCurrentIndex((prev) =>
-            prev === 0 ? project.images.length - 1 : prev - 1,
-        );
-    };
+}) {
+    const [imgIndex, setImgIndex] = useState(0);
 
     return (
-        <div
-            ref={cardRef}
-            className="project-card absolute inset-0 flex items-center justify-center px-4 lg:px-20 will-change-transform"
+        <motion.div
+            /**
+             * REVERSE ANIMATION LOGIC:
+             * - initial: The state when the component is off-screen.
+             * - whileInView: The state when the component enters the viewport.
+             * - viewport: { once: false } allows the animation to play in reverse when scrolling away.
+             */
+            initial={{
+                opacity: 0,
+                y: 50,
+                x: isEven ? -50 : 50, // Slides in from left if even, right if odd
+            }}
+            whileInView={{
+                opacity: 1,
+                y: 0,
+                x: 0,
+            }}
+            viewport={{
+                once: false, // Set to false to enable reverse animation
+                amount: 0.2, // Triggers when 20% of the element is visible
+                margin: "-50px",
+            }}
+            transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for a smooth "pro" feel
+            }}
+            className="w-full py-16 lg:py-24 border-b border-foreground/5 last:border-none"
         >
-            {/* Main Card Container */}
             <div
-                className={`relative flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} gap-8 lg:gap-16 items-center w-full max-w-7xl bg-background/5 backdrop-blur-2xl p-6 lg:p-12 rounded-[3.5rem] border border-foreground/10 overflow-hidden`}
+                className={`flex flex-col ${
+                    isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+                } gap-12 items-center max-w-7xl mx-auto px-6`}
             >
-                {/* Decorative Background Glow */}
-                <div
-                    className="absolute -top-24 -left-24 w-96 h-96 opacity-20 blur-[120px] rounded-full pointer-events-none"
-                    style={{ backgroundColor: project.accent }}
-                />
-
-                {/* Visual Side: Interactive Carousel */}
-                <div className="w-full lg:w-3/5 relative group">
-                    <div className="relative aspect-16/10 overflow-hidden rounded-4xl border border-foreground/5 shadow-2xl bg-background/20">
-                        {project.images.map((img, i) => (
-                            <div
-                                key={i}
-                                className={`absolute inset-0 transition-all duration-700 ease-in-out ${i === currentIndex ? "opacity-100 scale-100" : "opacity-0 scale-110 pointer-events-none"}`}
+                {/* Image Container */}
+                <div className="w-full lg:w-3/5 group">
+                    <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden border border-foreground/10 bg-muted shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={imgIndex}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.4 }}
+                                className="relative w-full h-full"
                             >
                                 <Image
-                                    src={img}
-                                    alt={`${project.title} screenshot`}
+                                    src={project.images[imgIndex]}
+                                    alt={project.title}
                                     fill
                                     className="object-cover"
-                                    priority={i === 0}
                                 />
-                            </div>
-                        ))}
+                            </motion.div>
+                        </AnimatePresence>
 
-                        {/* Carousel Navigation */}
+                        {/* Image Navigation */}
                         {project.images.length > 1 && (
-                            <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between z-30 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                 <button
-                                    onClick={prevSlide}
-                                    className="p-3 rounded-2xl bg-background/50 backdrop-blur-md text-foreground hover:bg-foreground/20 transition-all"
+                                    className="p-3 rounded-full bg-background/80 backdrop-blur-md text-foreground hover:bg-primary hover:text-white transition-all"
+                                    onClick={() =>
+                                        setImgIndex(
+                                            (i) =>
+                                                (i -
+                                                    1 +
+                                                    project.images.length) %
+                                                project.images.length,
+                                        )
+                                    }
                                 >
                                     <ChevronLeft size={20} />
                                 </button>
                                 <button
-                                    onClick={nextSlide}
-                                    className="p-3 rounded-2xl bg-background/50 backdrop-blur-md text-foreground hover:bg-foreground/20 transition-all"
+                                    className="p-3 rounded-full bg-background/80 backdrop-blur-md text-foreground hover:bg-primary hover:text-white transition-all"
+                                    onClick={() =>
+                                        setImgIndex(
+                                            (i) =>
+                                                (i + 1) % project.images.length,
+                                        )
+                                    }
                                 >
                                     <ChevronRight size={20} />
                                 </button>
                             </div>
                         )}
-
-                        {/* Image Indicators */}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-                            {project.images.map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={`h-1.5 transition-all duration-300 rounded-full ${i === currentIndex ? "w-8" : "w-2 bg-white/30"}`}
-                                    style={{
-                                        backgroundColor:
-                                            i === currentIndex
-                                                ? project.accent
-                                                : "",
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Project Floating Badge */}
-                    <div className="absolute -top-4 -right-4 bg-white dark:bg-zinc-800 shadow-2xl px-5 py-2.5 rounded-2xl flex items-center gap-3 border border-white/10 z-40 transform group-hover:-translate-y-1 transition-transform">
-                        <span
-                            className="p-1.5 rounded-lg bg-foreground/5"
-                            style={{ color: project.accent }}
-                        >
-                            {iconMap[project.iconKey]}
-                        </span>
-                        <span className="text-[11px] font-black uppercase tracking-[0.15em] text-foreground/80">
-                            {project.badge}
-                        </span>
                     </div>
                 </div>
 
                 {/* Content Side */}
-                <div className="w-full lg:w-2/5 flex flex-col z-10">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span
-                            className="font-mono text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-white/5 border border-white/10"
-                            style={{ color: project.accent }}
-                        >
+                <div className="w-full lg:w-2/5 flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                        <span style={{ color: project.accent }}>
+                            {iconMap[project.iconKey] || <Globe size={18} />}
+                        </span>
+                        <span className="text-xs font-mono uppercase tracking-[0.3em] text-foreground/60">
                             {project.category}
                         </span>
                     </div>
 
-                    <h3 className="text-4xl lg:text-6xl font-black mb-6 tracking-tighter text-foreground leading-[0.9]">
+                    <h3 className="text-4xl lg:text-6xl font-black mb-6 tracking-tighter text-foreground">
                         {project.title}
                     </h3>
 
-                    <p className="text-foreground/70 text-lg mb-8 leading-relaxed font-medium">
+                    <p className="text-foreground/70 mb-8 text-lg leading-relaxed">
                         {project.description}
                     </p>
 
-                    {/* Highlights List */}
-                    <div className="space-y-3 mb-8">
-                        {project.highlights.map((highlight, i) => (
-                            <div
-                                key={i}
-                                className="flex items-center gap-3 group/item"
+                    {/* Highlights */}
+                    <ul className="grid grid-cols-1 gap-3 mb-10">
+                        {project.highlights.map((h, idx) => (
+                            <motion.li
+                                key={h}
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="flex items-center gap-3"
                             >
                                 <div
-                                    className="h-1 w-1 rounded-full transition-all group-hover/item:scale-150"
+                                    className="h-2 w-2 rounded-full"
                                     style={{ backgroundColor: project.accent }}
                                 />
-                                <span className="text-sm font-semibold text-foreground/80 tracking-wide">
-                                    {highlight}
+                                <span className="text-sm font-semibold text-foreground/80">
+                                    {h}
                                 </span>
-                            </div>
+                            </motion.li>
                         ))}
-                    </div>
-
-                    {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap gap-2 mb-10">
-                        {project.tech.map((t) => (
-                            <span
-                                key={t}
-                                className="text-[10px] font-bold font-mono bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-foreground/60 hover:border-white/30 transition-colors"
-                            >
-                                {t.toUpperCase()}
-                            </span>
-                        ))}
-                    </div>
+                    </ul>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={project.github}
-                            className="flex-1 flex items-center justify-center gap-2 font-bold p-4 rounded-2xl border border-foreground/10 hover:bg-foreground hover:text-background transition-all active:scale-95"
-                        >
-                            <FaGithub size={20} /> Source
-                        </Link>
+                    <div className="flex flex-wrap gap-4">
                         <Link
                             href={project.link}
-                            style={{ backgroundColor: project.accent }}
-                            className="flex-[1.5] flex items-center justify-center gap-2 text-white p-4 rounded-2xl font-bold hover:brightness-110 shadow-lg shadow-black/20 transition-all active:scale-95"
+                            className="px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95"
                         >
-                            Live Preview <ExternalLink size={18} />
+                            Live Demo <ExternalLink size={18} />
+                        </Link>
+
+                        <Link
+                            href={`/project/${project.id}`}
+                            className="px-8 py-4 rounded-2xl border-2 border-foreground/10 font-bold hover:bg-foreground hover:text-background transition-all"
+                        >
+                            Details
                         </Link>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
-};
+}
 
-const ProjectSection: React.FC = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+/* ===================== MAIN SECTION ===================== */
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            const cards = cardsRef.current;
-
-            // Initial State: Position all cards except the first one off-screen
-            gsap.set(cards.slice(1), { yPercent: 100, opacity: 0, scale: 0.9 });
-
-            // Create the ScrollTrigger Master Timeline
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: `+=${cards.length * 100}%`, // Dynamic scroll length based on project count
-                    pin: true,
-                    scrub: 1, // Smoothly tracks the scrollbar
-                    anticipatePin: 1,
-                },
-            });
-
-            cards.forEach((card, index) => {
-                if (index === 0) return; // Skip first card
-
-                // Previous card scales down and fades slightly
-                tl.to(
-                    cards[index - 1],
-                    {
-                        scale: 0.85,
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "power2.inOut",
-                    },
-                    index - 0.5,
-                );
-
-                // Current card slides up
-                tl.to(
-                    card,
-                    {
-                        yPercent: 0,
-                        opacity: 1,
-                        scale: 1,
-                        duration: 1,
-                        ease: "power2.out",
-                    },
-                    index - 0.5,
-                );
-            });
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
+export default function ProjectSection() {
     return (
-        <section
-            ref={sectionRef}
-            className="relative h-screen w-full overflow-hidden"
-        >
-            <div className="absolute top-0 left-0 w-full z-50 ">
-                <Divider sectionName="Projects" />
-            </div>
+        <section className="relative w-full  overflow-hidden">
+            <Divider sectionName="Featured Work" />
 
-            {/* Background Aesthetic Elements */}
-            <div className="absolute top-0  left-1/4 w-125 h-125 bg-primary/5 rounded-full blur-[120px] -z-10" />
-
-            <div ref={containerRef} className="relative h-full w-full top-10">
-                {projectData.projects.map((project, index) => (
-                    <ProjectCard
-                        key={project.id}
-                        project={project}
-                        isEven={index % 2 === 0}
-                        cardRef={(el: HTMLDivElement | null) =>
-                            (cardsRef.current[index] = el)
-                        }
-                    />
+            <div className="flex flex-col py-10">
+                {projectData.projects.map((p: Project, i: number) => (
+                    <ProjectCard key={p.id} project={p} isEven={i % 2 === 0} />
                 ))}
             </div>
+
+            {/* Background decoration */}
+            <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full -z-10" />
+            <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-accent/5 blur-[120px] rounded-full -z-10" />
         </section>
     );
-};
-
-export default ProjectSection;
+}

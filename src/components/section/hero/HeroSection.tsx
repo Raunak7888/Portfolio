@@ -39,7 +39,7 @@ export default function HeroSection() {
             className="relative min-h-screen w-full flex flex-col items-center overflow-hidden opacity-0"
         >
             {/* Background Layer for GSAP to manipulate */}
-            <div ref={bgRef} className="absolute inset-0 pointer-events-none" />
+            <div ref={bgRef} className="absolute  inset-0 pointer-events-none" />
 
             <Navbar />
 
