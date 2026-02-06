@@ -1,7 +1,6 @@
 "use client";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap"; // Using your existing GSAP lib
-import Navbar from "@/components/section/navbar/Navbar";
 import HeroContent from "./HeroCard";
 
 export default function HeroSection() {
@@ -41,7 +40,7 @@ export default function HeroSection() {
             {/* Background Layer for GSAP to manipulate */}
             <div ref={bgRef} className="absolute  inset-0 pointer-events-none" />
 
-            <Navbar />
+            
 
             <div className="relative z-10 flex-1 flex items-center justify-center w-full max-w-7xl mt-20 sm:mt-0 px-6">
                 <HeroContent />

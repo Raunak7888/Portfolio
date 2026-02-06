@@ -7,7 +7,7 @@ import { Home, AlertTriangle, Terminal } from "lucide-react";
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background px-6 overflow-hidden relative">
+        <div className="min-h-screen flex items-center justify-center bg-background  overflow-hidden relative">
             
             {/* 1. Background Cinematic Elements */}
             <div className="absolute inset-0 z-0">
@@ -17,7 +17,7 @@ export default function NotFound() {
                 {/* Radial glow */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary-rgb),0.1)_0%,transparent_70%)]" />
             </div>
-            <div className="relative z-10 max-w-md w-full text-center">
+            <div className="relative z-10 mt-16 max-[440px]:mt-25 max-w-md w-full text-center">
                 
                 {/* 2. Glitchy 404 Header */}
                 <motion.div

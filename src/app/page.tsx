@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import { motion, useScroll, useSpring, Variant, Variants } from "framer-motion";
+import { motion, useScroll, useSpring, Variants } from "framer-motion";
 import { gsap } from "gsap";
 
 import { GridBackground } from "@/components/GridBackground";

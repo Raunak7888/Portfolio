@@ -1,0 +1,523 @@
+{
+    "hermes": {
+        "meta": {
+            "projectName": "Hermes",
+            "codename": "hermes-chat",
+            "version": "0.9.0",
+            "status": "active",
+            "lastUpdated": "2026-02-04",
+            "maintainers": ["Raunak"],
+            "repository": "https://github.com/Raunak7888/Hermes",
+            "license": "MIT",
+            "post": ""
+        },
+
+        "images": [
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20173606.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20174258.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-02%20191626.png"
+        ],
+
+        "executiveSummary": {
+            "oneLiner": "Hermes is a real-time web chat application supporting private messaging, group chats, and image sharing using WebSocket and REST APIs.",
+            "problemStatement": "Enable low-latency, real-time communication with authentication, group messaging, and media sharing using a self-hosted stack.",
+            "solutionOverview": "A Spring Boot backend provides REST APIs for authentication and data access, and WebSocket/STOMP for real-time messaging, paired with a React/Vite SPA frontend.",
+            "primaryUsers": ["Registered end users"],
+            "keyCapabilities": [
+                "Email-based authentication with verification and password reset",
+                "JWT-based stateless authentication",
+                "One-to-one real-time messaging",
+                "Group chat creation and messaging",
+                "Image upload and retrieval",
+                "Online/offline user status"
+            ],
+            "knownLimitations": [
+                "Message history limited to last 24 hours",
+                "Local file storage is not persistent across container rebuilds",
+                "Security permits all /auth/** endpoints"
+            ]
+        },
+
+        "architecture": {
+            "overview": "Single-page application communicating with a Spring Boot backend via REST and WebSocket/STOMP, backed by a MySQL database and an in-memory message broker.",
+            "diagram": {
+                "type": "text",
+                "content": "graph LR\n\nA[Browser SPA]\nB[Spring Boot API]\nD[WebSocket Broker]\nC[(MySQL)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\n\nclassDef client fill:#1e293b,stroke:#38bdf8,stroke-width:1.5px,color:#e5e7eb\nclassDef server fill:#020617,stroke:#7c7cff,stroke-width:1.5px,color:#e5e7eb\nclassDef data fill:#020617,stroke:#22c55e,stroke-width:1.5px,color:#e5e7eb\n\nclass A client\nclass B,D server\nclass C data"
+            },
+            "components": [
+                {
+                    "name": "Frontend SPA",
+                    "type": "frontend",
+                    "responsibilities": [
+                        "User authentication UI",
+                        "Chat and group management UI",
+                        "WebSocket connection and message handling",
+                        "Image upload and rendering"
+                    ],
+                    "tech": ["React 18", "Vite 6", "SockJS", "STOMPJS"]
+                },
+                {
+                    "name": "Backend API",
+                    "type": "backend",
+                    "responsibilities": [
+                        "Authentication and JWT issuance",
+                        "User and group management",
+                        "Message persistence",
+                        "File handling",
+                        "WebSocket message routing"
+                    ],
+                    "tech": [
+                        "Spring Boot 3.3.4",
+                        "Spring Security",
+                        "Spring WebSocket",
+                        "JPA"
+                    ]
+                },
+                {
+                    "name": "Database",
+                    "type": "database",
+                    "responsibilities": [
+                        "Persist users, roles, messages, groups, and file metadata"
+                    ],
+                    "tech": ["MySQL 8"]
+                },
+                {
+                    "name": "WebSocket Broker",
+                    "type": "broker",
+                    "responsibilities": ["Topic-based message broadcasting"],
+                    "tech": ["Spring Simple Broker (in-memory)"]
+                }
+            ],
+            "dataFlow": [
+                {
+                    "flowName": "Authentication",
+                    "steps": [
+                        "User submits credentials",
+                        "Backend validates and issues JWT",
+                        "JWT stored in browser cookie"
+                    ]
+                },
+                {
+                    "flowName": "Real-time Messaging",
+                    "steps": [
+                        "Client connects to WebSocket endpoint",
+                        "Message sent to /app destination",
+                        "Backend stores message",
+                        "Message broadcast to /topic subscribers"
+                    ]
+                }
+            ],
+            "architectureRationale": "WebSocket enables low-latency chat, while REST handles authentication and data retrieval. Spring Boot provides rapid development with mature security and persistence tooling."
+        },
+
+        "technologyStack": {
+            "backend": [
+                {
+                    "name": "Spring Boot",
+                    "version": "3.3.4",
+                    "purpose": "REST APIs, WebSocket handling, and application configuration",
+                    "tradeOffs": "Higher memory footprint than minimalist frameworks"
+                },
+                {
+                    "name": "Spring Security + JWT",
+                    "version": "N/A",
+                    "purpose": "Stateless authentication",
+                    "tradeOffs": "No token revocation or refresh strategy"
+                }
+            ],
+            "frontend": [
+                {
+                    "name": "React",
+                    "version": "18",
+                    "purpose": "Single-page application UI",
+                    "tradeOffs": "Requires explicit state and WebSocket management"
+                },
+                {
+                    "name": "Vite",
+                    "version": "6",
+                    "purpose": "Fast development and build tooling",
+                    "tradeOffs": "Smaller ecosystem than Webpack"
+                }
+            ],
+            "infrastructure": ["Docker", "Docker Compose"],
+            "rejectedAlternatives": [
+                {
+                    "option": "Managed real-time services (Pusher, Firebase)",
+                    "reasonRejected": "Vendor lock-in and recurring cost"
+                },
+                {
+                    "option": "GraphQL",
+                    "reasonRejected": "REST + WebSocket simpler and sufficient"
+                }
+            ]
+        },
+
+        "roadmap": {
+            "shortTerm": ["Fix security configuration", "Persist file storage"],
+            "midTerm": ["Message pagination", "Refresh tokens"],
+            "longTerm": ["Horizontal scaling", "External broker integration"]
+        }
+    },
+
+    "pokeverse": {
+        "meta": {
+            "projectName": "Pokeverse",
+            "codename": "pokeverse-play",
+            "version": "0.0.1-SNAPSHOT",
+            "status": "active",
+            "lastUpdated": "unknown",
+            "maintainers": ["Raunak"],
+            "repository": "https://github.com/Raunak7888/Pokeverse",
+            "license": "MIT",
+            "post": ""
+        },
+        "images": [
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151405.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151448.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151717.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
+        ],
+        "executiveSummary": {
+            "oneLiner": "Pokeverse is a real-time Pokémon quiz platform with single-player sessions, multiplayer rooms, and live chat built on REST and WebSocket APIs.",
+            "problemStatement": "Deliver a low-latency, competitive quiz experience with authentication, room-based multiplayer, and persistent session tracking.",
+            "solutionOverview": "A Spring Boot backend exposes REST endpoints for quiz data and user flows, plus WebSocket/STOMP for real-time gameplay and chat, while a Next.js frontend renders the interactive UI; PostgreSQL persists data and Redis supports caching/state.",
+            "primaryUsers": [
+                "Players taking Pokémon quizzes",
+                "Hosts running multiplayer rooms",
+                "Admin users managing questions"
+            ],
+            "keyCapabilities": [
+                "OAuth2 login and JWT-based auth with refresh tokens",
+                "Single-player session creation and attempt submission",
+                "Multiplayer room creation, join/leave, and results",
+                "Real-time gameplay events over WebSocket/STOMP",
+                "Room chat messaging via WebSocket",
+                "Admin-protected question management"
+            ],
+            "knownLimitations": [
+                "No Role-Based Access Control (RBAC), Admin credentials are passed as request parameters for question management",
+                "Only Question game is developed"
+            ]
+        },
+        "architecture": {
+            "overview": "Next.js frontend communicates with a Spring Boot backend via REST and WebSocket/STOMP; data persists in PostgreSQL with Redis used for caching/state, and an in-memory simple broker handles real-time topics.",
+            "diagram": {
+                "type": "text",
+                "content": "graph LR\n\nA[Next.js Client]\nB[Spring Boot API]\nD[WebSocket Broker]\nC[(PostgreSQL)]\nE[(Redis)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  E\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\nB -->|RedisTemplate| E\n\nclassDef client fill:#1e293b,stroke:#38bdf8,stroke-width:1.5px,color:#e5e7eb\nclassDef server fill:#020617,stroke:#7c7cff,stroke-width:1.5px,color:#e5e7eb\nclassDef data fill:#020617,stroke:#22c55e,stroke-width:1.5px,color:#e5e7eb\n\nclass A client\nclass B,D server\nclass C,E data"
+            },
+            "components": [
+                {
+                    "name": "Frontend Web App",
+                    "type": "frontend",
+                    "responsibilities": [
+                        "Auth and session UI",
+                        "Quiz gameplay UI",
+                        "Multiplayer room UI",
+                        "WebSocket event handling"
+                    ],
+                    "tech": [
+                        "Next.js 15.5.3",
+                        "React 19.1.0",
+                        "Tailwind CSS 4",
+                        "STOMPJS",
+                        "SockJS"
+                    ]
+                },
+                {
+                    "name": "Backend API",
+                    "type": "backend",
+                    "responsibilities": [
+                        "Authentication and token issuance",
+                        "Quiz/session CRUD and scoring",
+                        "Room management",
+                        "WebSocket message routing"
+                    ],
+                    "tech": [
+                        "Spring Boot 3.5.5",
+                        "Spring Security",
+                        "Spring WebSocket",
+                        "Spring Data JPA",
+                        "OAuth2 Client",
+                        "Flyway"
+                    ]
+                },
+                {
+                    "name": "Database",
+                    "type": "database",
+                    "responsibilities": [
+                        "Persist users, sessions, attempts, rooms, questions, chat messages"
+                    ],
+                    "tech": ["PostgreSQL 17"]
+                },
+                {
+                    "name": "Cache/State Store",
+                    "type": "cache",
+                    "responsibilities": [
+                        "Redis-backed caching/state for quiz flows"
+                    ],
+                    "tech": ["Redis 7"]
+                },
+                {
+                    "name": "WebSocket Broker",
+                    "type": "broker",
+                    "responsibilities": [
+                        "Topic/queue-based real-time message distribution"
+                    ],
+                    "tech": ["Spring Simple Broker (in-memory)"]
+                }
+            ],
+            "dataFlow": [
+                {
+                    "flowName": "Authentication",
+                    "steps": [
+                        "User signs in via OAuth2",
+                        "Backend issues JWT access token and refresh token",
+                        "Client stores tokens and uses JWT for protected requests"
+                    ]
+                },
+                {
+                    "flowName": "Single-Player Quiz",
+                    "steps": [
+                        "Client creates a quiz session",
+                        "Client submits attempts",
+                        "Backend evaluates and exposes session analysis"
+                    ]
+                },
+                {
+                    "flowName": "Multiplayer Gameplay",
+                    "steps": [
+                        "Host creates room and players join via REST",
+                        "Game start and answers are sent to /app over WebSocket",
+                        "Backend validates and broadcasts results to /topic"
+                    ]
+                },
+                {
+                    "flowName": "Room Chat",
+                    "steps": [
+                        "Client sends chat to /app/chat/{roomId}",
+                        "Backend persists message",
+                        "Message broadcast to /topic/room/{roomId}/chat"
+                    ]
+                }
+            ],
+            "architectureRationale": "REST is used for stable CRUD and session flows, while WebSocket/STOMP provides low-latency gameplay and chat; PostgreSQL ensures durability and Redis supports fast state access."
+        },
+        "technologyStack": {
+            "backend": [
+                {
+                    "name": "Spring Boot",
+                    "version": "3.5.5",
+                    "purpose": "Application framework for REST and WebSocket services",
+                    "tradeOffs": "Higher memory footprint than lightweight frameworks"
+                },
+                {
+                    "name": "Spring Security + OAuth2 + JWT",
+                    "version": "N/A",
+                    "purpose": "Authentication and token-based access",
+                    "tradeOffs": "Token validation and revocation strategy not fully configured"
+                },
+                {
+                    "name": "JJWT",
+                    "version": "0.11.5",
+                    "purpose": "JWT creation and parsing",
+                    "tradeOffs": "Requires careful key management and rotation"
+                }
+            ],
+            "frontend": [
+                {
+                    "name": "Next.js",
+                    "version": "15.5.3",
+                    "purpose": "React-based frontend framework",
+                    "tradeOffs": "Requires SSR/CSR coordination and build complexity"
+                },
+                {
+                    "name": "React",
+                    "version": "19.1.0",
+                    "purpose": "UI rendering and state-driven views",
+                    "tradeOffs": "State coordination for real-time events can be complex"
+                },
+                {
+                    "name": "Tailwind CSS",
+                    "version": "4",
+                    "purpose": "Utility-first styling system",
+                    "tradeOffs": "Long class strings can reduce readability"
+                }
+            ],
+            "infrastructure": [
+                "Docker",
+                "Docker Compose",
+                "PostgreSQL 17",
+                "Redis 7"
+            ],
+            "rejectedAlternatives": []
+        },
+        "roadmap": {
+            "shortTerm": [
+                "Harden security rules for quiz and WebSocket endpoints",
+                "Move admin auth away from query parameters"
+            ],
+            "midTerm": [
+                "Enable JWT resource-server validation",
+                "Add pagination to room chat history"
+            ],
+            "longTerm": [
+                "Externalize WebSocket broker (e.g., RabbitMQ)",
+                "Add horizontal scaling support"
+            ]
+        }
+    },
+    "calculate": {
+        "meta": {
+            "projectName": "Calculate",
+            "codename": "calc",
+            "version": "0.1.0",
+            "status": "active",
+            "lastUpdated": "2026-02-05",
+            "maintainers": ["Raunak"],
+            "repository": "https://github.com/Raunak7888/Calculate",
+            "license": "MIT",
+            "post": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+        },
+        "images": [
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005018.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005032.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005115.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005134.png",
+            "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005200.png"
+        ],
+        "executiveSummary": {
+            "oneLiner": "A modular, stack-based scientific calculator that parses expressions, converts to postfix, and evaluates with 50+ math functions and implicit multiplication.",
+            "problemStatement": "Build a learning-first calculator that demonstrates tokenization, operator precedence, and stack-based evaluation while supporting rich scientific functions.",
+            "solutionOverview": "A Python package exposes a `StackQueueCalculator` that tokenizes input, injects implicit multiplication, converts to postfix via the shunting-yard algorithm, and evaluates results with a function registry covering arithmetic, trig, hyperbolic, logs, combinatorics, and constants.",
+            "primaryUsers": [
+                "Learners studying parsing and algorithms",
+                "Developers who want a programmable scientific calculator",
+                "Students exploring math function implementations"
+            ],
+            "keyCapabilities": [
+                "Expression tokenization with implicit multiplication",
+                "Shunting-yard postfix conversion",
+                "Stack-based postfix evaluation",
+                "50+ unary/binary functions and constants",
+                "Angle-aware trigonometry",
+                "Memory operations and last-answer support",
+                "Domain validation and safe error handling"
+            ],
+            "knownLimitations": [
+                "No CLI or GUI interface; usage is via Python API",
+                "No persistence layer for history or memory across runs",
+                "Random function ignores its argument",
+                "No complex-number support for invalid domains (e.g., sqrt(-1))"
+            ]
+        },
+        "architecture": {
+            "overview": "A single-process Python library where expression processing flows through tokenizer, implicit multiplication, postfix conversion, then evaluation; math function groups are modularized by domain (trig, hyperbolic, math).",
+            "diagram": {
+                "type": "text",
+                "content": "graph TB\n\nA[User Expression]\nB[Tokenizer]\nC[Implicit Multiplication]\nD[Postfix Converter]\nE[Postfix Evaluator]\nF[Result]\n\nA --> B --> C --> D --> E --> F\n"
+            },
+            "components": [
+                {
+                    "name": "StackQueueCalculator",
+                    "type": "core",
+                    "responsibilities": [
+                        "Orchestrate tokenization, postfix conversion, and evaluation",
+                        "Maintain memory and last-answer state",
+                        "Register functions and constants"
+                    ],
+                    "tech": ["Python 3.13+"]
+                },
+                {
+                    "name": "Tokenizer",
+                    "type": "parser",
+                    "responsibilities": [
+                        "Convert input string to tokens",
+                        "Handle constants and functions"
+                    ],
+                    "tech": ["Python"]
+                },
+                {
+                    "name": "Postfix Converter",
+                    "type": "parser",
+                    "responsibilities": [
+                        "Apply shunting-yard algorithm",
+                        "Respect operator precedence"
+                    ],
+                    "tech": ["Python"]
+                },
+                {
+                    "name": "Postfix Evaluator",
+                    "type": "evaluator",
+                    "responsibilities": [
+                        "Evaluate postfix expression via stack operations",
+                        "Call registered unary/binary functions"
+                    ],
+                    "tech": ["Python"]
+                },
+                {
+                    "name": "Function Modules",
+                    "type": "library",
+                    "responsibilities": [
+                        "Provide math, trig, and hyperbolic helpers",
+                        "Safe domain checks and validations"
+                    ],
+                    "tech": ["Python math"]
+                }
+            ],
+            "dataFlow": [
+                {
+                    "flowName": "Expression Evaluation",
+                    "steps": [
+                        "User passes an expression string to `evaluate()`",
+                        "Tokenizer converts string into tokens",
+                        "Implicit multiplication inserts missing `*` operators",
+                        "Postfix converter generates RPN sequence",
+                        "Evaluator computes final numeric result"
+                    ]
+                },
+                {
+                    "flowName": "Memory Operations",
+                    "steps": [
+                        "User calls memory add/subtract/recall/clear",
+                        "Calculator updates in-memory state",
+                        "State is returned or cleared on demand"
+                    ]
+                }
+            ],
+            "architectureRationale": "Tokenizer + shunting-yard + postfix evaluation keeps parsing logic clear, extensible, and aligned with classic compiler techniques."
+        },
+        "technologyStack": {
+            "backend": [
+                {
+                    "name": "Python",
+                    "version": ">=3.13",
+                    "purpose": "Core runtime and standard math utilities",
+                    "tradeOffs": "Single-process execution and no built-in UI"
+                },
+                {
+                    "name": "Colorama",
+                    "version": ">=0.4.6",
+                    "purpose": "Optional console output styling in tests",
+                    "tradeOffs": "Not required for calculator logic"
+                }
+            ],
+            "frontend": [],
+            "infrastructure": [],
+            "rejectedAlternatives": []
+        },
+        "roadmap": {
+            "shortTerm": [
+                "Add a minimal CLI runner",
+                "Expose `evaluate_with_steps()` in usage docs"
+            ],
+            "midTerm": [
+                "Add persistent history and session export",
+                "Provide a simple TUI or GUI"
+            ],
+            "longTerm": [
+                "Add complex number support",
+                "Introduce plugin system for custom functions"
+            ]
+        }
+    }
+}

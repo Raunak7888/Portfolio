@@ -45,72 +45,98 @@
     },
     "projects": [
         {
-            "id": "eco-track-pro",
-            "title": "EcoTrack Pro",
-            "category": "Full-Stack Development",
-            "badge": "Most Innovative",
-            "accent": "#ff0000",
-            "iconKey": "globe",
+            "id": "pokeverse",
+            "title": "Pokeverse",
+            "category": "Real-Time Multiplayer / WebSockets",
+            "badge": "Active",
+            "accent": "#22C55E",
+            "iconKey": "gamepad-2",
             "highlights": [
-                "Architected a real-time dashboard tracking 50+ global supply chain nodes.",
-                "Integrated OpenWeather API to correlate environmental data with logistics.",
-                "Reduced data processing latency by 45% using Redis caching."
+                "Built real-time single-player and multiplayer Pokémon quizzes using WebSocket + STOMP.",
+                "Implemented OAuth2 login with JWT access and refresh tokens.",
+                "Supports multiplayer rooms, live gameplay events, and real-time chat."
             ],
-            "description": "An enterprise-grade carbon footprint monitor designed for logistics giants to track Scope 3 emissions.",
-            "tech": ["React", "TypeScript", "Node.js", "PostgreSQL", "Redis"],
-            "link": "https://demo.com",
-            "github": "https://github.com/user/repo",
+            "description": "A real-time Pokémon quiz platform featuring single-player sessions, multiplayer rooms, and live chat powered by REST and WebSocket APIs.",
+            "tech": [
+                "Java",
+                "Spring Boot",
+                "Spring WebSocket",
+                "Spring Security",
+                "OAuth2",
+                "JWT",
+                "PostgreSQL",
+                "Redis",
+                "Next.js",
+                "React",
+                "Docker"
+            ],
+            "link": "",
+            "github": "https://github.com/Raunak7888/Pokeverse",
             "images": [
-                "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2400&auto=format&fit=crop"
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151405.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151448.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151717.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
             ]
         },
         {
-            "id": "sentinul-ai",
-            "title": "Sentinul AI",
-            "category": "Machine Learning / Security",
-            "badge": "Trending",
-            "accent": "#FF7F00",
-            "iconKey": "shield",
+            "id": "hermes",
+            "title": "Hermes",
+            "category": "Real-Time Systems / WebSockets",
+            "badge": "Active",
+            "accent": "#7C7CFF",
+            "iconKey": "message_circle",
             "highlights": [
-                "Trained Random Forest models on 1M+ anonymized transaction records.",
-                "Deployed as a containerized microservice via Docker and Kubernetes.",
-                "Achieved a 99.2% precision rate in identifying fraudulent credit patterns."
+                "Implemented real-time 1:1 and group chat using WebSocket + STOMP.",
+                "JWT-based stateless authentication with Spring Security.",
+                "Supports image sharing, online/offline presence, and group management."
             ],
-            "description": "A real-time fraud detection engine that identifies anomalous transaction patterns using ML models.",
-            "tech": ["Python", "FastAPI", "Scikit-Learn", "Docker"],
-            "link": "https://demo.com",
-            "github": "https://github.com/user/repo",
+            "description": "A real-time web chat application enabling private messaging, group chats, and image sharing using WebSocket and REST APIs.",
+            "tech": [
+                "Java",
+                "Spring Boot",
+                "Spring WebSocket",
+                "JWT",
+                "MySQL",
+                "React",
+                "Vite",
+                "Docker"
+            ],
+            "link": "",
+            "github": "https://github.com/Raunak7888/Hermes",
             "images": [
-                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop"
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20173606.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20174258.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-02%20191626.png"
             ]
         },
         {
-            "id": "nexus-stream",
-            "title": "Nexus Stream",
-            "category": "System Architecture",
-            "badge": "High Performance",
-            "accent": "#f59e0b",
-            "iconKey": "zap",
+            "id": "calculate",
+            "title": "Calculate",
+            "category": "Algorithms / Parsing",
+            "badge": "Active",
+            "accent": "#F59E0B",
+            "iconKey": "calculator",
             "highlights": [
-                "Engineered a Kafka-based pipeline for asynchronous event streaming.",
-                "Optimized WebSocket handshakes to support 10k+ concurrent users.",
-                "Implemented horizontal scaling strategies via Kubernetes HPA."
+                "Implemented expression parsing using tokenization and the shunting-yard algorithm.",
+                "Supports implicit multiplication and 50+ scientific functions and constants.",
+                "Evaluates expressions via stack-based postfix (RPN) execution with domain validation."
             ],
-            "description": "A high-concurrency video streaming backend built to handle massive traffic spikes.",
-            "tech": ["Go", "Kafka", "MongoDB", "Kubernetes"],
-            "link": "https://demo.com",
-            "github": "https://github.com/user/repo",
+            "description": "A modular, stack-based scientific calculator that parses expressions, converts them to postfix notation, and evaluates results using classic compiler techniques.",
+            "tech": [
+                "Python",
+                "Shunting-Yard Algorithm",
+                "Postfix (RPN) Evaluation",
+                "Stack & Queue Data Structures"
+            ],
+            "link": "",
+            "github": "https://github.com/Raunak7888/Calculate",
             "images": [
-                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=2400&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2400&auto=format&fit=crop"
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005018.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005032.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005115.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005134.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005200.png"
             ]
         }
     ],

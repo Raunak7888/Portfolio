@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "../../ThemeToggle";
 import ThemeColorDropdown from "./AccentChanger";
 import Data from "@/Data/Data.json";
+import { useMounted } from "@/hooks/useMounted";
 
 /* ===================== CONSTANTS ===================== */
 
@@ -34,6 +35,7 @@ const itemVariants = {
 };
 
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+     
     return (
         <AnimatePresence>
             {open && (
@@ -49,7 +51,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                         <motion.a
                             key={item}
                             variants={itemVariants}
-                            href={`#${item.toLowerCase()}`}
+                            href={`/#${item.toLowerCase()}`}
                             onClick={onClose}
                             className="text-sm font-medium"
                         >
@@ -203,9 +205,9 @@ export default function Navbar() {
                             (item) => (
                                 <Link
                                     key={item}
-                                    href={`#${item.toLowerCase()}`}
+                                    href={`/#${item.toLowerCase()}`}
                                     className="text-xs font-medium uppercase tracking-widest
-                           text-muted-foreground hover:text-primary"
+                            text-muted-foreground hover:text-primary"
                                 >
                                     {item}
                                 </Link>

@@ -11,6 +11,8 @@ import {
     Globe,
     ChevronLeft,
     ChevronRight,
+    MessageCircleCode,
+    Calculator,
 } from "lucide-react";
 import Divider from "../Divider";
 import projectData from "@/Data/Data.json";
@@ -33,6 +35,8 @@ const iconMap: Record<string, React.ReactNode> = {
     globe: <Globe size={18} />,
     shield: <Shield size={18} />,
     zap: <Zap size={18} />,
+    message_circle: <MessageCircleCode size={18} />,
+    calculator: <Calculator size={18} />,
 };
 
 /* ===================== PROJECT CARD ===================== */
@@ -45,6 +49,8 @@ function ProjectCard({
     isEven: boolean;
 }) {
     const [imgIndex, setImgIndex] = useState(0);
+    const detailsHref = `/project/${encodeURIComponent(project.id)}`;
+    const liveDemoHref = project.link.replace("[projectId]", project.id);
 
     return (
         <motion.div
@@ -82,7 +88,7 @@ function ProjectCard({
             >
                 {/* Image Container */}
                 <div className="w-full lg:w-3/5 group">
-                    <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden border border-foreground/10 bg-muted shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div className="relative aspect-16/10 rounded-4xl overflow-hidden border border-foreground/10 bg-muted shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={imgIndex}
@@ -176,15 +182,23 @@ function ProjectCard({
 
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4">
-                        <Link
-                            href={project.link}
-                            className="px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95"
-                        >
-                            Live Demo <ExternalLink size={18} />
-                        </Link>
+                        {project.link !== "" ? (
+                            <Link
+                                href={liveDemoHref}
+                                className={`px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 `}
+                            >
+                                Live Demo <ExternalLink size={18} />
+                            </Link>
+                        ) : (
+                            <div
+                                className={`px-8 py-4 rounded-2xl bg-gray-400 cursor-not-allowed text-primary-foreground font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 `}
+                            >
+                                Live Demo <ExternalLink size={18} />
+                            </div>
+                        )}
 
                         <Link
-                            href={`/project/${project.id}`}
+                            href={detailsHref}
                             className="px-8 py-4 rounded-2xl border-2 border-foreground/10 font-bold hover:bg-foreground hover:text-background transition-all"
                         >
                             Details
