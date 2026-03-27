@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import data from "@/Data/Data.json";
 import { NextResponse } from "next/server";
 
 // Initialize transporter once, outside the handler for better performance
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
         // 3. Send via Nodemailer
         await transporter.sendMail({
             from: `"Portfolio Notifications" <${process.env.EMAIL_USER}>`,
-            to: process.env.EMAIL_USER,
+            to: data.hero.email,
             replyTo: email,
             subject: `✨ New message from ${name}`,
             text: `New message from ${name} (${email}): ${message}`,

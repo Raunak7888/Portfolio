@@ -23,7 +23,7 @@ const MermaidDiagram = dynamic(
 );
 
 const ProjectDetail = ({ projectId }: { projectId: string }) => {
-    const data = (Data as Record<string, ProjectData>)[projectId];
+    const data = (Data as unknown as Record<string, ProjectData>)[projectId];
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const galleryTriggerRef = useRef<HTMLDivElement | null>(null);

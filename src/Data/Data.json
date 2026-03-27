@@ -2,7 +2,8 @@
     "hero": {
         "firstName": "Raunak",
         "secondName": "Yadav",
-        "fullName": "Raunak Yadav"
+        "fullName": "Raunak Yadav",
+        "email": "raunakyadav7888@gmail.com"
     },
     "heroSection": {
         "description": "A Java-focused Full-Stack Engineer specializing in high-performance backends and clean, maintainable frontends. I build software that solves real problems without the fluff.",
