@@ -7,6 +7,7 @@ import {
     LinkedInSvg,
 } from "@/components/ui/Icons";
 import Link from "next/link";
+import data from "@/Data/Data.json";
 
 type SocialItem = {
     href: string;
@@ -15,18 +16,18 @@ type SocialItem = {
 };
 
 const SOCIALS: SocialItem[] = [
-    { href: "https://github.com", label: "GitHub", icon: <GithubSvg /> },
+    { href: data.heroSection.socialLinks.githubUrl, label: "GitHub", icon: <GithubSvg /> },
     {
-        href: "https://www.linkedin.com/",
+        href: data.heroSection.socialLinks.linkedInUrl,
         label: "Twitter / X",
         icon: <LinkedInSvg />,
     },
     {
-        href: "https://www.instagram.com/",
+        href: data.heroSection.socialLinks.instagramUrl,
         label: "Instagram",
         icon: <InstagramSvg />,
     },
-    { href: "mailto:forlearning8080@gmail.com", label: "Email", icon: <GmailSvg /> },
+    { href: data.heroSection.socialLinks.gmailUrl, label: "Email", icon: <GmailSvg /> },
 ];
 
 export const SocialIcons = ({
