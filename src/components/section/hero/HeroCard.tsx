@@ -9,6 +9,8 @@ import { gsap } from "@/lib/gsap";
 import { SocialIcons } from "@/components/ui/SocialLinks";
 import HeroVisualStack from "./CodeCard";
 import data from "@/Data/Data.json";
+import { Download } from "lucide-react";
+import ResumeButton from "./ResumeDownloader";
 
 /* ---------------- Framer Motion (layout only) ---------------- */
 
@@ -129,7 +131,7 @@ export default function HeroContent() {
                         className="text-5xl md:text-7xl text-primary
                         font-bungee font-bold tracking-tight
                         min-h-18"
-                                >
+                    >
                         {data.hero.fullName}
                     </h1>
                 </motion.div>
@@ -144,13 +146,17 @@ export default function HeroContent() {
                     {data.heroSection.description}
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="flex gap-6 pt-4 w-fit max-[440px]:flex-col ">
+                <motion.div
+                    variants={itemVariants}
+                    className="flex gap-6 pt-4 w-fit max-[440px]:flex-col "
+                >
                     <div
                         className="h-12 flex items-center px-4 border-2
                             backdrop-blur-sm border-primary rounded-full"
                     >
                         <SocialIcons />
                     </div>
+                    <ResumeButton/>
 
                     <button
                         className="h-12 px-8 bg-primary text-primary-foreground

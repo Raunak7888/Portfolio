@@ -158,7 +158,6 @@
             "longTerm": ["Horizontal scaling", "External broker integration"]
         }
     },
-
     "pokeverse": {
         "meta": {
             "projectName": "Pokeverse",
@@ -178,41 +177,40 @@
             "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
         ],
         "executiveSummary": {
-            "oneLiner": "Pokeverse is a real-time Pokémon quiz platform with single-player sessions, multiplayer rooms, and live chat built on REST and WebSocket APIs.",
-            "problemStatement": "Deliver a low-latency, competitive quiz experience with authentication, room-based multiplayer, and persistent session tracking.",
-            "solutionOverview": "A Spring Boot backend exposes REST endpoints for quiz data and user flows, plus WebSocket/STOMP for real-time gameplay and chat, while a Next.js frontend renders the interactive UI; PostgreSQL persists data and Redis supports caching/state.",
+            "oneLiner": "Pokeverse is a real-time multiplayer game platform providing shared infrastructure for multiple interactive games, with a Pokémon Quiz implemented as the first game module.",
+            "problemStatement": "Building low-latency multiplayer games repeatedly requires solving the same problems—authentication, rooms, real-time events, chat, and state management—over and over.",
+            "solutionOverview": "Pokeverse provides a reusable backend platform built with Spring Boot that centralizes authentication, room management, real-time messaging, and persistence. Individual games plug into this platform as modules. A Pokémon Quiz game demonstrates single-player and multiplayer gameplay using the shared infrastructure.",
             "primaryUsers": [
-                "Players taking Pokémon quizzes",
-                "Hosts running multiplayer rooms",
-                "Admin users managing questions"
+                "Players participating in real-time games",
+                "Hosts creating and managing multiplayer rooms",
+                "Administrators managing game content"
             ],
             "keyCapabilities": [
-                "OAuth2 login and JWT-based auth with refresh tokens",
-                "Single-player session creation and attempt submission",
-                "Multiplayer room creation, join/leave, and results",
-                "Real-time gameplay events over WebSocket/STOMP",
-                "Room chat messaging via WebSocket",
-                "Admin-protected question management"
+                "Centralized OAuth2 authentication with JWT access and refresh tokens",
+                "Reusable room and session management for multiplayer games",
+                "Low-latency real-time events via WebSocket/STOMP",
+                "Shared chat system for multiplayer rooms",
+                "Pluggable game modules built on common platform services"
             ],
             "knownLimitations": [
-                "No Role-Based Access Control (RBAC), Admin credentials are passed as request parameters for question management",
-                "Only Question game is developed"
+                "Role-Based Access Control (RBAC) is not implemented; admin access is currently handled via request parameters",
+                "Only one game module (Pokémon Quiz) is currently implemented"
             ]
         },
         "architecture": {
-            "overview": "Next.js frontend communicates with a Spring Boot backend via REST and WebSocket/STOMP; data persists in PostgreSQL with Redis used for caching/state, and an in-memory simple broker handles real-time topics.",
+            "overview": "A Next.js frontend communicates with a Spring Boot game platform via REST and WebSocket/STOMP. The backend exposes shared services for authentication, rooms, messaging, and persistence, while individual games reuse these services. PostgreSQL stores durable data and Redis supports fast state access.",
             "diagram": {
                 "type": "text",
-                "content": "graph LR\n\nA[Next.js Client]\nB[Spring Boot API]\nD[WebSocket Broker]\nC[(PostgreSQL)]\nE[(Redis)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  E\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\nB -->|RedisTemplate| E\n\nclassDef client fill:#1e293b,stroke:#38bdf8,stroke-width:1.5px,color:#e5e7eb\nclassDef server fill:#020617,stroke:#7c7cff,stroke-width:1.5px,color:#e5e7eb\nclassDef data fill:#020617,stroke:#22c55e,stroke-width:1.5px,color:#e5e7eb\n\nclass A client\nclass B,D server\nclass C,E data"
+                "content": "graph LR\n\nA[Next.js Client]\nB[Spring Boot Game Platform]\nD[WebSocket Broker]\nC[(PostgreSQL)]\nE[(Redis)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  E\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\nB -->|RedisTemplate| E"
             },
             "components": [
                 {
                     "name": "Frontend Web App",
                     "type": "frontend",
                     "responsibilities": [
-                        "Auth and session UI",
-                        "Quiz gameplay UI",
-                        "Multiplayer room UI",
+                        "Authentication and session UI",
+                        "Game-specific UI rendering",
+                        "Multiplayer room interaction",
                         "WebSocket event handling"
                     ],
                     "tech": [
@@ -224,13 +222,13 @@
                     ]
                 },
                 {
-                    "name": "Backend API",
+                    "name": "Game Platform Backend",
                     "type": "backend",
                     "responsibilities": [
                         "Authentication and token issuance",
-                        "Quiz/session CRUD and scoring",
-                        "Room management",
-                        "WebSocket message routing"
+                        "Reusable room and session management",
+                        "Game-agnostic WebSocket message routing",
+                        "Game module orchestration"
                     ],
                     "tech": [
                         "Spring Boot 3.5.5",
@@ -245,15 +243,15 @@
                     "name": "Database",
                     "type": "database",
                     "responsibilities": [
-                        "Persist users, sessions, attempts, rooms, questions, chat messages"
+                        "Persist users, rooms, sessions, game data, and chat messages"
                     ],
                     "tech": ["PostgreSQL 17"]
                 },
                 {
-                    "name": "Cache/State Store",
+                    "name": "Cache / State Store",
                     "type": "cache",
                     "responsibilities": [
-                        "Redis-backed caching/state for quiz flows"
+                        "Low-latency state access for active games and sessions"
                     ],
                     "tech": ["Redis 7"]
                 },
@@ -261,7 +259,7 @@
                     "name": "WebSocket Broker",
                     "type": "broker",
                     "responsibilities": [
-                        "Topic/queue-based real-time message distribution"
+                        "Topic- and queue-based real-time message distribution"
                     ],
                     "tech": ["Spring Simple Broker (in-memory)"]
                 }
@@ -271,101 +269,53 @@
                     "flowName": "Authentication",
                     "steps": [
                         "User signs in via OAuth2",
-                        "Backend issues JWT access token and refresh token",
-                        "Client stores tokens and uses JWT for protected requests"
+                        "Platform issues JWT access and refresh tokens",
+                        "Client authenticates all protected REST and WebSocket requests"
                     ]
                 },
                 {
-                    "flowName": "Single-Player Quiz",
+                    "flowName": "Game Session (Single-Player)",
                     "steps": [
-                        "Client creates a quiz session",
-                        "Client submits attempts",
-                        "Backend evaluates and exposes session analysis"
+                        "Client creates a game session",
+                        "Game module processes player actions",
+                        "Platform persists results and exposes analysis"
                     ]
                 },
                 {
                     "flowName": "Multiplayer Gameplay",
                     "steps": [
-                        "Host creates room and players join via REST",
-                        "Game start and answers are sent to /app over WebSocket",
-                        "Backend validates and broadcasts results to /topic"
+                        "Host creates a room and players join",
+                        "Game events are sent to /app over WebSocket",
+                        "Platform validates and broadcasts results to subscribers"
                     ]
                 },
                 {
                     "flowName": "Room Chat",
                     "steps": [
-                        "Client sends chat to /app/chat/{roomId}",
-                        "Backend persists message",
-                        "Message broadcast to /topic/room/{roomId}/chat"
+                        "Client sends chat messages to the room channel",
+                        "Platform persists messages",
+                        "Messages are broadcast to room participants"
                     ]
                 }
             ],
-            "architectureRationale": "REST is used for stable CRUD and session flows, while WebSocket/STOMP provides low-latency gameplay and chat; PostgreSQL ensures durability and Redis supports fast state access."
-        },
-        "technologyStack": {
-            "backend": [
-                {
-                    "name": "Spring Boot",
-                    "version": "3.5.5",
-                    "purpose": "Application framework for REST and WebSocket services",
-                    "tradeOffs": "Higher memory footprint than lightweight frameworks"
-                },
-                {
-                    "name": "Spring Security + OAuth2 + JWT",
-                    "version": "N/A",
-                    "purpose": "Authentication and token-based access",
-                    "tradeOffs": "Token validation and revocation strategy not fully configured"
-                },
-                {
-                    "name": "JJWT",
-                    "version": "0.11.5",
-                    "purpose": "JWT creation and parsing",
-                    "tradeOffs": "Requires careful key management and rotation"
-                }
-            ],
-            "frontend": [
-                {
-                    "name": "Next.js",
-                    "version": "15.5.3",
-                    "purpose": "React-based frontend framework",
-                    "tradeOffs": "Requires SSR/CSR coordination and build complexity"
-                },
-                {
-                    "name": "React",
-                    "version": "19.1.0",
-                    "purpose": "UI rendering and state-driven views",
-                    "tradeOffs": "State coordination for real-time events can be complex"
-                },
-                {
-                    "name": "Tailwind CSS",
-                    "version": "4",
-                    "purpose": "Utility-first styling system",
-                    "tradeOffs": "Long class strings can reduce readability"
-                }
-            ],
-            "infrastructure": [
-                "Docker",
-                "Docker Compose",
-                "PostgreSQL 17",
-                "Redis 7"
-            ],
-            "rejectedAlternatives": []
+            "architectureRationale": "The platform separates stable concerns (auth, rooms, messaging, persistence) from game-specific logic. REST handles lifecycle and management flows, while WebSocket/STOMP provides low-latency real-time interaction required by multiplayer games."
         },
         "roadmap": {
             "shortTerm": [
-                "Harden security rules for quiz and WebSocket endpoints",
-                "Move admin auth away from query parameters"
+                "Harden security rules for platform and WebSocket endpoints",
+                "Replace admin access via request parameters with proper authorization"
             ],
             "midTerm": [
-                "Enable JWT resource-server validation",
-                "Add pagination to room chat history"
+                "Add JWT resource-server validation",
+                "Abstract game-module interfaces for easier expansion"
             ],
             "longTerm": [
                 "Externalize WebSocket broker (e.g., RabbitMQ)",
-                "Add horizontal scaling support"
+                "Support horizontal scaling and multiple concurrent game types"
             ]
         }
     },
+
     "calculate": {
         "meta": {
             "projectName": "Calculate",

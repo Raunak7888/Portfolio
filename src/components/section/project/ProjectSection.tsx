@@ -13,6 +13,7 @@ import {
     ChevronRight,
     MessageCircleCode,
     Calculator,
+    Github,
 } from "lucide-react";
 import Divider from "../Divider";
 import projectData from "@/Data/Data.json";
@@ -28,6 +29,7 @@ interface Project {
     highlights: string[];
     description: string;
     link: string;
+    github: string;
     images: string[];
 }
 
@@ -185,6 +187,7 @@ function ProjectCard({
                         {project.link !== "" ? (
                             <Link
                                 href={liveDemoHref}
+                                target="_blank"
                                 className={`px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 `}
                             >
                                 Live Demo <ExternalLink size={18} />
@@ -202,6 +205,13 @@ function ProjectCard({
                             className="px-8 py-4 rounded-2xl border-2 border-foreground/10 font-bold hover:bg-foreground hover:text-background transition-all"
                         >
                             Details
+                        </Link>
+                        <Link
+                            href={project.github}
+                            target="_blank"
+                            className="px-8 py-4 rounded-2xl border-2 border-foreground/10 font-bold flex flex-row gap-2 hover:bg-foreground hover:text-background transition-all"
+                        >
+                            <Github />Github
                         </Link>
                     </div>
                 </div>

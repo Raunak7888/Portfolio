@@ -47,16 +47,17 @@
         {
             "id": "pokeverse",
             "title": "Pokeverse",
-            "category": "Real-Time Multiplayer / WebSockets",
+            "category": "Real-Time Multiplayer Game Platform",
             "badge": "Active",
             "accent": "#22C55E",
             "iconKey": "gamepad-2",
             "highlights": [
-                "Built real-time single-player and multiplayer Pokémon quizzes using WebSocket + STOMP.",
-                "Implemented OAuth2 login with JWT access and refresh tokens.",
-                "Supports multiplayer rooms, live gameplay events, and real-time chat."
+                "Designed a modular real-time game platform supporting multiple game types.",
+                "Implemented Pokémon Quiz as a pluggable game module (single-player & multiplayer).",
+                "Built real-time rooms, matchmaking, live events, and chat using WebSocket + STOMP.",
+                "Centralized OAuth2 authentication with JWT access and refresh tokens."
             ],
-            "description": "A real-time Pokémon quiz platform featuring single-player sessions, multiplayer rooms, and live chat powered by REST and WebSocket APIs.",
+            "description": "Pokeverse is a real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure.",
             "tech": [
                 "Java",
                 "Spring Boot",
@@ -79,6 +80,7 @@
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
             ]
         },
+
         {
             "id": "hermes",
             "title": "Hermes",

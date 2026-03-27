@@ -9,7 +9,7 @@ const Footer = () => {
     const footerVariants: Variants = {
         hidden: { 
             opacity: 0, 
-            y: 20 
+            y: 10 
         },
         visible: {
             opacity: 1,
@@ -23,7 +23,7 @@ const Footer = () => {
     };
 
     const itemVariants: Variants = {
-        hidden: { opacity: 0, y: 10 },
+        hidden: { opacity: 0, y: 7 },
         visible: { 
             opacity: 1, 
             y: 0,
@@ -36,7 +36,7 @@ const Footer = () => {
             <motion.div
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }} // Reverses when 50% of the footer leaves the view
+                viewport={{ once: false, amount: 0.3 }} // Reverses when 50% of the footer leaves the view
                 variants={footerVariants}
                 className="
                     mx-auto max-w-7xl
