@@ -18,11 +18,19 @@ export const TechListMobile = ({
 }) => {
     const [activeTab, setActiveTab] = useState<Tab>("All");
 
-    const categories: Tab[] = ["All", "Language", "Framework", "Database", "Tool", "Security"];
+    const categories: Tab[] = [
+        "All",
+        "Language",
+        "Framework",
+        "Database",
+        "Tool",
+        "Security",
+    ];
 
-    const filteredNodes = activeTab === "All"
-        ? nodes
-        : nodes.filter((n) => n.data.type === activeTab);
+    const filteredNodes =
+        activeTab === "All"
+            ? nodes
+            : nodes.filter((n) => n.data.type === activeTab);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -36,19 +44,19 @@ export const TechListMobile = ({
     };
 
     const itemVariants: Variants = {
-        hidden: { 
-            opacity: 0, 
-            y: 30, 
-            scale: 0.9 
+        hidden: {
+            opacity: 0,
+            y: 30,
+            scale: 0.9,
         },
         show: {
             opacity: 1,
             y: 0,
             scale: 1,
-            transition: { 
-                type: "spring", 
-                stiffness: 120, 
-                damping: 20 
+            transition: {
+                type: "spring",
+                stiffness: 120,
+                damping: 20,
             },
         },
     };
@@ -74,16 +82,19 @@ export const TechListMobile = ({
 
             {/* Bento Grid */}
             <motion.div
+                key={activeTab}
                 variants={containerVariants}
                 initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.2 }} 
+                animate="show"
                 className="grid grid-cols-2 gap-3"
             >
                 <AnimatePresence mode="popLayout">
                     {filteredNodes.map((n, idx) => {
                         const isFeature = idx % 3 === 0;
-                        const { legend } = TYPE_STYLES[n.data.type as keyof typeof TYPE_STYLES] || TYPE_STYLES.Tool;
+                        const { legend } =
+                            TYPE_STYLES[
+                                n.data.type as keyof typeof TYPE_STYLES
+                            ] || TYPE_STYLES.Tool;
 
                         return (
                             <motion.button
@@ -92,17 +103,19 @@ export const TechListMobile = ({
                                 variants={itemVariants}
                                 onClick={() => onOpen(n.data)}
                                 className={`
-                                    group relative overflow-hidden rounded-3xl border bg-background p-4 
-                                    transition-all active:scale-95 text-left h-28 border-foreground/10
-                                    ${isFeature ? "col-span-2 h-32" : "col-span-1"}
-                                `}
+                        group relative overflow-hidden rounded-3xl border bg-background p-4 
+                        transition-all active:scale-95 text-left h-28 border-foreground/10
+                        ${isFeature ? "col-span-2 h-32" : "col-span-1"}
+                    `}
                             >
                                 <div
                                     className="absolute -right-4 -top-4 h-20 w-20 rounded-full opacity-[0.05] blur-2xl transition-opacity group-hover:opacity-20"
                                     style={{ backgroundColor: legend }}
                                 />
 
-                                <div className={`flex h-full relative z-10 ${isFeature ? "flex-row items-center gap-4" : "flex-col justify-between"}`}>
+                                <div
+                                    className={`flex h-full relative z-10 ${isFeature ? "flex-row items-center gap-4" : "flex-col justify-between"}`}
+                                >
                                     <div
                                         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background border shadow-sm text-xl transition-transform group-hover:scale-110"
                                         style={{

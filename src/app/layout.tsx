@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.css"
 import {
     Mitr,
     Modak,
@@ -18,7 +18,6 @@ import {
     JetBrains_Mono,
 } from "next/font/google";
 import { Providers } from "@/components/Provider";
-import Navbar from "@/components/section/navbar/Navbar";
 
 const bungee = Bungee({
     variable: "--font-bungee",

@@ -6,7 +6,7 @@ export default function ResumeButton() {
 
     return (
         <a
-            href="/Raunak_yadav_resume.pdf"
+            href="/Raunak_Yadav_Resume.pdf"
             download="Raunak_Yadav_Resume.pdf"
             onClick={() => {
                 setLoading(true);
