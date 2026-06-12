@@ -218,7 +218,7 @@ const ThemeColorPicker = () => {
             {/* Active color bead — no layout animation, just a plain button */}
             <button
                 type="button"
-                className="w-[18px] h-[18px] rounded-full bg-primary ring-2 ring-background ring-offset-1 ring-offset-primary/20 cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-4.5 h-4.5 rounded-full bg-primary ring-2 ring-background ring-offset-1 ring-offset-primary/20 cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 aria-label="Change accent color"
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
@@ -240,7 +240,7 @@ const ThemeColorPicker = () => {
                          * position: absolute so the dropdown doesn't affect the
                          * pill's layout or GSAP width measurements.
                          */
-                        className="absolute top-full left-1/2 -translate-x-1/2 z-[1001] flex flex-col gap-2 p-2 rounded-full bg-background/60 backdrop-blur-xl border border-foreground/8 shadow-xl"
+                        className="absolute top-full left-1/2 -translate-x-1/2 z-1001 flex flex-col gap-2 p-2 rounded-full bg-background/60 backdrop-blur-xl border border-foreground/8 shadow-xl"
                         style={{ marginTop: "6px" }}
                         /**
                          * Stop mouse events from propagating to the pill's
@@ -260,7 +260,7 @@ const ThemeColorPicker = () => {
                                 variants={beadVariants}
                                 onClick={() => handleSelectColor(c.value)}
                                 disabled={isPending}
-                                className="w-[18px] h-[18px] rounded-full transition-transform duration-100 hover:scale-125 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-40 disabled:pointer-events-none"
+                                className="w-4.5 h-4.5 rounded-full transition-transform duration-100 hover:scale-125 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-40 disabled:pointer-events-none"
                                 style={{ backgroundColor: c.value }}
                                 title={c.name}
                             />

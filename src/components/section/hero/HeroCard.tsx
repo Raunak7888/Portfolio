@@ -183,7 +183,7 @@ export default function HeroContent() {
                         {/* Shimmer sweep */}
                         <span
                             aria-hidden
-                            className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                            className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-linear-to-r from-transparent via-white/10 to-transparent"
                         />
                         Get in Touch
                         <ArrowRight size={14} />

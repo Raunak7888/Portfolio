@@ -458,7 +458,7 @@ export default function Navbar() {
                             <Link
                                 key={item}
                                 href={`/#${item.toLowerCase()}`}
-                                className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-150 whitespace-nowrap"
+                                className="text-xs font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-150 whitespace-nowrap"
                             >
                                 {item}
                             </Link>

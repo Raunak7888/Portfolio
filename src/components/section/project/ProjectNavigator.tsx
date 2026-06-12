@@ -56,7 +56,7 @@ export function ProjectNavigator({
             {isActive && (
               <motion.span
                 layoutId="nav-indicator"
-                className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-full bg-white"
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-6 rounded-full bg-white"
                 transition={{ type: "spring", stiffness: 400, damping: 35 }}
               />
             )}
