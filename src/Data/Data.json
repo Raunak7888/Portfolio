@@ -48,108 +48,121 @@
         {
             "id": "pokeverse",
             "title": "Pokeverse",
+            "tagline": "A real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure.",
             "category": "Real-Time Multiplayer Game Platform",
-            "badge": "Active",
+            "description": "Pokeverse is a real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure. It features modular, pluggable game modules such as a Pokémon Quiz, utilizing WebSocket and STOMP protocols to power real-time game rooms, live matchmaking, events, and instant communication.",
             "accent": "#22C55E",
             "iconKey": "gamepad-2",
+            "images": [
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151405.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151448.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151717.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
+            ],
             "highlights": [
                 "Designed a modular real-time game platform supporting multiple game types.",
                 "Implemented Pokémon Quiz as a pluggable game module (single-player & multiplayer).",
                 "Built real-time rooms, matchmaking, live events, and chat using WebSocket + STOMP.",
                 "Centralized OAuth2 authentication with JWT access and refresh tokens."
             ],
-            "description": "Pokeverse is a real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure.",
-            "tech": [
-                "Java",
-                "Spring Boot",
-                "Spring WebSocket",
-                "Spring Security",
-                "OAuth2",
-                "JWT",
-                "PostgreSQL",
-                "Redis",
-                "Next.js",
-                "React",
-                "Docker"
+            "technologies": [
+                { "name": "Java", "category": "Language" },
+                { "name": "Spring Boot", "category": "Backend" },
+                { "name": "Spring WebSocket", "category": "Real-time" },
+                { "name": "Spring Security", "category": "Security" },
+                { "name": "OAuth2", "category": "Security" },
+                { "name": "JWT", "category": "Security" },
+                { "name": "PostgreSQL", "category": "Database" },
+                { "name": "Redis", "category": "Database/Caching" },
+                { "name": "Next.js", "category": "Frontend" },
+                { "name": "React", "category": "Frontend" },
+                { "name": "Docker", "category": "DevOps" }
             ],
-            "link": "",
-            "github": "https://github.com/Raunak7888/Pokeverse",
-            "images": [
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151405.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151448.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151717.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
-            ]
+            "metrics": [],
+            "links": {
+                "github": "https://github.com/Raunak7888/Pokeverse",
+                "live": ""
+            },
+            "status": "Not Live"
         },
-
         {
             "id": "hermes",
             "title": "Hermes",
+            "tagline": "A real-time web chat application enabling private messaging, group chats, and image sharing.",
             "category": "Real-Time Systems / WebSockets",
-            "badge": "Active",
+            "description": "A real-time web chat application enabling private messaging, group chats, and image sharing using WebSocket and REST APIs. Features JWT-based stateless authentication alongside stateful user mechanics like live online/offline presence tracking and responsive group channel management.",
             "accent": "#7C7CFF",
             "iconKey": "message_circle",
+            "images": [
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20173606.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20174258.png",
+                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-02%20191626.png"
+            ],
             "highlights": [
                 "Implemented real-time 1:1 and group chat using WebSocket + STOMP.",
                 "JWT-based stateless authentication with Spring Security.",
                 "Supports image sharing, online/offline presence, and group management."
             ],
-            "description": "A real-time web chat application enabling private messaging, group chats, and image sharing using WebSocket and REST APIs.",
-            "tech": [
-                "Java",
-                "Spring Boot",
-                "Spring WebSocket",
-                "JWT",
-                "MySQL",
-                "React",
-                "Vite",
-                "Docker"
+            "technologies": [
+                { "name": "Java", "category": "Language" },
+                { "name": "Spring Boot", "category": "Backend" },
+                { "name": "Spring WebSocket", "category": "Real-time" },
+                { "name": "JWT", "category": "Security" },
+                { "name": "MySQL", "category": "Database" },
+                { "name": "React", "category": "Frontend" },
+                { "name": "Vite", "category": "Frontend" },
+                { "name": "Docker", "category": "DevOps" }
             ],
-            "link": "",
-            "github": "https://github.com/Raunak7888/Hermes",
-            "images": [
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20173606.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20174258.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-02%20191626.png"
-            ]
+            "metrics": [],
+            "links": {
+                "github": "https://github.com/Raunak7888/Hermes",
+                "live": ""
+            },
+            "status": "Not Live"
         },
         {
             "id": "calculate",
             "title": "Calculate",
+            "tagline": "A modular, stack-based scientific calculator that parses and evaluates complex expressions.",
             "category": "Algorithms / Parsing",
-            "badge": "Active",
+            "description": "A modular, stack-based scientific calculator that parses expressions, converts them to postfix notation, and evaluates results using classic compiler techniques. Supports implicit multiplication, explicit domain validation, and handles over 50 scientific functions and mathematical constants seamlessly.",
             "accent": "#F59E0B",
             "iconKey": "calculator",
-            "highlights": [
-                "Implemented expression parsing using tokenization and the shunting-yard algorithm.",
-                "Supports implicit multiplication and 50+ scientific functions and constants.",
-                "Evaluates expressions via stack-based postfix (RPN) execution with domain validation."
-            ],
-            "description": "A modular, stack-based scientific calculator that parses expressions, converts them to postfix notation, and evaluates results using classic compiler techniques.",
-            "tech": [
-                "Python",
-                "Shunting-Yard Algorithm",
-                "Postfix (RPN) Evaluation",
-                "Stack & Queue Data Structures"
-            ],
-            "link": "",
-            "github": "https://github.com/Raunak7888/Calculate",
             "images": [
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005018.png",
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005032.png",
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005115.png",
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005134.png",
                 "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005200.png"
-            ]
+            ],
+            "highlights": [
+                "Implemented expression parsing using tokenization and the shunting-yard algorithm.",
+                "Supports implicit multiplication and 50+ scientific functions and constants.",
+                "Evaluates expressions via stack-based postfix (RPN) execution with domain validation."
+            ],
+            "technologies": [
+                { "name": "Python", "category": "Language" },
+                { "name": "Shunting-Yard Algorithm", "category": "Algorithm" },
+                { "name": "Postfix (RPN) Evaluation", "category": "Algorithm" },
+                {
+                    "name": "Stack & Queue Data Structures",
+                    "category": "Data Structures"
+                }
+            ],
+            "metrics": [],
+            "links": {
+                "github": "https://github.com/Raunak7888/Calculate",
+                "live": ""
+            },
+            "status": "Not Live"
         }
     ],
     "skills": {
         "tech_types": ["Language", "Framework", "Database", "Tool", "Security"],
-        "nodes": [
+        "skills": [
             {
                 "id": "javascript",
                 "type": "tech",
-                "position": { "x": -150, "y": 240 },
                 "data": {
                     "label": "JavaScript",
                     "icon_id": "SiJavascript",
@@ -163,7 +176,6 @@
             {
                 "id": "typescript",
                 "type": "tech",
-                "position": { "x": -150, "y": 340 },
                 "data": {
                     "label": "TypeScript",
                     "icon_id": "SiTypescript",
@@ -177,7 +189,6 @@
             {
                 "id": "java",
                 "type": "tech",
-                "position": { "x": -150, "y": 440 },
                 "data": {
                     "label": "Java",
                     "icon_id": "FaJava",
@@ -191,7 +202,6 @@
             {
                 "id": "python",
                 "type": "tech",
-                "position": { "x": -150, "y": 540 },
                 "data": {
                     "label": "Python",
                     "icon_id": "SiPython",
@@ -205,7 +215,6 @@
             {
                 "id": "react",
                 "type": "tech",
-                "position": { "x": 30, "y": 285 },
                 "data": {
                     "label": "React",
                     "icon_id": "SiReact",
@@ -219,7 +228,6 @@
             {
                 "id": "nextjs",
                 "type": "tech",
-                "position": { "x": 350, "y": 285 },
                 "data": {
                     "label": "Next.js",
                     "icon_id": "SiNextdotjs",
@@ -233,7 +241,6 @@
             {
                 "id": "tailwind",
                 "type": "tech",
-                "position": { "x": 200, "y": 240 },
                 "data": {
                     "label": "Tailwind CSS",
                     "icon_id": "SiTailwindcss",
@@ -247,7 +254,6 @@
             {
                 "id": "springboot",
                 "type": "tech",
-                "position": { "x": 30, "y": 440 },
                 "data": {
                     "label": "Spring Boot",
                     "icon_id": "SiSpringboot",
@@ -261,7 +267,6 @@
             {
                 "id": "postgresql",
                 "type": "tech",
-                "position": { "x": 200, "y": 390 },
                 "data": {
                     "label": "PostgreSQL",
                     "icon_id": "SiPostgresql",
@@ -275,7 +280,6 @@
             {
                 "id": "redis",
                 "type": "tech",
-                "position": { "x": 200, "y": 490 },
                 "data": {
                     "label": "Redis",
                     "icon_id": "SiRedis",
@@ -289,7 +293,6 @@
             {
                 "id": "docker",
                 "type": "tech",
-                "position": { "x": 350, "y": 440 },
                 "data": {
                     "label": "Docker",
                     "icon_id": "SiDocker",
@@ -303,7 +306,6 @@
             {
                 "id": "git",
                 "type": "tech",
-                "position": { "x": -350, "y": 390 },
                 "data": {
                     "label": "Git",
                     "icon_id": "SiGit",
@@ -317,7 +319,6 @@
             {
                 "id": "jwt",
                 "type": "tech",
-                "position": { "x": 125, "y": 540 },
                 "data": {
                     "label": "JWT",
                     "icon_id": "SiJsonwebtokens",
@@ -331,7 +332,6 @@
             {
                 "id": "oauth2",
                 "type": "tech",
-                "position": { "x": 125, "y": 340 },
                 "data": {
                     "label": "OAuth 2.0",
                     "icon_id": "TbBrandOauth",
@@ -341,116 +341,6 @@
                     "consistency": "High",
                     "description": "Authorization framework enabling secure delegated access between services and identity providers."
                 }
-            }
-        ],
-        "edges": [
-            {
-                "id": "e-js-react",
-                "source": "javascript",
-                "target": "react",
-                "animated": true
-            },
-            {
-                "id": "e-ts-react",
-                "source": "typescript",
-                "target": "react",
-                "animated": true
-            },
-            {
-                "id": "e-react-tailwind",
-                "source": "react",
-                "target": "tailwind",
-                "animated": true
-            },
-            {
-                "id": "e-react-nextjs",
-                "source": "react",
-                "target": "nextjs",
-                "animated": true
-            },
-            {
-                "id": "e-tailwind-nextjs",
-                "source": "tailwind",
-                "target": "nextjs",
-                "animated": true
-            },
-            {
-                "id": "e-java-spring",
-                "source": "java",
-                "target": "springboot",
-                "animated": true
-            },
-            {
-                "id": "e-spring-postgres",
-                "source": "springboot",
-                "target": "postgresql",
-                "animated": true
-            },
-            {
-                "id": "e-spring-redis",
-                "source": "springboot",
-                "target": "redis",
-                "animated": true
-            },
-            {
-                "id": "e-postgres-docker",
-                "source": "postgresql",
-                "target": "docker",
-                "animated": true
-            },
-            {
-                "id": "e-redis-docker",
-                "source": "redis",
-                "target": "docker",
-                "animated": true
-            },
-            {
-                "id": "e-spring-jwt",
-                "source": "springboot",
-                "target": "jwt",
-                "animated": true
-            },
-            {
-                "id": "e-spring-oauth2",
-                "source": "springboot",
-                "target": "oauth2",
-                "animated": true
-            },
-            {
-                "id": "e-spring-docker",
-                "source": "springboot",
-                "target": "docker",
-                "animated": true
-            },
-            {
-                "id": "e-oauth2-nextjs",
-                "source": "oauth2",
-                "target": "nextjs",
-                "animated": true
-            },
-            {
-                "id": "e-git-js",
-                "source": "git",
-                "target": "javascript",
-                "animated": true
-            },
-            {
-                "id": "e-git-ts",
-                "source": "git",
-                "target": "typescript",
-                "animated": true
-            },
-            {
-                "id": "e-git-java",
-                "source": "git",
-                "target": "java",
-                "animated": true
-            },
-            {
-                "id": "e-git-python",
-                "source": "git",
-                "target": "python",
-                "animated": true
             }
         ]
     },

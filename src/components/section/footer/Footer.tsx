@@ -32,7 +32,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="w-full border-t border-border bg-background">
+        <footer className="w-full border-t border-border ">
             <motion.div
                 initial="hidden"
                 whileInView="visible"

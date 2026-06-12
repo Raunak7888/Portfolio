@@ -1,3 +1,4 @@
+import { aspectRatio } from "framer-motion";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -8,6 +9,9 @@ const config: Config = {
             animation: {
                 "float-slow": "float 6s ease-in-out infinite",
                 "float-medium": "float 4s ease-in-out infinite",
+            },
+            aspectRatio: {
+                "16/10": "16 / 10",
             },
             keyframes: {
                 float: {

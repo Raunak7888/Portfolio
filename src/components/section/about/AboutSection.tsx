@@ -1,220 +1,279 @@
 "use client";
 
-import React, { useLayoutEffect, useRef, JSX, useCallback } from "react";
-import {
-    motion,
-    useReducedMotion,
-    useSpring,
-    useMotionValue,
-} from "framer-motion";
-import { gsap } from "@/lib/gsap";
+import React, { JSX } from "react";
+import { motion, Variants } from "framer-motion";
 import Divider from "../Divider";
-import {
-    ShieldCheck,
-    Cpu,
-    Map,
-    Terminal,
-    Brain,
-    ArrowUpRight,
-} from "lucide-react";
 import data from "@/Data/Data.json";
 
-const iconMap: Record<string, JSX.Element> = {
-    "01": <ShieldCheck className="w-5 h-5 text-primary" />,
-    "02": <Cpu className="w-5 h-5 text-primary" />,
-    "03": <Brain className="w-5 h-5 text-primary" />,
-    "04": <Map className="w-5 h-5 text-primary" />,
+import {
+    SecurityLockIcon,
+    CpuIcon,
+    AiBrainIcon,
+    Location01Icon,
+    FlashIcon,
+    CodeIcon,
+    StarIcon,
+    CheckmarkCircle02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
+// ─── Motion variants ──────────────────────────────────────────────────────────
+
+const fadeUp: Variants = {
+    hidden:  { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
+        opacity: 1,
+        y: 0,
+        transition: { delay: i * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    }),
 };
 
-const AboutSection: React.FC = () => {
-    const sectionRef = useRef<HTMLElement | null>(null);
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const terminalRef = useRef<HTMLDivElement | null>(null);
-    const bgTextRef = useRef<HTMLDivElement | null>(null);
-    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+// ─── Icon map (segment cards) ─────────────────────────────────────────────────
 
-    const prefersReducedMotion = useReducedMotion();
+const iconMap: Record<string, JSX.Element> = {
+    "01": <HugeiconsIcon icon={SecurityLockIcon} size={14} className="text-primary" />,
+    "02": <HugeiconsIcon icon={CpuIcon}          size={14} className="text-primary" />,
+    "03": <HugeiconsIcon icon={AiBrainIcon}       size={14} className="text-primary" />,
+    "04": <HugeiconsIcon icon={Location01Icon}    size={14} className="text-primary" />,
+};
 
-    // Magnetic Effect Values
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+// ─── Dot-grid decoration ──────────────────────────────────────────────────────
+// A subtle SVG pattern used as a visual anchor behind the headline.
+// Pure atmosphere — no meaning, no interaction.
 
-    // Increased damping slightly for smoother performance
-    const springConfig = { damping: 25, stiffness: 120, restDelta: 0.001 };
-    const transX = useSpring(mouseX, springConfig);
-    const transY = useSpring(mouseY, springConfig);
-
-    const { endingLine, segments } = data.about;
-
-    // Optimized Mouse Move
-    const handleMouseMove = useCallback(
-        (e: React.MouseEvent) => {
-            if (!terminalRef.current || window.innerWidth < 1024) return;
-
-            const rect = terminalRef.current.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const distanceX = e.clientX - centerX;
-            const distanceY = e.clientY - centerY;
-
-            // Check range before updating motion values
-            if (Math.abs(distanceX) < 300 && Math.abs(distanceY) < 300) {
-                mouseX.set(distanceX * 0.15);
-                mouseY.set(distanceY * 0.15);
-            } else if (mouseX.get() !== 0 || mouseY.get() !== 0) {
-                mouseX.set(0);
-                mouseY.set(0);
-            }
-        },
-        [mouseX, mouseY],
+function DotGrid() {
+    return (
+        <svg
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-0 h-full w-[340px] opacity-[0.035] dark:opacity-[0.055]"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <pattern
+                    id="dot-pattern"
+                    x="0"
+                    y="0"
+                    width="20"
+                    height="20"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor" className="text-foreground" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dot-pattern)" />
+        </svg>
     );
+}
 
-    useLayoutEffect(() => {
-        if (prefersReducedMotion) return;
+// ─── Segment card ─────────────────────────────────────────────────────────────
 
-        const ctx = gsap.context(() => {
-            // 1. Background Parallax - Use x instead of xPercent for better GPU usage
-            gsap.to(bgTextRef.current, {
-                x: -200,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "40% 70%",
-                    scrub: 0.5, // Reduced scrub for responsiveness
-                },
-            });
+interface Segment {
+    id:    string;
+    title: string;
+    label: string;
+    text:  string;
+}
 
-            // 2. Card Entrance - Removed Blur/Brightness filters (Performance Killers)
-            cardsRef.current.forEach((card, i) => {
-                if (!card) return;
-                const isLeft = i % 2 === 0;
+function SegmentCard({ s, index }: { s: Segment; index: number }) {
+    return (
+        <motion.div
+            custom={index}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            className="group relative flex flex-col gap-5 p-7 lg:p-8 bg-background hover:bg-card border border-border rounded-2xl transition-colors duration-200 cursor-default overflow-hidden"
+        >
+            {/* Hover glow — top-left origin */}
+            <div
+                aria-hidden
+                className="pointer-events-none absolute -top-10 -left-10 w-36 h-36 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, transparent 70%)" }}
+            />
 
-                gsap.fromTo(
-                    card,
-                    {
-                        opacity: 0,
-                        x: isLeft ? -50 : 50,
-                        skewX: isLeft ? 2 : -2,
-                    },
-                    {
-                        opacity: 1,
-                        x: 0,
-                        skewX: 0,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "25% 80%",
-                            toggleActions: "play none none reverse",
-                        },
-                    },
-                );
-            });
-        }, sectionRef);
+            {/* Icon + id */}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-2xl border border-border bg-muted group-hover:border-primary/30 transition-colors duration-200">
+                        {iconMap[s.id]}
+                    </div>
+                    <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase">
+                        {s.id}
+                    </span>
+                </div>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            </div>
 
-        return () => ctx.revert();
-    }, [prefersReducedMotion]);
+            {/* Title + label */}
+            <div>
+                <h3 className="text-base lg:text-lg font-semibold tracking-tight text-foreground mb-2">
+                    {s.title}
+                </h3>
+                <div className="flex items-center gap-2">
+                    <div className="h-px w-4 bg-primary rounded-full shrink-0" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
+                        {s.label}
+                    </span>
+                </div>
+            </div>
+
+            {/* Body */}
+            <p className="text-sm text-muted-foreground leading-relaxed">
+                {s.text}
+            </p>
+
+            {/* Bottom accent line */}
+            <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-primary transition-all duration-500 ease-out" />
+        </motion.div>
+    );
+}
+
+// ─── Philosophy section ───────────────────────────────────────────────────────
+// Four pillars as full bento cells — icon, label, one-liner.
+// The pillars are the visual anchor of this section; they earn their own row.
+
+const pillars = [
+    {
+        icon:  FlashIcon,
+        label: "Zero compromise DX",
+        desc:  "Every abstraction earns its keep. If it slows down the feedback loop, it goes.",
+    },
+    {
+        icon:  CodeIcon,
+        label: "Open by default",
+        desc:  "Prefer legible code over clever code. Future-you is reading this at 2 am.",
+    },
+    {
+        icon:  CheckmarkCircle02Icon,
+        label: "Correctness first",
+        desc:  "A fast wrong answer is worse than a slow right one. Test before you ship.",
+    },
+    {
+        icon:  StarIcon,
+        label: "Clarity over clever",
+        desc:  "Naming things well is the hardest part. Take the time — it compounds.",
+    },
+];
+
+function PhilosophySection() {
+    return (
+        <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            className="mt-3"
+        >
+            {/* Section label */}
+            <motion.div
+                variants={fadeUp}
+                custom={0}
+                className="flex items-center gap-3 mb-4"
+            >
+                <div className="h-px w-5 bg-border" />
+                <span className="font-mono text-[10px] text-muted-foreground tracking-[0.2em] uppercase">
+                    Philosophy
+                </span>
+            </motion.div>
+
+            {/* Pillar grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-border rounded-2xl overflow-hidden">
+                {pillars.map((p, i) => (
+                    <motion.div
+                        key={i}
+                        custom={i + 1}
+                        variants={fadeUp}
+                        className={[
+                            "group relative flex flex-col gap-4 p-6 lg:p-7",
+                            "bg-background hover:bg-card transition-colors duration-200 cursor-default overflow-hidden",
+                            // right borders between columns
+                            i < pillars.length - 1
+                                ? "border-b lg:border-b-0 lg:border-r border-border"
+                                : "",
+                            // for 2-col on sm: bottom border on first row
+                            i === 1 ? "sm:border-r-0 border-b sm:border-b border-border" : "",
+                        ]
+                            .join(" ")
+                            .replace(/\s+/g, " ")
+                            .trim()}
+                    >
+                        {/* Hover radial */}
+                        <div
+                            aria-hidden
+                            className="pointer-events-none absolute -top-8 -left-8 w-28 h-28 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, transparent 70%)" }}
+                        />
+
+                        {/* Icon */}
+                        <div className="flex items-center justify-center w-8 h-8 rounded-2xl border border-border bg-muted group-hover:border-primary/30 transition-colors duration-200 shrink-0">
+                            <HugeiconsIcon icon={p.icon} size={14} className="text-primary" />
+                        </div>
+
+                        {/* Label */}
+                        <div>
+                            <p className="text-sm font-semibold text-foreground tracking-tight mb-1.5">
+                                {p.label}
+                            </p>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                                {p.desc}
+                            </p>
+                        </div>
+
+                        {/* Bottom accent */}
+                        <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-primary transition-all duration-500 ease-out" />
+                    </motion.div>
+                ))}
+            </div>
+        </motion.div>
+    );
+}
+
+// ─── Closing bar ──────────────────────────────────────────────────────────────
+
+function ClosingBar() {
+    return (
+        <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={fadeUp}
+            custom={0}
+            className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        >
+            <p className="font-mono text-xs text-muted-foreground tracking-wide max-w-lg">
+                {data.about.endingLine}
+            </p>
+            <div className="flex items-center gap-2 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
+                <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase">
+                    Available for projects
+                </span>
+            </div>
+        </motion.div>
+    );
+}
+
+// ─── Section ──────────────────────────────────────────────────────────────────
+
+const AboutSection: React.FC = () => {
+    const { segments } = data.about;
 
     return (
-        <section
-            ref={sectionRef}
-            onMouseMove={handleMouseMove}
-            className="relative w-full min-h-screen flex flex-col overflow-hidden py-10 lg:py-20"
-        >
-            <div
-                ref={bgTextRef}
-                className="absolute top-1/4 left-0 text-[20vw] font-black text-foreground/2 whitespace-nowrap pointer-events-none select-none z-0 uppercase will-change-transform"
-            >
-                Digital Craftsman
-            </div>
+        <section className="relative w-full min-h-screen flex flex-col">
+            <Divider sectionName="About Me" />
 
-            <div className="px-6 relative z-10">
-                <Divider sectionName="About Me" />
-            </div>
+            <div className="flex-1 max-w-7xl mx-auto w-full px-6 sm:px-8 lg:px-16 pb-24">
 
-            <div className="flex-1 max-w-7xl mx-auto w-full px-6 flex items-center relative z-10">
-                <div
-                    ref={containerRef}
-                    className="relative w-full grid grid-cols-1 md:grid-cols-2 gap-px border border-foreground/10 rounded-4xl overflow-hidden bg-foreground/5 backdrop-blur-md shadow-2xl"
-                >
-                    {/* Central Terminal */}
-                    <motion.div
-                        ref={terminalRef}
-                        style={{ x: transX, y: transY }}
-                        className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none will-change-transform"
-                    >
-                        <div className="relative group">
-                            <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
-                            <div className="relative p-6 bg-zinc-900 border border-primary/50 rounded-2xl shadow-xl">
-                                <Terminal className="w-10 h-10 text-primary" />
-                            </div>
-                        </div>
-                    </motion.div>
+                {/* ── Headline block with dot-grid decoration ── */}
+                
 
-                    {segments.map((s, index) => (
-                        <motion.div
-                            key={s.id}
-                            ref={(el) => {
-                                cardsRef.current[index] = el;
-                            }}
-                            whileHover={{
-                                backgroundColor:
-                                    "rgba(var(--primary-rgb), 0.02)",
-                            }}
-                            className="relative group p-8 lg:p-16 bg-background flex flex-col gap-6 border-foreground/5 transition-colors duration-300"
-                        >
-                            <div className="flex flex-col gap-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-mono text-[10px] font-bold text-primary border border-primary/30 px-2 py-1 rounded-sm bg-primary/5">
-                                            NODE_{s.id}
-                                        </span>
-                                        <div className="h-px w-12 bg-primary/20" />
-                                    </div>
-                                    <ArrowUpRight className="w-4 h-4 text-foreground/20 group-hover:text-primary transition-transform duration-300" />
-                                </div>
-                                <h3 className="text-3xl lg:text-4xl font-bold tracking-tighter uppercase">
-                                    {s.title}
-                                </h3>
-                            </div>
-
-                            <div className="flex items-center gap-3 bg-foreground/5 self-start px-4 py-2 rounded-full border border-foreground/10">
-                                <div className="animate-spin-slow">
-                                    {iconMap[s.id]}
-                                </div>
-                                <span className="text-[11px] font-mono font-bold uppercase text-muted-foreground tracking-widest">
-                                    {s.label}
-                                </span>
-                            </div>
-
-                            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed font-light">
-                                {s.text}
-                            </p>
-
-                            <div className="absolute -bottom-2 -right-2 text-[10rem] font-black text-foreground/1 pointer-events-none italic">
-                                {s.id}
-                            </div>
-                        </motion.div>
+                {/* ── Segment cards — 2-col grid ── */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {segments.map((s, i) => (
+                        <SegmentCard key={s.id} s={s} index={i} />
                     ))}
                 </div>
-            </div>
 
-            {/* Footer Info */}
-            <div className="w-full flex flex-col md:flex-row justify-between items-end px-10 pt-10 gap-6 relative z-10">
-                <div className="flex gap-2">
-                    {[1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className="w-2 h-2 rounded-full bg-primary/20 animate-pulse"
-                        />
-                    ))}
-                </div>
-                <div className="border-r-4 border-primary/40 pr-6 text-right max-w-sm">
-                    <p className="text-[12px] font-mono text-zinc-500 leading-snug uppercase italic">
-                        {endingLine}
-                    </p>
-                </div>
+                <ClosingBar />
             </div>
         </section>
     );

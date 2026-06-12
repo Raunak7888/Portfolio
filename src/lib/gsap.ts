@@ -11,8 +11,7 @@ declare global {
 }
 
 if (typeof window !== "undefined" && !window.__GSAP_REGISTERED__) {
-    gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin);
-
+    gsap.registerPlugin(ScrollTrigger,TextPlugin, ScrambleTextPlugin);
     window.__GSAP_REGISTERED__ = true;
 }
 

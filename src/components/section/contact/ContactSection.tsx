@@ -214,22 +214,22 @@ const ContactSection = () => {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                                 <div className="flex flex-col gap-3 group">
-                                    <label className="text-[10px] uppercase tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
-                                        Full Name
+                                    <label className="text-[10px]  tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
+                                        FULL NAME
                                     </label>
                                     <input
                                         {...register("name", {
                                             required: true,
                                         })}
                                         autoComplete="off"
-                                        placeholder="JANE DOE"
-                                        className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20 uppercase tracking-tighter"
+                                        placeholder="JOHN DOE"
+                                        className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20  tracking-tighter"
                                     />
                                 </div>
 
                                 <div className="flex flex-col gap-3 group">
-                                    <label className="text-[10px] uppercase tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
-                                        Email Address
+                                    <label className="text-[10px]  tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
+                                        EMAIL ADDRESS
                                     </label>
                                     <input
                                         {...register("email", {
@@ -240,22 +240,22 @@ const ContactSection = () => {
                                             },
                                         })}
                                         autoComplete="off"
-                                        placeholder="JANE@EXAMPLE.COM"
-                                        className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20 uppercase tracking-tighter"
+                                        placeholder="JOHNDOE@EMAIL.COM"
+                                        className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20  tracking-tighter"
                                     />
                                 </div>
                             </div>
 
                             <div className="flex flex-col gap-3 group">
-                                <label className="text-[10px] uppercase tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
-                                    Payload_Message
+                                <label className="text-[10px]  tracking-widest font-black opacity-30 group-focus-within:opacity-100 group-focus-within:text-primary transition-all">
+                                    MESSAGE
                                 </label>
                                 <textarea
                                     {...register("message", { required: true })}
                                     autoComplete="off"
-                                    placeholder="DESCRIBE THE PROJECT..."
+                                    placeholder="DESCRIBE YOUR THOUGHTS..."
                                     rows={4}
-                                    className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20 resize-none uppercase tracking-tighter"
+                                    className="w-full bg-transparent border-b-2 border-foreground/10 focus:border-primary py-2 transition-all outline-none font-bold placeholder:opacity-20 resize-none tracking-tighter"
                                 />
                             </div>
 

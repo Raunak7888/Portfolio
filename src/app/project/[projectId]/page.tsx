@@ -2,7 +2,7 @@
 
 import React from "react";
 import { GridBackground } from "@/components/GridBackground";
-import ProjectDetail from "@/components/section/project/details/ProjectPage";
+import ProjectDetail from "@/components/section/project/ProjectDetail";
 
 export default function Page({
     params,
