@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Github, Star, Users, Zap } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 
 import { SocialIcons } from "@/components/ui/SocialLinks";

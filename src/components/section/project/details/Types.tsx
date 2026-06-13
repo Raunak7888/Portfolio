@@ -10,6 +10,7 @@ export interface ProjectData {
 /* ================= META ================= */
 
 export interface Meta {
+    live: string | null;
     projectName: string;
     codename: string;
     version: string;

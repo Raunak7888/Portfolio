@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -144,7 +145,7 @@ function StringArrayEditor({
           <div key={idx} className="flex gap-2">
             <input value={item} onChange={(e) => update(idx, e.target.value)}
               placeholder={placeholder}
-              className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all" />
+              className="flex-1 bg-white/4 border border-white/8 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all" />
             <button onClick={() => remove(idx)} className="text-white/20 hover:text-red-400 transition-colors text-sm px-1">✕</button>
           </div>
         ))}
@@ -158,7 +159,7 @@ function StringArrayEditor({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 space-y-4">
+    <section className="rounded-2xl border border-white/6 bg-white/2 p-5 space-y-4">
       <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider">{title}</h2>
       {children}
     </section>
@@ -238,9 +239,9 @@ export function ProjectDetailEditor({ projectKey, initialData, isNew = false }: 
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <a href="/admin/projects" className="text-white/30 hover:text-white/60 text-sm transition-colors">
+            <Link href="/admin/projects" className="text-white/30 hover:text-white/60 text-sm transition-colors">
               ← Projects
-            </a>
+            </Link>
           </div>
           <h1 className="text-xl font-semibold text-white">
             {isNew ? "New Project" : `Edit: ${proj.meta.projectName}`}

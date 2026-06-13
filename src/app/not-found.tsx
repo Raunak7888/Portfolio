@@ -1,13 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 import { Home, AlertTriangle, Terminal } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function NotFound() {
-   const router = useRouter();
+    const router = useRouter();
+    const [pathname, setPathname] = React.useState("");
+
+    React.useEffect(() => {
+        setPathname(window.location.pathname);
+    }, []);
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-background  overflow-hidden relative">
             
@@ -65,7 +70,7 @@ export default function NotFound() {
                         Oops! You Got Lost!
                     </h1>
                     <p className="mt-6 text-base leading-7 text-foreground/60 font-medium">
-                        The coordinate <span className="text-primary/80 font-mono">&quot;{`${window.location.pathname}`}&quot;</span> does not exist in our current database. It may have been purged or relocated.
+                        The coordinate <span className="text-primary/80 font-mono">&quot;{pathname || "/..."}&quot;</span> does not exist in our current database. It may have been purged or relocated.
                     </p>
                 </motion.div>
                 {/* 4. Interactive Action Buttons */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import Data from "@/Data/Project.json";
 import Image from "next/image";
 import gsap from "gsap";
@@ -574,7 +574,7 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
           <div className="rounded-2xl p-8" style={{ background: "#111111", border: "1px solid #1f1f1f" }}>
             <SectionLabel>Data Flow</SectionLabel>
             <div className="space-y-10">
-              {data.architecture.dataFlow.map((flow, fi) => (
+              {data.architecture.dataFlow.map((flow) => (
                 <div key={flow.flowName}>
                   <p className="text-xs font-semibold mb-4" style={{ color: "#ffffff" }}>
                     {flow.flowName}
@@ -769,7 +769,7 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
           ROADMAP
       ════════════════════════════════════════════ */}
       <section className="reveal px-6 lg:px-20 py-24">
-        <SectionLabel>What's Next</SectionLabel>
+        <SectionLabel>What&apos;s Next</SectionLabel>
         <h2
           className="text-3xl lg:text-5xl font-black tracking-tight mb-16 flex items-center gap-4"
           style={{ color: "#ffffff" }}

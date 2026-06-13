@@ -8,7 +8,7 @@ import * as Si from "react-icons/si";
 import * as Fa from "react-icons/fa";
 import * as Tb from "react-icons/tb";
 import type { IconType } from "react-icons";
-import { X, Layers, Zap, Star } from "lucide-react";
+import { X } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -172,7 +172,7 @@ const SkillModal: React.FC<{ skill: Skill; onClose: () => void }> = ({
     skill,
     onClose,
 }) => {
-    const Icon = resolveIcon(skill.data.icon_id);
+    const icon = resolveIcon(skill.data.icon_id);
     const token = getToken(skill.data.category);
     const tier = overallTier(skill.data);
 
@@ -217,7 +217,7 @@ const SkillModal: React.FC<{ skill: Skill; onClose: () => void }> = ({
                         <div
                             className={`flex h-12 w-12 items-center justify-center border border-border bg-muted rounded-xl ${token.text}`}
                         >
-                            {Icon ? <Icon size={24} /> : null}
+                            {icon ? React.createElement(icon, { size: 24 }) : null}
                         </div>
                         <div>
                             <h2 className="text-base font-semibold text-foreground leading-none mb-2">
@@ -271,7 +271,7 @@ const FeaturedCard: React.FC<{ skill: Skill; onClick: () => void }> = ({
     skill,
     onClick,
 }) => {
-    const Icon = resolveIcon(skill.data.icon_id);
+    const icon = resolveIcon(skill.data.icon_id);
     const token = getToken(skill.data.category);
     const tier = overallTier(skill.data);
 
@@ -297,7 +297,7 @@ const FeaturedCard: React.FC<{ skill: Skill; onClick: () => void }> = ({
                 <div
                     className={`flex h-11 w-11 items-center justify-center border border-border bg-muted rounded-xl ${token.text} group-hover:scale-105 transition-transform duration-200`}
                 >
-                    {Icon ? <Icon size={22} /> : null}
+                    {icon ? React.createElement(icon, { size: 22 }) : null}
                 </div>
                 <span
                     className={`font-mono text-[10px] uppercase tracking-widest border px-2 py-0.5 rounded-full ${token.badge}`}
@@ -344,9 +344,8 @@ const CompactCard: React.FC<{
     onClick: () => void;
     delay?: number;
 }> = ({ skill, onClick, delay = 0 }) => {
-    const Icon = resolveIcon(skill.data.icon_id);
+    const icon = resolveIcon(skill.data.icon_id);
     const token = getToken(skill.data.category);
-    const tier = overallTier(skill.data);
 
     return (
         <motion.button
@@ -356,12 +355,12 @@ const CompactCard: React.FC<{
             initial={{ opacity: 0, y: 12 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1], delay }}
-            className={`group flex flex-col items-center gap-2.5 w-fit border border-border bg-card hover:bg-card/80 rounded-xl p-4 text-center w-full cursor-pointer transition-all duration-150 ${token.glow}`}
+            className={`group flex flex-col items-center gap-2.5 border border-border bg-card hover:bg-card/80 rounded-xl p-4 text-center w-full cursor-pointer transition-all duration-150 ${token.glow}`}
         >
             <div
                 className={`flex h-9 w-9 items-center justify-center border border-border bg-muted rounded-lg ${token.text} group-hover:scale-110 transition-transform duration-150`}
             >
-                {Icon ? <Icon size={18} /> : null}
+                {icon ? React.createElement(icon, { size: 18 }) : null}
             </div>
             <div className="space-y-1.5">
                 <span className="text-[11px] font-medium text-foreground leading-tight block">
@@ -473,51 +472,6 @@ const FilterPills: React.FC<{
         ))}
     </div>
 );
-
-// ─── Stats bar ────────────────────────────────────────────────────────────────
-
-const StatsBar: React.FC<{ skills: Skill[] }> = ({ skills }) => {
-    const expertCount = skills.filter((s) => {
-        const avg =
-            (ratingValue[s.data.scalability] ?? 0) +
-            (ratingValue[s.data.debuggability] ?? 0) +
-            (ratingValue[s.data.consistency] ?? 0);
-        return Math.round(avg / 3) >= 4;
-    }).length;
-
-    const categories = [...new Set(skills.map((s) => s.data.category))].length;
-
-    return (
-        <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 12 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap gap-6 mb-10"
-        >
-            {[
-                { icon: Layers, label: "Technologies", value: skills.length },
-                { icon: Star, label: "Expert-level", value: expertCount },
-                { icon: Zap, label: "Categories", value: categories },
-            ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center border border-border bg-card rounded-lg text-muted-foreground">
-                        <Icon size={14} />
-                    </div>
-                    <div>
-                        <div className="text-sm font-semibold text-foreground leading-none mb-0.5">
-                            {value}
-                        </div>
-                        <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                            {label}
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </motion.div>
-    );
-};
-
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 const SkillSection: React.FC = () => {

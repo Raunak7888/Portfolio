@@ -6,12 +6,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { username, password } = body as { username: string; password: string };
 
-    const validUsername = process.env.ADMIN_USERNAME ?? "admin";
-    const validPassword = process.env.ADMIN_PASSWORD ?? "strongpassword";
-    console.log("========================================================================");
-    console.log("validUsername: ", validUsername, "validPassword: ", validPassword);
-    console.log("username: ", username, "password: ", password);
-    console.log("========================================================================");
+    const validUsername = process.env.ADMIN_USERNAME;
+    const validPassword = process.env.ADMIN_PASSWORD;
     if (username !== validUsername || password !== validPassword) {
       return NextResponse.json(
         { error: "Invalid credentials" },

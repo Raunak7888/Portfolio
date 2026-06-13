@@ -3,13 +3,9 @@
 import React from "react";
 import {
   CodeIcon,
-  Database01Icon,
-  CloudIcon,
   ShieldIcon,
   ChartLineDataIcon,
-  BracketsIcon,
   JavaIcon,
-  GitCompareIcon,
   SparklesIcon,
   WebProgrammingIcon,
   Github01Icon,
@@ -24,7 +20,6 @@ import {
   SiReact, 
   SiTypescript, 
   SiRedis, 
-  SiGithub, 
   SiTerraform,
   SiPostgresql
 } from "react-icons/si";

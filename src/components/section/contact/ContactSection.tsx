@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import {useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

@@ -8,7 +8,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 
-import { Zap, Milestone, Play, ChevronRight } from "lucide-react";
+import { Zap, Milestone, Play } from "lucide-react";
 
 import ProjectFooter from "./ProjectFooter";
 import { ProjectData } from "./Types";

@@ -1,7 +1,7 @@
 // ProjectSection.tsx — full rewrite
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { BrowserFrame } from "./BrowserFrame";
 import { TechBadge } from "./TechBadge";
@@ -64,6 +64,7 @@ function ProjectSlide({
 
     useEffect(() => {
         if (!isActive) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setImgIndex(0);
         }
     }, [isActive]);
@@ -282,6 +283,7 @@ export default function ProjectsSection({
 }: ProjectsSectionProps) {
     const projects: Project[] =
         projectsProp ??
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (data.projects as any[]).map((p) => ({
             id: p.id,
             title: p.title,
@@ -300,6 +302,7 @@ export default function ProjectsSection({
                 live: p.links?.live,
                 caseStudy: p.links?.caseStudy,
             },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             technologies: ((p.technologies as any[]) || []).map((t) => ({
                 name: t.name,
                 iconKey: getIconKey(t.name, t.category),
@@ -339,18 +342,14 @@ export default function ProjectsSection({
         return () => observer.disconnect();
     }, [projects.length]);
 
-    const scrollToIndex = useCallback((i: number) => {
-        const c = containerRef.current;
-        if (!c) return;
-        c.scrollTo({ top: i * c.clientHeight, behavior: "smooth" });
-    }, []);
-
+    
     /* ── Mobile state (keep original tab UX) ── */
     const [mobileActive, setMobileActive] = useState(0);
     const [mobileImgIndex, setMobileImgIndex] = useState(0);
     const mobileTabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMobileImgIndex(0);
     }, [mobileActive]);
 
