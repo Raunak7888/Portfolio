@@ -102,6 +102,13 @@ export function BrowserFrame({
               className=""
               priority={activeImageIndex === 0}
             />
+            {/* <Image
+              src={"/uploads/hermes1.png"}
+              alt={`${projectTitle} screenshot ${activeImageIndex + 1}`}
+              fill
+              className=""
+              priority={activeImageIndex === 0}
+            /> */}
           </motion.div>
         </AnimatePresence>
 

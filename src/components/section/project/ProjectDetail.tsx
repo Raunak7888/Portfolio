@@ -186,7 +186,7 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
         color: "#e5e5e5",
         fontFamily: "var(--font-geist-sans, Inter, system-ui, sans-serif)",
       }}
-      className="min-h-screen overflow-x-hidden selection:bg-white/10"
+      className="min-h-screen overflow-x-hidden selection:bg-white"
     >
       {/* ── Progress bar ── */}
       <motion.div
@@ -236,6 +236,15 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
             >
               <GitBranch size={12} /> GitHub <ArrowUpRight size={12} />
             </Link>
+            {data.meta.live && (
+              <Link
+                href={data.meta.live}
+                target="_blank"
+                className="flex items-center gap-2 px-4 py-2 border-2 border-foreground hover:bg-foreground hover:text-background rounded-2xl text-xs font-medium transition-all duration-200"
+              >
+                <Globe size={12} /> Live Demo <ArrowUpRight size={12} />
+              </Link>
+            )}
             {data.meta.post && (
               <Link
                 href={data.meta.post}

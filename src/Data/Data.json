@@ -9,14 +9,14 @@
         "description": "A Java-focused Full-Stack Engineer specializing in high-performance backends and clean, maintainable frontends. I build software that solves real problems without the fluff.",
         "socialLinks": {
             "githubUrl": "https://github.com/Raunak7888",
-            "linkedInUrl": "https://x.com/RaunakYada51596",
+            "linkedInUrl": "https://www.linkedin.com/in/raunak7888",
             "instagramUrl": "https://www.instagram.com/raunakyadav7888",
             "gmailUrl": "https://mail.google.com/mail/?view=cm&fs=1&to=raunakyadav7888@gmail.com"
         },
         "viewSourceGithubLinkUrl": "https://github.com/Raunak7888/Portfolio"
     },
     "about": {
-        "endingLine": "Engineered for long-term stability and human readability under change. ",
+        "endingLine": "Engineered for long-term stability and human readability under change.",
         "segments": [
             {
                 "id": "01",
@@ -28,55 +28,98 @@
                 "id": "02",
                 "title": "How I Build",
                 "label": "Foundations",
-                "text": "I work primarily with Java and Spring, learning how backend systems are structured. I pay attention to API design, data flow, and concurrency basics to build predictable services."
+                "text": "Java and Spring Boot for backend, React and Next.js for frontend, Terraform and Ansible for the  that makes it all run in production. I don't stop at 'runs locally.'"
             },
             {
                 "id": "03",
                 "title": "How I Learn",
                 "label": "Iteration",
-                "text": "I learn by implementing concepts end-to-end. Instead of memorizing patterns, I build small projects, experiment with edge cases, and refine my understanding through iteration."
+                "text": "I learn by building, breaking, and fixing with understanding — not by memorising patterns. Every project in this portfolio was deliberately overengineered to force me into problems I had never solved before."
             },
             {
                 "id": "04",
-                "title": "Where I’m Going",
+                "title": "Where I'm Going",
                 "label": "Growth",
-                "text": "I am currently strengthening my fundamentals in data structures, system design, and distributed systems to prepare for building larger and more complex applications."
+                "text": "Deepening system design intuition, distributed systems patterns, and the gap between 'it works on my machine' and 'it works under load at 3am on a Tuesday.' That's the interesting part."
             }
         ]
     },
     "projects": [
         {
+            "id": "hermes",
+            "title": "Hermes",
+            "tagline": "Production-grade real-time encrypted chat — private messaging, group chats, and a two-VM Kubernetes cluster on GCP to run it all.",
+            "category": "Real-Time Systems / DevOps",
+            "description": "Hermes is a full-stack, end-to-end encrypted real-time messaging platform supporting private and group chat, deployed on a self-managed k3s Kubernetes cluster on GCP — provisioned from zero via Terraform and Ansible. The server never sees plaintext private message content. The CI/CD pipeline catches it before you do.",
+            "accent": "#7C7CFF",
+            "iconKey": "message_circle",
+            "images": [
+                "/uploads/hermes1.png",
+                "/uploads/hermes2.png",
+                "/uploads/hermes3.png",
+                "/uploads/hermes4.png",
+                "/uploads/hermes5.png"
+            ],
+            "highlights": [
+                "End-to-end encrypted messaging using WebCrypto, ECDH P-256, and AES-GCM. Server never sees plaintext messages.",
+                "Self-managed k3s cluster on GCP provisioned with Terraform and configured through Ansible automation.",
+                "GitHub Actions CI/CD with security scanning, Docker builds, Kubernetes rollouts, and observability monitoring."
+            ],
+            "technologies": [
+                { "name": "Java 21", "category": "Language" },
+                { "name": "Spring Boot", "category": "Backend" },
+                { "name": "GCP", "category": "Cloud" },
+                { "name": "Kubernetes (k3s)", "category": "DevOps" },
+                { "name": "MySQL 8", "category": "Database" },
+                { "name": "Redis 7", "category": "Database/Caching" },
+                { "name": "React 18", "category": "Frontend" },
+                { "name": "TypeScript", "category": "Language" },
+                { "name": "Vite 6", "category": "Frontend" },
+                { "name": "Zustand", "category": "Frontend" },
+                { "name": "Docker", "category": "DevOps" },
+                { "name": "Terraform", "category": "Infrastructure" },
+                { "name": "Ansible", "category": "Infrastructure" },
+                { "name": "GitHub Actions", "category": "DevOps" },
+                { "name": "Traefik", "category": "Infrastructure" },
+                { "name": "Prometheus", "category": "Observability" },
+                { "name": "Grafana", "category": "Observability" }
+            ],
+            "metrics": [],
+            "links": {
+                "github": "https://github.com/Raunak7888/Hermes",
+                "live": "https://23.236.54.241.nip.io/"
+            },
+            "status": "Live"
+        },
+        {
             "id": "pokeverse",
             "title": "Pokeverse",
-            "tagline": "A real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure.",
+            "tagline": "A real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure — so you only solve auth, rooms, and WebSockets once.",
             "category": "Real-Time Multiplayer Game Platform",
-            "description": "Pokeverse is a real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure. It features modular, pluggable game modules such as a Pokémon Quiz, utilizing WebSocket and STOMP protocols to power real-time game rooms, live matchmaking, events, and instant communication.",
+            "description": "Pokeverse centralises the solved problems every multiplayer game re-invents — authentication, room lifecycle, real-time event routing, chat, and state management — into a reusable platform backend. Individual game types plug in as modules. A Pokémon Quiz demonstrates it in both single-player and multiplayer modes using the shared infrastructure.",
             "accent": "#22C55E",
             "iconKey": "gamepad-2",
             "images": [
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151405.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151448.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151717.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20151936.png"
+                "/uploads/pokeverse1.png",
+                "/uploads/pokeverse2.png",
+                "/uploads/pokeverse3.png",
+                "/uploads/pokeverse4.png"
             ],
             "highlights": [
-                "Designed a modular real-time game platform supporting multiple game types.",
-                "Implemented Pokémon Quiz as a pluggable game module (single-player & multiplayer).",
-                "Built real-time rooms, matchmaking, live events, and chat using WebSocket + STOMP.",
-                "Centralized OAuth2 authentication with JWT access and refresh tokens."
+                "Reusable multiplayer platform handling authentication, rooms, messaging, persistence, and real-time event routing.",
+                "PostgreSQL stores durable game data while Redis powers low-latency active session management.",
+                "Pokémon Quiz module supports single-player and multiplayer gameplay with live scoring and WebSocket updates."
             ],
             "technologies": [
                 { "name": "Java", "category": "Language" },
-                { "name": "Spring Boot", "category": "Backend" },
-                { "name": "Spring WebSocket", "category": "Real-time" },
-                { "name": "Spring Security", "category": "Security" },
-                { "name": "OAuth2", "category": "Security" },
-                { "name": "JWT", "category": "Security" },
-                { "name": "PostgreSQL", "category": "Database" },
-                { "name": "Redis", "category": "Database/Caching" },
+                { "name": "Spring Boot 3.5.5", "category": "Backend" },
+                { "name": "PostgreSQL 17", "category": "Database" },
+                { "name": "Redis 7", "category": "Database/Caching" },
                 { "name": "Next.js", "category": "Frontend" },
                 { "name": "React", "category": "Frontend" },
-                { "name": "Docker", "category": "DevOps" }
+                { "name": "Docker", "category": "DevOps" },
+                { "name": "TypeScript", "category": "Language" },
+                { "name": "Tailwind CSS 4", "category": "Frontend" }
             ],
             "metrics": [],
             "links": {
@@ -86,62 +129,27 @@
             "status": "Not Live"
         },
         {
-            "id": "hermes",
-            "title": "Hermes",
-            "tagline": "A real-time web chat application enabling private messaging, group chats, and image sharing.",
-            "category": "Real-Time Systems / WebSockets",
-            "description": "A real-time web chat application enabling private messaging, group chats, and image sharing using WebSocket and REST APIs. Features JWT-based stateless authentication alongside stateful user mechanics like live online/offline presence tracking and responsive group channel management.",
-            "accent": "#7C7CFF",
-            "iconKey": "message_circle",
-            "images": [
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20173606.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-01%20174258.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-02%20191626.png"
-            ],
-            "highlights": [
-                "Implemented real-time 1:1 and group chat using WebSocket + STOMP.",
-                "JWT-based stateless authentication with Spring Security.",
-                "Supports image sharing, online/offline presence, and group management."
-            ],
-            "technologies": [
-                { "name": "Java", "category": "Language" },
-                { "name": "Spring Boot", "category": "Backend" },
-                { "name": "Spring WebSocket", "category": "Real-time" },
-                { "name": "JWT", "category": "Security" },
-                { "name": "MySQL", "category": "Database" },
-                { "name": "React", "category": "Frontend" },
-                { "name": "Vite", "category": "Frontend" },
-                { "name": "Docker", "category": "DevOps" }
-            ],
-            "metrics": [],
-            "links": {
-                "github": "https://github.com/Raunak7888/Hermes",
-                "live": ""
-            },
-            "status": "Not Live"
-        },
-        {
             "id": "calculate",
             "title": "Calculate",
-            "tagline": "A modular, stack-based scientific calculator that parses and evaluates complex expressions.",
-            "category": "Algorithms / Parsing",
-            "description": "A modular, stack-based scientific calculator that parses expressions, converts them to postfix notation, and evaluates results using classic compiler techniques. Supports implicit multiplication, explicit domain validation, and handles over 50 scientific functions and mathematical constants seamlessly.",
+            "tagline": "A scientific expression evaluator built with compiler techniques — because calling eval() is cheating.",
+            "category": "Algorithms / Parsing / Compiler",
+            "description": "A scientific expression evaluator built from scratch using classic compiler techniques — tokenisation, implicit multiplication injection, Shunting-Yard postfix conversion, and stack-based evaluation. Supports 50+ mathematical functions and 70+ operators with zero external math dependencies. Comes with a Medium article explaining how it works, because the implementation alone is only half the point.",
             "accent": "#F59E0B",
             "iconKey": "calculator",
             "images": [
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005018.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005032.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005115.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005134.png",
-                "https://raw.githubusercontent.com/Raunak7888/images/refs/heads/main/Screenshot%202026-02-06%20005200.png"
+                "/uploads/calculate1.png",
+                "/uploads/calculate2.png",
+                "/uploads/calculate3.png",
+                "/uploads/calculate4.png",
+                "/uploads/calculate5.png"
             ],
             "highlights": [
-                "Implemented expression parsing using tokenization and the shunting-yard algorithm.",
-                "Supports implicit multiplication and 50+ scientific functions and constants.",
-                "Evaluates expressions via stack-based postfix (RPN) execution with domain validation."
+                "Built from scratch using tokenization, Shunting-Yard conversion, and stack-based postfix evaluation.",
+                "Supports 50+ functions and 70+ operators without relying on external math libraries.",
+                "Includes 100+ tests and a published Medium article explaining implementation decisions."
             ],
             "technologies": [
-                { "name": "Python", "category": "Language" },
+                { "name": "Python 3.13+", "category": "Language" },
                 { "name": "Shunting-Yard Algorithm", "category": "Algorithm" },
                 { "name": "Postfix (RPN) Evaluation", "category": "Algorithm" },
                 {
@@ -183,7 +191,7 @@
                     "scalability": "High",
                     "debuggability": "High",
                     "consistency": "High",
-                    "description": "Statically typed superset of JavaScript that improves correctness, refactoring safety, and large-scale maintainability."
+                    "description": "Statically typed superset of JavaScript. Dominant language across Hermes frontend, Pokeverse frontend, and the portfolio — 51%, 82%, and 94% of those repos respectively."
                 }
             },
             {
@@ -196,7 +204,7 @@
                     "scalability": "Very High",
                     "debuggability": "High",
                     "consistency": "High",
-                    "description": "Strongly typed, JVM-based language designed for long-running, concurrent, and production-grade backend systems."
+                    "description": "Primary language for all backend work. Spring Boot 3.3.4 in Hermes, Spring Boot 3.5.5 in Pokeverse — production-grade, not tutorial-grade."
                 }
             },
             {
@@ -209,7 +217,7 @@
                     "scalability": "Moderate",
                     "debuggability": "Moderate",
                     "consistency": "Moderate",
-                    "description": "High-level language emphasizing readability and rapid development, commonly used for scripting, automation, and data tasks."
+                    "description": "100% of the Calculate project — 600+ lines, 100+ test cases, proper packaging with pyproject.toml. Used when Java would be overkill."
                 }
             },
             {
@@ -222,7 +230,7 @@
                     "scalability": "High",
                     "debuggability": "Moderate",
                     "consistency": "High",
-                    "description": "Component-based UI library enabling declarative interfaces and reusable view logic."
+                    "description": "Component-based UI library powering Hermes (React 18), Pokeverse (React 19.1.0), and the portfolio (React 19.1.0). Multiple production frontends, not just hello-world."
                 }
             },
             {
@@ -235,7 +243,7 @@
                     "scalability": "Very High",
                     "debuggability": "High",
                     "consistency": "High",
-                    "description": "React framework providing routing, SSR, and production-grade tooling for full-stack web applications."
+                    "description": "React framework providing routing, SSR, and production-grade tooling. Live on Vercel for the portfolio; Pokeverse frontend runs Next.js 15.5.3."
                 }
             },
             {
@@ -248,7 +256,7 @@
                     "scalability": "High",
                     "debuggability": "High",
                     "consistency": "High",
-                    "description": "Utility-first CSS framework that enforces design consistency and eliminates ad-hoc styling."
+                    "description": "Utility-first CSS framework enforcing design consistency. Tailwind 4 in Pokeverse and the portfolio — current-gen, not the tutorial version."
                 }
             },
             {
@@ -261,7 +269,7 @@
                     "scalability": "Very High",
                     "debuggability": "High",
                     "consistency": "High",
-                    "description": "Opinionated Java framework for building secure, scalable, and production-ready backend services."
+                    "description": "Opinionated Java framework for production-ready backend services. Two separate projects: 3.3.4 in Hermes, 3.5.5 in Pokeverse. WebSocket, Security, JPA, OAuth2 — the whole stack."
                 }
             },
             {
@@ -274,7 +282,20 @@
                     "scalability": "High",
                     "debuggability": "High",
                     "consistency": "Very High",
-                    "description": "Relational database emphasizing correctness, strong constraints, and complex query capabilities."
+                    "description": "PostgreSQL 17 with Flyway-managed schema versioning in Pokeverse. Chosen over MySQL here for its stronger constraint system and richer query capabilities."
+                }
+            },
+            {
+                "id": "mysql",
+                "type": "tech",
+                "data": {
+                    "label": "MySQL",
+                    "icon_id": "SiMysql",
+                    "category": "Database",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "MySQL 8 with JPA/Hibernate in Hermes. Schema covers users, roles, messages, groups, and file metadata. Nightly backup CronJob in Kubernetes because data loss is not a feature."
                 }
             },
             {
@@ -287,7 +308,7 @@
                     "scalability": "High",
                     "debuggability": "Moderate",
                     "consistency": "Moderate",
-                    "description": "In-memory data store optimized for caching, rate limiting, and fast ephemeral data access."
+                    "description": "Redis 7 in both projects — image caching, per-user sliding window rate limiting, pub-sub, and E2EE public key distribution in Hermes; low-latency active game session state in Pokeverse."
                 }
             },
             {
@@ -300,7 +321,85 @@
                     "scalability": "High",
                     "debuggability": "Moderate",
                     "consistency": "High",
-                    "description": "Containerization platform ensuring consistent runtime environments across development and production."
+                    "description": "Multi-stage builds, non-root users, minimal base images in Hermes. Docker Compose for local dev. The kind of Dockerfile hygiene that makes security reviewers nod."
+                }
+            },
+            {
+                "id": "kubernetes",
+                "type": "tech",
+                "data": {
+                    "label": "Kubernetes",
+                    "icon_id": "SiKubernetes",
+                    "category": "Tool",
+                    "scalability": "Very High",
+                    "debuggability": "Low",
+                    "consistency": "High",
+                    "description": "k3s on GCP in Hermes — Deployments, StatefulSets, Ingress, NetworkPolicies, HPA, CronJob, ConfigMaps, Secrets, cert-manager. Default-deny NetworkPolicies. Two-VM cluster, managed from scratch."
+                }
+            },
+            {
+                "id": "terraform",
+                "type": "tech",
+                "data": {
+                    "label": "Terraform",
+                    "icon_id": "SiTerraform",
+                    "category": "Tool",
+                    "scalability": "Very High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "GCP provider in Hermes — VPC, subnet, firewall rules, two compute instances. HCL is 1.7% of the Hermes repo; it provisions 100% of the infrastructure."
+                }
+            },
+            {
+                "id": "ansible",
+                "type": "tech",
+                "data": {
+                    "label": "Ansible",
+                    "icon_id": "SiAnsible",
+                    "category": "Tool",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "Hermes playbooks: bootstrap, kubernetes, deploy-k8s, monitoring, and security. Automates everything from package installation to UFW hardening to k3s cluster formation."
+                }
+            },
+            {
+                "id": "githubactions",
+                "type": "tech",
+                "data": {
+                    "label": "GitHub Actions",
+                    "icon_id": "SiGithubactions",
+                    "category": "Tool",
+                    "scalability": "High",
+                    "debuggability": "Moderate",
+                    "consistency": "High",
+                    "description": "Full CI/CD pipeline in Hermes: unit tests → Trivy scan (images + IaC) → SHA-tagged multi-stage Docker build → push to Docker Hub → kubectl rollout → smoke test. Every step earns its place."
+                }
+            },
+            {
+                "id": "prometheus",
+                "type": "tech",
+                "data": {
+                    "label": "Prometheus",
+                    "icon_id": "SiPrometheus",
+                    "category": "Observability",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Scrapes /actuator/prometheus in Hermes. Feeds Grafana dashboards covering JVM heap/GC, HTTP latency percentiles, WebSocket connections, Redis hit/miss, MySQL pool, and HPA replica count."
+                }
+            },
+            {
+                "id": "grafana",
+                "type": "tech",
+                "data": {
+                    "label": "Grafana",
+                    "icon_id": "SiGrafana",
+                    "category": "Observability",
+                    "scalability": "High",
+                    "debuggability": "High",
+                    "consistency": "High",
+                    "description": "Deployed via Ansible in Hermes. Dashboards cover the full operational picture — not just 'is it up', but 'is it healthy under load.'"
                 }
             },
             {
@@ -326,7 +425,7 @@
                     "scalability": "High",
                     "debuggability": "Low",
                     "consistency": "Moderate",
-                    "description": "Stateless token format for authentication; simple to scale but risky without strict expiration and rotation."
+                    "description": "Stateless token format for authentication. Dual-token (access + refresh) in Pokeverse; stateless in Hermes. Cookie-based storage. Filter chain integration — not bolted on as an afterthought."
                 }
             },
             {
@@ -339,12 +438,12 @@
                     "scalability": "Very High",
                     "debuggability": "Low",
                     "consistency": "High",
-                    "description": "Authorization framework enabling secure delegated access between services and identity providers."
+                    "description": "Google OAuth2 social login in both Hermes and Pokeverse. Hermes supports hybrid email/password + OAuth2. Pokeverse centralises it as a platform service shared across game modules."
                 }
             }
         ]
     },
     "footer": {
-        "note": "Everything’s open source. Take it, build better."
+        "note": "Everything's open source. Take it, build better."
     }
 }
