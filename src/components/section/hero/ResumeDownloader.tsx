@@ -8,8 +8,8 @@ export default function ResumeButton() {
 
     return (
         <motion.a
-            href="/Raunak_Yadav_Resume.pdf"
-            download="Raunak_Yadav_Resume.pdf"
+            href="/Raunak_yadav_resume.pdf"
+            download="Raunak_yadav_resume.pdf"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => {
