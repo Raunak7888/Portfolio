@@ -4,8 +4,8 @@ import { ThemeProvider } from "next-themes";
 import { useMounted } from "@/hooks/useMounted";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeTransitionLayer } from "@/components/ThemeTransitionLayer";
-import Navbar from "./section/navbar/Navbar";
 import PageTransition from "./PageTransition";
+import Navbar from "./section/navbar/Navbar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const mounted = useMounted();
