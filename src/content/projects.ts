@@ -1,3 +1,5 @@
+import { ALGOFORGE_SHOTS } from "./image-meta.generated";
+
 export const copy = {
     badge: "Projects",
     headingTop: "Things I've",
@@ -35,6 +37,8 @@ export type Project = {
     caseStudy: string;
     image?: string;
     imageAlt?: string;
+    /** Real screenshots shown in the sticky stage (generated list, see scripts/gen-image-meta.mjs). */
+    shots?: string[];
     readout: string;
 };
 
@@ -74,7 +78,7 @@ export const PROJECTS: Project[] = [
         caseStudy: "/projects/hermes",
         image: "/uploads/hermes1.webp",
         imageAlt: "Hermes chat interface showing a private conversation",
-        readout: "hover · watch it seal",
+        readout: "hover · open the frames",
     },
     {
         id: "pokeverse",
@@ -164,6 +168,7 @@ export const PROJECTS: Project[] = [
         links: [],
         caseStudy: "/projects/algoforge",
         readout: "hover · pipeline sketch",
+        shots: ALGOFORGE_SHOTS,
     },
 ];
 

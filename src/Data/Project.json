@@ -750,7 +750,9 @@
       "live": "",
       "license": ""
     },
-    "images": [],
+    "images": [
+      "/uploads/algoforge1.webp"
+    ],
     "executiveSummary": {
       "oneLiner": "An AI-powered code understanding platform that transforms source code into structured explanations and interactive algorithm visualizations.",
       "problemStatement": "Understanding code execution, algorithm logic, and complex programming concepts can be difficult, especially when developers cannot easily visualize how their code works.",

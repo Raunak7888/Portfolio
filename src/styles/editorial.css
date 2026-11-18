@@ -1,0 +1,92 @@
+/* redesign.sh:v1 : editorial layer. Tokens + primitives shared by every redesigned section. */
+:root {
+    --ed-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ed-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+    --ed-hair: color-mix(in oklab, var(--foreground) 14%, transparent);
+    --ed-paper: color-mix(in oklab, var(--background) 92%, #d9a441);
+}
+.dark {
+    --ed-paper: color-mix(in oklab, var(--background) 93%, var(--foreground));
+}
+
+/* animated underline used for text links */
+.ed-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size 0.5s var(--ed-ease);
+}
+.ed-link:hover,
+.ed-link:focus-visible {
+    background-size: 100% 1px;
+}
+.ed-link--on {
+    background-size: 100% 1px;
+}
+
+/* hollow display type */
+.ed-outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in oklab, var(--tint, var(--foreground)) 55%, transparent);
+}
+
+/* secondary project copy only shows when the viewport is tall enough (or when not sticky) */
+.ed-tall-only {
+    display: none;
+}
+@media (max-width: 1023.98px), (min-height: 800px) {
+    .ed-tall-only {
+        display: flex;
+    }
+}
+
+/* notebook / letter */
+.ed-paper {
+    position: relative;
+    background: var(--ed-paper);
+    border: 1px solid var(--ed-hair);
+    border-radius: 3px;
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 6%, transparent), 0 34px 70px -42px rgba(0, 0, 0, 0.55);
+}
+.ed-paper::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 2.5rem;
+    width: 1px;
+    background: color-mix(in oklab, var(--primary) 38%, transparent);
+    pointer-events: none;
+}
+.ed-paper::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, transparent 50%, color-mix(in oklab, var(--foreground) 10%, var(--ed-paper)) 50%);
+    box-shadow: -3px -3px 6px -4px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+@media (min-width: 640px) {
+    .ed-paper::before {
+        left: 3.25rem;
+    }
+}
+.ed-ruled {
+    line-height: 2rem;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(2rem - 1px),
+        var(--ed-hair) calc(2rem - 1px),
+        var(--ed-hair) 2rem
+    );
+    background-attachment: local;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ed-link {
+        transition: none;
+    }
+}

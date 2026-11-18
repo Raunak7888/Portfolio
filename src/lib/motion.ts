@@ -36,3 +36,7 @@ export const wiggle: Variants = {
     rest: { rotate: 0 },
     hover: { rotate: [0, -8, 7, -4, 0], transition: { duration: 0.5 } },
 };
+
+// ed:motion (redesign.sh:v1) shared easings for the editorial motion system
+export const easeOutExpo = [0.16, 1, 0.3, 1] as const;
+export const easeInOutQuint = [0.65, 0, 0.35, 1] as const;

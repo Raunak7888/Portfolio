@@ -117,7 +117,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
                                 alt={`${meta.projectName} screenshot ${i + 1}`}
                                 loading="lazy"
                                 decoding="async"
-                                className="w-full rounded-[var(--ds-radius-sm)] border-2 border-foreground"
+                                className="w-full rounded-[var(--ds-radius-sm)] border border-border"
                             />
                         ))}
                     </div>

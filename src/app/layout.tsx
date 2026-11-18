@@ -3,6 +3,7 @@ import "./globals.css";
 import "@/styles/design-system.css";
 import "@/styles/redesign.css";
 import "@/styles/polish.css";
+import "@/styles/editorial.css";
 import { Instrument_Serif, JetBrains_Mono, Outfit, Bungee, Nunito, Mitr, Modak, Jersey_25, Luckiest_Guy, Madimi_One, Krona_One, Aclonica, Mogra, Lemon, Piedra, Poetsen_One } from "next/font/google";
 import { Providers } from "@/components/Provider";
 import data from "@/Data/Data.json";
@@ -85,6 +86,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
                 <script dangerouslySetInnerHTML={{ __html: accentScript }} />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: personJson }} />
+                <noscript>
+                    <style dangerouslySetInnerHTML={{ __html: "[data-ed-hide],[style*=\"opacity:0;\"],[style$=\"opacity:0\"]{opacity:1!important;transform:none!important;filter:none!important}" }} />
+                </noscript>
                 <Providers>{children}</Providers>
             </body>
         </html>
