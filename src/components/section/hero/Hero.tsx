@@ -8,7 +8,6 @@ import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import HeroTray from "@/components/ui/Herotray";
 import NightSky from "@/components/hero/NightSky";
 import Eyebrow from "@/components/ui/Eyebrow";
-import PlayButton from "@/components/ui/PlayButton";
 import { portfolio } from "@/content/data";
 import { TINT_LIST as TINTS } from "@/lib/tokens";
 

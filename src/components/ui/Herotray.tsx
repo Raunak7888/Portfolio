@@ -40,7 +40,6 @@ const R_FIRST = "22px 12px 12px 22px"; // rounded-l-full, rounded-r-xl
 const R_MID = "12px 12px 12px 12px"; //  rounded-xl
 const R_LAST = "12px 22px 22px 12px"; //  rounded-r-full, rounded-l-xl
 
-const UI: Transition = { type: "spring", stiffness: 420, damping: 32, mass: 0.7 };
 const SOFT: Transition = { type: "spring", stiffness: 260, damping: 26, mass: 0.9 };
 const GLIDE: Transition = { type: "spring", stiffness: 520, damping: 38, mass: 0.6 };
 const POP: Transition = { type: "spring", stiffness: 600, damping: 18, mass: 0.6 };
@@ -558,7 +557,7 @@ export default function HeroTray({ delay = 1.2 }: { delay?: number }) {
                         <Cell
                             id="contact"
                             label="Contact"
-                            href={links.gmailUrl}
+                            href={"#contact"}
                             radius={R_LAST}
                             active={active === "contact"}
                             onActive={setActive}

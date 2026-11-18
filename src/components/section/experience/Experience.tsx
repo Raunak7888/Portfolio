@@ -1,7 +1,7 @@
 "use client";
 // redesign.sh:v1
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import Reveal from "@/components/motion/Reveal";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { motion, useReducedMotion, useScroll, useTransform, useInView, Variants, type MotionValue } from "framer-motion";
@@ -25,31 +25,26 @@ function parsePeriod(p: string): [Side, Side | null] {
     return [parseSide(a), b ? parseSide(b) : null];
 }
 
-/** "2 mo" / "1 yr 3 mo", computed after mount to avoid hydration mismatch. */
+const subscribeToNothing = () => () => {};
+
+/** "2 mo" / "1 yr 3 mo", computed on the client to avoid hydration mismatch. */
 function useDuration(start: Side, end: Side | null) {
-    const [label, setLabel] = useState<string | null>(null);
     const startMonth = start.month;
     const startYear = start.year;
     const isPresent = !!end?.present;
 
-    useEffect(() => {
+    return useSyncExternalStore(subscribeToNothing, () => {
         const mi = MONTHS.indexOf((startMonth ?? "").toLowerCase());
-        if (!isPresent || mi < 0 || !startYear) {
-            setLabel(null);
-            return;
-        }
+        if (!isPresent || mi < 0 || !startYear) return null;
+
         const now = new Date();
         const n = (now.getFullYear() - Number(startYear)) * 12 + (now.getMonth() - mi) + 1;
-        if (n < 1) {
-            setLabel(null);
-            return;
-        }
+        if (n < 1) return null;
+
         const y = Math.floor(n / 12);
         const m = n % 12;
-        setLabel(y ? `${y} yr${m ? ` ${m} mo` : ""}` : `${m} mo`);
-    }, [startMonth, startYear, isPresent]);
-
-    return label;
+        return y ? `${y} yr${m ? ` ${m} mo` : ""}` : `${m} mo`;
+    }, () => null);
 }
 
 /* ---------- a line of text that rolls up out of a mask ---------- */

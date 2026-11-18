@@ -430,7 +430,6 @@ function ExploreBar({
 export default function Skills() {
     const reduce = !!useReducedMotion();
     const fine = useFinePointer();
-    const initial = reduce ? "show" : "hidden";
 
     const sectionRef = useRef<HTMLElement>(null);
     const gridRef = useRef<HTMLUListElement>(null);
