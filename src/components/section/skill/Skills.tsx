@@ -101,7 +101,7 @@ function FilterBar({
         <div
             role="group"
             aria-label="Filter skills by category"
-            className="flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-border bg-muted/50 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex w-[101.5%] items-center  overflow-x-auto rounded-full border border-border bg-muted/50 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
         >
             {CATEGORIES.map((c) => {
                 const active = c.id === value;

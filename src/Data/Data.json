@@ -14,7 +14,7 @@
             "before": "I turn",
             "emphasis": "hard problems",
             "middle": "into",
-            "after": "people love."
+            "after": "things people enjoy using."
         },
         "rotatorWords": [
             "products",
@@ -32,7 +32,7 @@
                 "tilt": 3
             },
             {
-                "label": "AI agents",
+                "label": "AI tools",
                 "tilt": -2
             },
             {
@@ -41,7 +41,7 @@
             }
         ],
         "primaryCta": {
-            "label": "See Hermes, my main project",
+            "label": "See what I've built",
             "href": "#projects"
         },
         "secondaryCta": {
@@ -50,7 +50,7 @@
         }
     },
     "heroSection": {
-        "description": "A Java-focused Full-Stack Engineer specializing in high-performance backends and clean, maintainable frontends. I build software that solves real problems without the fluff.",
+        "description": "A Java-focused full-stack developer who likes fast backends and clean, simple frontends. I build things that solve real problems, and I'm curious about the AI side of software too.",
         "socialLinks": {
             "githubUrl": "https://github.com/Raunak7888",
             "linkedInUrl": "https://www.linkedin.com/in/raunak7888",
@@ -60,37 +60,37 @@
         "viewSourceGithubLinkUrl": "https://github.com/Raunak7888/Portfolio"
     },
     "about": {
-        "endingLine": "Engineered for long-term stability and human readability under change.",
+        "endingLine": "Built to last, and easy to read when things change.",
         "segments": [
             {
                 "id": "01",
                 "title": "How I Think",
                 "label": "Clarity",
-                "text": "I focus on writing code that is easy to understand and hard to break. I value clear logic and correctness over clever shortcuts, so the software I build remains reliable as it grows."
+                "text": "I like code that is easy to understand and hard to break. Clear logic beats clever tricks, because simple code is the kind that stays reliable as it grows."
             },
             {
                 "id": "02",
                 "title": "How I Build",
                 "label": "Foundations",
-                "text": "Java and Spring Boot for backend, React and Next.js for frontend, Terraform and Ansible for the  that makes it all run in production. I don't stop at 'runs locally.'"
+                "text": "Java and Spring Boot for the backend, React and Next.js for the frontend, and Terraform and Ansible for the infrastructure that runs it all. I don't stop at 'it works on my machine.'"
             },
             {
                 "id": "03",
                 "title": "How I Learn",
                 "label": "Iteration",
-                "text": "I learn by building, breaking, and fixing with understanding — not by memorising patterns. Every project in this portfolio was deliberately overengineered to force me into problems I had never solved before."
+                "text": "I learn by building, breaking and fixing, and then working out why it broke. My projects are a little over-engineered on purpose, so they push me into problems I haven't solved yet."
             },
             {
                 "id": "04",
                 "title": "Where I'm Going",
                 "label": "Growth",
-                "text": "Deepening system design intuition, distributed systems patterns, and the gap between 'it works on my machine' and 'it works under load at 3am on a Tuesday.' That's the interesting part."
+                "text": "Better system design instincts, distributed systems, and AI tools that actually help people. And the gap between 'works on my machine' and 'works under load at 3am', which is the fun part."
             }
         ],
         "greeting": "Hey, I'm Raunak",
         "headingTop": "Curious about",
         "headingBottom": "how things work.",
-        "paragraph": "I'm a BCA graduate and full-stack developer. I started with Java and Spring Boot, then moved into React and TypeScript. I enjoy building things, trying new ideas, and figuring out how everything fits together.",
+        "paragraph": "I'm a BCA graduate and full-stack developer. I started with Java and Spring Boot, then fell for React and TypeScript. I like building things, trying odd ideas and figuring out how all the pieces fit.",
         "half": "I like knowing why something works, not just that it does.",
         "currently": "Currently exploring",
         "topics": [
@@ -108,10 +108,10 @@
                 "iconKey": "view",
                 "kicker": "How I think",
                 "title": "Understand first",
-                "text": "I like figuring out the problem before jumping into a solution. Simple and clear is usually better.",
+                "text": "I like figuring out the problem before jumping to a solution. Simple and clear usually wins.",
                 "emoji": "🦆",
                 "backTitle": "Rubber duck approved",
-                "backText": "Sometimes I explain bugs to a duck. Surprisingly, it helps more than you'd think.",
+                "backText": "Sometimes I explain bugs to a duck. It helps more than you'd think.",
                 "tint": "oklch(0.72 0.16 75)",
                 "tilt": -2
             },
@@ -120,10 +120,10 @@
                 "iconKey": "layers",
                 "kicker": "How I build",
                 "title": "A bit of everything",
-                "text": "From APIs and databases to user interfaces, I enjoy bringing all the pieces together.",
+                "text": "From APIs and databases to the buttons you click, I enjoy putting all the pieces together.",
                 "emoji": "🧩",
                 "backTitle": "Pieces that fit",
-                "backText": "There's something satisfying about seeing everything finally work together.",
+                "backText": "Nothing beats the moment everything finally clicks into place.",
                 "tint": "oklch(0.68 0.14 235)",
                 "tilt": 1.5
             },
@@ -132,10 +132,10 @@
                 "iconKey": "refresh",
                 "kicker": "How I learn",
                 "title": "Learn by doing",
-                "text": "I learn by trying things, making mistakes, and figuring out how to fix them.",
+                "text": "I try things, break things, and then figure out how to fix them.",
                 "emoji": "🐛",
                 "backTitle": "Bugs happen",
-                "backText": "Every bug has something to teach. Some just take longer to explain themselves.",
+                "backText": "Every bug has a lesson in it. Some just take longer to say it out loud.",
                 "tint": "oklch(0.68 0.17 10)",
                 "tilt": 2
             },
@@ -144,10 +144,10 @@
                 "iconKey": "rocket",
                 "kicker": "What's next",
                 "title": "Always growing",
-                "text": "There's always something new to learn, and I like keeping that curiosity alive.",
+                "text": "There's always something new to learn, and I like keeping that curiosity switched on.",
                 "emoji": "🔭",
                 "backTitle": "What's on the horizon?",
-                "backText": "Exploring AI, system design, and building things that can grow with more users.",
+                "backText": "AI, system design, and building things that keep working as more people show up.",
                 "tint": "oklch(0.66 0.17 295)",
                 "tilt": -1.5
             }
@@ -190,7 +190,7 @@
             {
                 "id": "tooling",
                 "label": "Infra & delivery",
-                "blurb": "How Hermes gets built, shipped and run.",
+                "blurb": "How things get built, shipped and run.",
                 "tint": "oklch(0.66 0.17 295)"
             }
         ],
@@ -201,7 +201,7 @@
                 "mark": "Ja",
                 "cat": "languages",
                 "level": 3,
-                "note": "Where I started, and what I use for every backend. It taught me to think in types, objects and structure.",
+                "note": "Where I started, and what I use for backends. It taught me to think in types, objects and structure.",
                 "usedIn": "Hermes, Pokeverse",
                 "related": [
                     "spring",
@@ -216,7 +216,7 @@
                 "cat": "languages",
                 "level": 4,
                 "note": "Types catch my mistakes before users do. I reach for it on every frontend.",
-                "usedIn": "This portfolio, Hermes UI, AlgoForge",
+                "usedIn": "This portfolio, Hermes, AlgoForge",
                 "related": [
                     "react",
                     "next",
@@ -229,7 +229,7 @@
                 "mark": "JS",
                 "cat": "languages",
                 "level": 3,
-                "note": "The language underneath it all. I like knowing what the compiler is hiding.",
+                "note": "The language under it all. I like knowing what the tools are hiding from me.",
                 "related": [
                     "typescript",
                     "react",
@@ -242,8 +242,8 @@
                 "mark": "Py",
                 "cat": "languages",
                 "level": 2,
-                "note": "For small, sharp tools. Calculate is a parser and evaluator with 100+ tests.",
-                "usedIn": "Calculate",
+                "note": "For small, sharp tools, like Calculate, a parser and evaluator with 100+ tests. Also my day-to-day at work, with Django.",
+                "usedIn": "Calculate, my internship",
                 "related": [
                     "java",
                     "typescript",
@@ -271,8 +271,8 @@
                 "mark": "API",
                 "cat": "backend",
                 "level": 3,
-                "note": "Clear routes, predictable responses, plus JWT and Google OAuth2 sign-in.",
-                "usedIn": "Hermes, Pokeverse",
+                "note": "Clear routes and predictable answers, plus JWT and Google sign-in.",
+                "usedIn": "Hermes, Pokeverse, my internship",
                 "related": [
                     "spring",
                     "next",
@@ -285,8 +285,8 @@
                 "mark": "SQL",
                 "cat": "backend",
                 "level": 2,
-                "note": "MySQL in Hermes. PostgreSQL with Flyway migrations in Pokeverse.",
-                "usedIn": "Hermes, Pokeverse",
+                "note": "MySQL in Hermes, and PostgreSQL with Flyway migrations in Pokeverse and AlgoForge.",
+                "usedIn": "Hermes, Pokeverse, AlgoForge",
                 "related": [
                     "spring",
                     "rest",
@@ -299,7 +299,7 @@
                 "mark": "Rd",
                 "cat": "backend",
                 "level": 2,
-                "note": "Rate limiting, caching and live game state.",
+                "note": "Rate limiting, caching and live game state. Small tool, big difference.",
                 "usedIn": "Hermes, Pokeverse",
                 "related": [
                     "spring",
@@ -313,7 +313,7 @@
                 "mark": "Re",
                 "cat": "frontend",
                 "level": 4,
-                "note": "Where I fell for the frontend. Small components that compose into whole screens.",
+                "note": "Where I fell for the frontend. Small components that add up to whole screens.",
                 "usedIn": "This portfolio, Hermes, Pokeverse",
                 "related": [
                     "typescript",
@@ -342,7 +342,7 @@
                 "cat": "frontend",
                 "level": 4,
                 "note": "Utility classes keep spacing and colour consistent without leaving the markup.",
-                "usedIn": "This portfolio, Pokeverse",
+                "usedIn": "This portfolio, Pokeverse, AlgoForge",
                 "related": [
                     "react",
                     "next",
@@ -355,7 +355,7 @@
                 "mark": "Fm",
                 "cat": "frontend",
                 "level": 3,
-                "note": "Springs and gestures that respond to the visitor instead of looping on their own.",
+                "note": "Springs and gestures that react to the visitor instead of looping on their own.",
                 "usedIn": "This portfolio",
                 "related": [
                     "react",
@@ -383,7 +383,7 @@
                 "mark": "K8",
                 "cat": "tooling",
                 "level": 2,
-                "note": "A two-VM k3s cluster on GCP: deployments, ingress and default-deny network policies.",
+                "note": "A two-VM k3s cluster on GCP with deployments, ingress and default-deny network policies.",
                 "usedIn": "Hermes",
                 "related": [
                     "docker",
@@ -397,7 +397,7 @@
                 "mark": "CI",
                 "cat": "tooling",
                 "level": 2,
-                "note": "A pipeline for Hermes: tests, Trivy scan, Docker build and rollout. Written, not yet switched on.",
+                "note": "A pipeline for Hermes with tests, a Trivy scan, a Docker build and a rollout. Written and waiting for its big moment.",
                 "usedIn": "Hermes",
                 "related": [
                     "docker",
@@ -464,7 +464,7 @@
             "headingBottom": "built.",
             "hintFine": "Scroll",
             "hintTouch": "Swipe down through the builds.",
-            "outroTitle": "There is more where this came from.",
+            "outroTitle": "There's more where this came from.",
             "outroText": "Every repo, commit and experiment lives on my GitHub.",
             "outroCta": "Open GitHub",
             "comingSoon": "Public link coming soon",
@@ -511,24 +511,26 @@
             ],
             "submitLabel": "Send message",
             "successTitle": "Message sent",
-            "successText": "Thanks for writing. I will reply soon."
+            "successText": "Thanks for writing. I'll reply soon."
         }
     },
     "experience": [
         {
-            "role": "Software Developer Intern",
-            "org": "ILN Global",
-            "period": "2026",
-            "summary": "Frontend and backend work on Tatito Health+, a healthcare platform with a Django backend and a JavaScript frontend.",
+            "role": "Software Engineer Intern",
+            "org": "ILN Global Technologies Pvt. Ltd.",
+            "period": "Oct 2026 – Present",
+            "summary": "Backend and frontend work with Django REST and JavaScript: an internship management portal, plus a clinic dashboard for an existing healthcare platform.",
             "points": [
-                "Built a clinic version of an existing hospital dashboard.",
-                "Reworked the doctor page: appointment booking, fee discounts and reviews. Booking now happens only after payment succeeds.",
-                "Working on Doctor Management: automatic, unique doctor IDs."
+                "Built an internship management portal with 5 dashboard modules, 10 data models and 10 REST endpoints.",
+                "Automated the intern journey end to end: shortlisting, approval, task assignment, attendance and feedback.",
+                "Built a clinic management dashboard for an existing healthcare platform, with 10 data models and 14 REST endpoints.",
+                "Wrote 130 automated backend tests (78 internship, 52 clinic) covering sign-in and core workflows.",
+                "Fixed 5 bugs in the doctor booking and review flow and shipped them through pull requests."
             ],
             "stack": [
+                "Django REST",
                 "JavaScript",
-                "Vite",
-                "Django"
+                "Python"
             ]
         }
     ],
@@ -536,7 +538,7 @@
         {
             "degree": "Bachelor of Computer Applications (BCA)",
             "school": "DAV Institute of Management, Faridabad",
-            "year": "2026"
+            "year": "2023 – 2026"
         }
     ],
     "writing": [
