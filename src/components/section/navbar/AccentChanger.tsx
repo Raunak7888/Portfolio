@@ -1,275 +1,147 @@
-// AccentChanger.tsx
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { runThemeTransition } from "@/components/ThemeTransitionLayer";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { ACCENTS, DEFAULT_ACCENT, applyAccent, readStoredAccent, storeAccent } from "@/lib/accent";
+import { runViewTransition } from "@/lib/view-transition";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Color palette
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface AccentColor {
-    name: string;
-    value: string;
-}
-
-const COLORS: AccentColor[] = [
-    { name: "Deep Purple",  value: "#7C3AED" },
-    { name: "Sky Blue",     value: "#0EA5E9" },
-    { name: "Teal",         value: "#14B8A6" },
-    { name: "Burnt Orange", value: "#EA580C" },
-    { name: "Rose Red",     value: "#EF4444" },
-];
-
-const DEFAULT_COLOR = COLORS[0].value;
-const STORAGE_KEY   = "theme-primary";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CSS custom-property transition
-//
-// @property registration lets Chromium interpolate between two <color> values
-// on a custom property. On Safari / Firefox, @property is not supported, so we
-// fall back to a JS-driven WAAPI transition (see applyColorWithTransition).
-//
-// We inject the <style> tag once and guard with a WeakSet keyed on the document
-// head so HMR hot-reloads don't accumulate duplicate tags.
-// ─────────────────────────────────────────────────────────────────────────────
-
-const _injectedHeads = new WeakSet<Element>();
-
-function ensurePrimaryTransition(): void {
-    if (_injectedHeads.has(document.head)) return;
-    _injectedHeads.add(document.head);
-
-    const style = document.createElement("style");
-    style.setAttribute("data-accent-transition", "");
-    style.textContent = `
-        @property --primary {
-            syntax: "<color>";
-            inherits: true;
-            initial-value: ${DEFAULT_COLOR};
-        }
-        :root {
-            transition: --primary 0.6s ease;
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-/**
- * Cross-browser color application.
- *
- * On Chromium: @property handles the CSS transition automatically.
- * On Safari/Firefox: we animate via the Web Animations API so the change is
- * still smooth rather than an instant snap.
- */
-function applyColor(value: string, supportsAtProperty: boolean): void {
-    const root = document.documentElement;
-
-    if (supportsAtProperty) {
-        // CSS transition handles it — just set the property.
-        root.style.setProperty("--primary", value);
-        return;
-    }
-
-    // Fallback: read current computed color and tween via WAAPI keyframes on
-    // a dummy element. We set the property directly because WAAPI cannot
-    // animate unregistered custom properties, but we can approximate by
-    // scheduling a RAF-delayed set after an equivalent CSS transition duration.
-    const current = getComputedStyle(root).getPropertyValue("--primary").trim();
-    root.style.setProperty("--primary", value);
-
-    // The visual snap happens instantly — to smooth it on non-Chromium we
-    // rely on the ThemeTransitionLayer overlay (view-transition or clip-path
-    // ripple) that runThemeTransition provides. No extra work needed here.
-    void current; // suppress unused-variable lint
-}
-
-/**
- * Detects @property support once per page load.
- * We cache the result in a module-level variable to avoid re-querying.
- */
-let _supportsAtProperty: boolean | null = null;
-function supportsAtProperty(): boolean {
-    if (_supportsAtProperty !== null) return _supportsAtProperty;
-    _supportsAtProperty =
-        typeof CSS !== "undefined" &&
-        typeof CSS.registerProperty === "function";
-    return _supportsAtProperty;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Framer Motion variants
-// ─────────────────────────────────────────────────────────────────────────────
-
-const dropdownVariants: Variants = {
-    hidden: {
-        opacity: 0,
-        y: -8,
-        scale: 0.92,
-        transition: { duration: 0.13, ease: "easeIn" },
-    },
+const panel: Variants = {
+    hidden: { opacity: 0, y: -8, scale: 0.94, transition: { duration: 0.12 } },
     visible: {
         opacity: 1,
         y: 4,
         scale: 1,
-        transition: {
-            duration: 0.18,
-            ease: [0.16, 1, 0.3, 1],
-            staggerChildren: 0.04,
-            delayChildren: 0.02,
-        },
-    },
-    exit: {
-        opacity: 0,
-        y: -6,
-        scale: 0.94,
-        transition: { duration: 0.13, ease: "easeIn" },
+        transition: { duration: 0.18, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.035 },
     },
 };
 
-const beadVariants: Variants = {
-    hidden:  { opacity: 0, scale: 0.4 },
+const bead: Variants = {
+    hidden: { opacity: 0, scale: 0.4 },
     visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 420, damping: 22 } },
-    exit:    { opacity: 0, scale: 0.4, transition: { duration: 0.1 } },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ThemeColorPicker
-// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Accent colour picker. The inline script in app/layout.tsx applies the saved
+ * colour before first paint; this component only changes it.
+ * This component mounts after hydration, so reading localStorage in the
+ * initialiser is safe.
+ */
+export default function ThemeColorPicker() {
+    const [open, setOpen] = useState(false);
+    const [color, setColor] = useState<string>(() => readStoredAccent() ?? DEFAULT_ACCENT);
+    const wrapRef = useRef<HTMLDivElement>(null);
+    const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-const ThemeColorPicker = () => {
-    const [isOpen, setIsOpen]   = useState(false);
-    const [isPending, setIsPending] = useState(false);
-    const [color, setColor]     = useState<string>(() => {
-        // SSR guard — window is not defined during server render.
-        if (typeof window === "undefined") return DEFAULT_COLOR;
-        return localStorage.getItem(STORAGE_KEY) ?? DEFAULT_COLOR;
-    });
-
-    const containerRef = useRef<HTMLDivElement>(null);
-    const closeTimer   = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    // ── Bootstrap ──────────────────────────────────────────────────────────
     useEffect(() => {
-        ensurePrimaryTransition();
-        // Apply the persisted color on mount so it survives hard-reloads.
-        applyColor(color, supportsAtProperty());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (!open) return;
+        const onDown = (e: PointerEvent) => {
+            if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+        };
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setOpen(false);
+        };
+        document.addEventListener("pointerdown", onDown);
+        document.addEventListener("keydown", onKey);
+        return () => {
+            document.removeEventListener("pointerdown", onDown);
+            document.removeEventListener("keydown", onKey);
+        };
+    }, [open]);
 
-    // ── Apply color whenever it changes ───────────────────────────────────
-    useEffect(() => {
-        applyColor(color, supportsAtProperty());
-        localStorage.setItem(STORAGE_KEY, color);
-    }, [color]);
+    useEffect(
+        () => () => {
+            if (closeTimer.current) clearTimeout(closeTimer.current);
+        },
+        [],
+    );
 
-    // ── Hover intent: small delay before close so quick mouse moves
-    //    across the gap between bead and dropdown don't dismiss it. ─────────
-    const handleMouseEnter = useCallback(() => {
+    const clearTimer = () => {
         if (closeTimer.current) {
             clearTimeout(closeTimer.current);
             closeTimer.current = null;
         }
-        setIsOpen(true);
-    }, []);
+    };
 
-    const handleMouseLeave = useCallback(() => {
-        closeTimer.current = setTimeout(() => setIsOpen(false), 120);
-    }, []);
-
-    // ── Colour selection ──────────────────────────────────────────────────
-    /**
-     * runThemeTransition triggers an overlay (view-transition or clip-path
-     * ripple) and then calls our callback synchronously inside the "frozen"
-     * frame so the color swap is invisible under the overlay, then the overlay
-     * dissolves to reveal the new colour — this gives us a smooth transition
-     * even on browsers that don't support @property.
-     */
-    const handleSelectColor = useCallback(
-        (nextColor: string) => {
-            if (isPending || nextColor === color) return;
-            setIsPending(true);
-            setIsOpen(false);
-
-            runThemeTransition("accent", () => {
-                setColor(nextColor);
-            });
-
-            // Re-enable selection after the transition finishes (≈ 400 ms is a
-            // safe upper bound for both view-transition and ripple durations).
-            const timer = setTimeout(() => setIsPending(false), 450);
-            return () => clearTimeout(timer);
+    const select = useCallback(
+        (hex: string, el: HTMLElement) => {
+            setOpen(false);
+            if (hex === color) return;
+            const r = el.getBoundingClientRect();
+            runViewTransition(
+                () => {
+                    applyAccent(hex);
+                    storeAccent(hex);
+                    setColor(hex);
+                },
+                { x: r.left + r.width / 2, y: r.top + r.height / 2 },
+                450,
+            );
         },
-        [color, isPending]
+        [color],
     );
 
-    // Filter out the active colour so the dropdown only shows alternatives.
-    const otherColors = COLORS.filter((c) => c.value !== color);
+    const current = ACCENTS.find((a) => a.value === color)?.name ?? "Custom";
 
     return (
         <div
-            ref={containerRef}
+            ref={wrapRef}
             className="relative flex flex-col items-center"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onPointerEnter={(e) => {
+                if (e.pointerType !== "mouse") return;
+                clearTimer();
+                setOpen(true);
+            }}
+            onPointerLeave={(e) => {
+                if (e.pointerType !== "mouse") return;
+                clearTimer();
+                closeTimer.current = setTimeout(() => setOpen(false), 140);
+            }}
         >
-            {/* Active color bead — no layout animation, just a plain button */}
             <button
                 type="button"
-                className="w-4.5 h-4.5 rounded-full bg-primary ring-2 ring-background ring-offset-1 ring-offset-primary/20 cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label="Change accent color"
-                aria-haspopup="listbox"
-                aria-expanded={isOpen}
-                onClick={() => setIsOpen((prev) => !prev)}
-            />
+                aria-label={`Accent colour: ${current}. Change`}
+                aria-haspopup="true"
+                aria-expanded={open}
+                onClick={() => setOpen((o) => !o)}
+                className="grid size-11 place-items-center rounded-full outline-none transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-95"
+            >
+                <span className="size-5 rounded-full bg-primary ring-2 ring-background ring-offset-1 ring-offset-primary/30" />
+            </button>
 
-            {/* Dropdown bead-string */}
             <AnimatePresence>
-                {isOpen && (
+                {open && (
                     <motion.div
-                        key="accent-dropdown"
-                        role="listbox"
-                        aria-label="Accent color options"
-                        variants={dropdownVariants}
+                        key="accent-panel"
+                        role="group"
+                        aria-label="Accent colour options"
+                        variants={panel}
                         initial="hidden"
                         animate="visible"
-                        exit="exit"
-                        /**
-                         * position: absolute so the dropdown doesn't affect the
-                         * pill's layout or GSAP width measurements.
-                         */
-                        className="absolute top-full left-1/2 -translate-x-1/2 z-1001 flex flex-col gap-2 p-2 rounded-full bg-background/60 backdrop-blur-xl border border-foreground/8 shadow-xl"
-                        style={{ marginTop: "6px" }}
-                        /**
-                         * Stop mouse events from propagating to the pill's
-                         * overflow:hidden container so the dropdown stays
-                         * visible when the cursor moves into it.
-                         */
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
+                        exit="hidden"
+                        className="absolute left-1/2 top-full z-[1001] mt-1 flex -translate-x-1/2 flex-col gap-0.5 rounded-full border border-border bg-background/85 p-1 shadow-xl backdrop-blur-xl"
                     >
-                        {otherColors.map((c) => (
+                        {ACCENTS.map((c) => (
                             <motion.button
                                 key={c.value}
                                 type="button"
-                                role="option"
-                                aria-selected={false}
+                                variants={bead}
                                 aria-label={c.name}
-                                variants={beadVariants}
-                                onClick={() => handleSelectColor(c.value)}
-                                disabled={isPending}
-                                className="w-4.5 h-4.5 rounded-full transition-transform duration-100 hover:scale-125 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-40 disabled:pointer-events-none"
-                                style={{ backgroundColor: c.value }}
+                                aria-pressed={c.value === color}
                                 title={c.name}
-                            />
+                                onClick={(e) => select(c.value, e.currentTarget)}
+                                className="grid size-9 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            >
+                                <span
+                                    className={`size-5 rounded-full transition-transform hover:scale-125 ${
+                                        c.value === color ? "ring-2 ring-foreground ring-offset-2 ring-offset-background" : ""
+                                    }`}
+                                    style={{ backgroundColor: c.value }}
+                                />
+                            </motion.button>
                         ))}
                     </motion.div>
                 )}
             </AnimatePresence>
         </div>
     );
-};
-
-export default ThemeColorPicker;
+}

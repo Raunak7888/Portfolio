@@ -41,3 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 data.md
+
+.redesign-backup/
+backups/
+playwright-report/
+test-results/
+.env

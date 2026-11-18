@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Redesign layer. Plain CSS, loaded after design-system.css.
+   Prefix: rd-   (nothing here overrides existing ds-* classes)
+   ========================================================================== */
+
+/* Split-flap: a character flips into place */
+@keyframes rd-flip {
+    from { transform: perspective(240px) rotateX(-88deg); opacity: 0.25; }
+    to   { transform: perspective(240px) rotateX(0deg);   opacity: 1; }
+}
+.rd-flap { animation: rd-flip 0.2s ease-out both; transform-origin: 50% 50%; }
+
+/* Liquid wave that scrolls sideways inside skill tiles */
+@keyframes rd-wave { to { transform: translateX(-50%); } }
+.rd-wave { animation: rd-wave 2.2s linear infinite; }
+
+/* A rocket crossing the runway in the footer */
+@keyframes rd-runway {
+    from { left: -2rem; }
+    to   { left: calc(100% + 2rem); }
+}
+.rd-runway { animation: rd-runway 9s linear infinite; }
+
+@keyframes rd-twinkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+    50%      { transform: scale(1.35) rotate(18deg); opacity: 0.5; }
+}
+.rd-twinkle { animation: rd-twinkle 2.4s ease-in-out infinite; display: inline-block; }
+
+@keyframes rd-wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-6deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-3deg); }
+}
+.rd-wiggle:hover { animation: rd-wiggle 0.5s ease-in-out; }
+
+/* Ruled paper for the postcard textarea */
+.rd-paper-lines {
+    line-height: 28px;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0 27px,
+        color-mix(in oklab, var(--foreground) 16%, transparent) 27px 28px
+    );
+    background-attachment: local;
+}
+
+/* Soft film grain over everything, one unifying surface across sections */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+::selection { background: var(--primary); color: var(--primary-foreground, #fff); }
+
+:focus-visible { outline-color: var(--primary); }
+
+@media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rd-flap, .rd-wave, .rd-runway, .rd-twinkle { animation: none !important; }
+    .rd-wiggle:hover { animation: none !important; }
+}

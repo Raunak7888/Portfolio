@@ -54,11 +54,11 @@
             "accent": "#7C7CFF",
             "iconKey": "message_circle",
             "images": [
-                "/uploads/hermes1.png",
-                "/uploads/hermes2.png",
-                "/uploads/hermes3.png",
-                "/uploads/hermes4.png",
-                "/uploads/hermes5.png"
+                "/uploads/hermes1.webp",
+                "/uploads/hermes2.webp",
+                "/uploads/hermes3.webp",
+                "/uploads/hermes4.webp",
+                "/uploads/hermes5.webp"
             ],
             "highlights": [
                 "End-to-end encrypted messaging using WebCrypto, ECDH P-256, and AES-GCM. Server never sees plaintext messages.",
@@ -100,10 +100,10 @@
             "accent": "#22C55E",
             "iconKey": "gamepad-2",
             "images": [
-                "/uploads/pokeverse1.png",
-                "/uploads/pokeverse2.png",
-                "/uploads/pokeverse3.png",
-                "/uploads/pokeverse4.png"
+                "/uploads/pokeverse1.webp",
+                "/uploads/pokeverse2.webp",
+                "/uploads/pokeverse3.webp",
+                "/uploads/pokeverse4.webp"
             ],
             "highlights": [
                 "Reusable multiplayer platform handling authentication, rooms, messaging, persistence, and real-time event routing.",
@@ -137,11 +137,11 @@
             "accent": "#F59E0B",
             "iconKey": "calculator",
             "images": [
-                "/uploads/calculate1.png",
-                "/uploads/calculate2.png",
-                "/uploads/calculate3.png",
-                "/uploads/calculate4.png",
-                "/uploads/calculate5.png"
+                "/uploads/calculate1.webp",
+                "/uploads/calculate2.webp",
+                "/uploads/calculate3.webp",
+                "/uploads/calculate4.webp",
+                "/uploads/calculate5.webp"
             ],
             "highlights": [
                 "Built from scratch using tokenization, Shunting-Yard conversion, and stack-based postfix evaluation.",
