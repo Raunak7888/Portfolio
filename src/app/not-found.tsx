@@ -1,17 +1,12 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Home, AlertTriangle, Terminal } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NotFound() {
     const router = useRouter();
-    const [pathname, setPathname] = React.useState("");
-
-    React.useEffect(() => {
-        setPathname(window.location.pathname);
-    }, []);
+    const pathname = usePathname();
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-background  overflow-hidden relative">
@@ -22,7 +17,7 @@ export default function NotFound() {
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_2px,3px_100%] pointer-events-none" />
                 
                 {/* Radial glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary-rgb),0.1)_0%,transparent_70%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_10%,transparent)_0%,transparent_70%)]" />
             </div>
             <div className="relative z-10 mt-16 max-[440px]:mt-25 max-w-md w-full text-center">
                 
@@ -41,7 +36,7 @@ export default function NotFound() {
                                 "2px 0px rgba(255,0,0,0.5)"
                             ] 
                         }}
-                        transition={{ repeat: Infinity, duration: 0.2 }}
+                        transition={{ repeat: Infinity, repeatType: "mirror", duration: 1.8 }}
                         className="text-9xl font-black text-primary tracking-tighter"
                     >
                         404
@@ -81,7 +76,7 @@ export default function NotFound() {
                     className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <button
-                        className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-bold text-primary-foreground transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]"
+                        className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-bold text-primary-foreground transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_color-mix(in_oklab,var(--primary)_30%,transparent)]"
                         onClick={() => {
                           router.push("/")
                         }}

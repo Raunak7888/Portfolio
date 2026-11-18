@@ -1,47 +1,34 @@
 {
     "name": "portfolio",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint"
+        "lint": "eslint",
+        "typecheck": "tsc --noEmit",
+        "test:e2e": "playwright test",
+        "validate:content": "node scripts/validate-content.mjs"
     },
     "dependencies": {
-        "@dnd-kit/core": "^6.3.1",
-        "@dnd-kit/sortable": "^10.0.0",
-        "@dnd-kit/utilities": "^3.2.2",
-        "@hookform/resolvers": "^5.4.0",
         "@hugeicons/core-free-icons": "^4.2.0",
         "@hugeicons/react": "^1.1.6",
-        "@radix-ui/react-select": "^2.2.6",
-        "@radix-ui/react-slot": "^1.2.4",
-        "@radix-ui/react-tooltip": "^1.2.8",
-        "@xyflow/react": "^12.10.0",
-        "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "framer-motion": "^12.29.0",
-        "gsap": "^3.14.2",
         "iron-session": "^8.0.4",
         "lucide-react": "^0.562.0",
-        "mermaid": "^11.12.2",
         "next": "16.1.4",
         "next-themes": "^0.4.6",
         "nodemailer": "^7.0.12",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-hook-form": "^7.78.0",
-        "react-icons": "^5.5.0",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
         "sharp": "^0.35.1",
         "sonner": "^2.0.7",
-        "styled-components": "^6.3.8",
-        "tailwind-merge": "^3.4.0",
-        "tailwindcss-animate": "^1.0.7",
-        "uuid": "^14.0.0",
-        "zod": "^4.4.3"
+        "tailwind-merge": "^3.4.0"
     },
     "devDependencies": {
+        "@playwright/test": "^1.65.1",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/nodemailer": "^7.0.5",
@@ -53,10 +40,6 @@
         "tailwindcss": "^4",
         "typescript": "^5"
     },
-    "ignoreScripts": [
-        "sharp",
-        "unrs-resolver"
-    ],
     "trustedDependencies": [
         "sharp",
         "unrs-resolver"

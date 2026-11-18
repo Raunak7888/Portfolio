@@ -1,704 +1,1482 @@
 {
-    "hermes": {
-        "meta": {
-            "projectName": "Hermes",
-            "codename": "hermes-chat",
-            "version": "0.1.0",
-            "status": "active",
-            "lastUpdated": "2026-02-04",
-            "maintainers": ["Raunak"],
-            "live": "https://23.236.54.241.nip.io/",
-            "repository": "https://github.com/Raunak7888/Hermes",
-            "license": "MIT",
-            "post": ""
-        },
-
-        "images": [
-          "/uploads/hermes1.png",
-          "/uploads/hermes2.png",
-          "/uploads/hermes3.png",
-          "/uploads/hermes4.png",
-          "/uploads/hermes5.png"
-        ],
-
-        "executiveSummary": {
-            "oneLiner": "Hermes is a full-stack, end-to-end encrypted real-time messaging platform supporting private and group chat, deployed on a self-managed k3s Kubernetes cluster on GCP — built, provisioned, and automated entirely from scratch.",
-            "problemStatement": "Build a self-hosted, production-deployable chat system that solves the full engineering stack: real-time communication, cryptographic privacy, multi-tenant authentication, cloud infrastructure, container orchestration, automated CI/CD, and observability — without relying on managed services.",
-            "solutionOverview": "A Spring Boot backend provides REST APIs for authentication and data access, and WebSocket/STOMP for real-time messaging. End-to-end encryption is implemented client-side via the WebCrypto API — the server never sees plaintext private message content. Infrastructure is provisioned via Terraform and Ansible onto GCP, orchestrated with k3s Kubernetes, and deployed through a GitHub Actions CI/CD pipeline with Trivy security scanning.",
-            "primaryUsers": ["Registered end users requiring private, secure, real-time communication"],
-            "keyCapabilities": [
-                "End-to-end encryption — ECDH P-256 key exchange, AES-GCM per-message encryption via WebCrypto API",
-                "Real-time private and group messaging via WebSocket/STOMP over SockJS",
-                "Google OAuth2 + email/password authentication with OTP email verification and password reset",
-                "JWT access + refresh token lifecycle with secure cookie storage",
-                "File and image sharing with Redis image caching",
-                "Live user presence and typing indicators",
-                "Per-user Redis rate limiting with sliding window algorithm",
-                "Group creation, membership management, and group-scoped messaging",
-                "Kubernetes-deployed: Deployments, StatefulSets, HPA, NetworkPolicies, CronJob, cert-manager",
-                "GitHub Actions CI/CD with Trivy security scanning and smoke testing",
-                "Prometheus + Grafana observability stack"
-            ],
-            "knownLimitations": [
-                "In-memory STOMP broker does not scale horizontally — RabbitMQ externalisation is on the roadmap",
-                "Local file storage is not persistent across pod restarts",
-                "Message history limited to last 24 hours"
-            ]
-        },
-
-        "architecture": {
-            "overview": "React/Vite SPA communicates with a Spring Boot monolith via REST and WebSocket/STOMP. E2EE is handled client-side using WebCrypto API before messages reach the server. Infrastructure is two GCP VMs running a k3s cluster, provisioned via Terraform and configured via Ansible. CI/CD is fully automated through GitHub Actions.",
-            "diagram": {
-                "type": "text",
-                "content": "graph LR\n\nA[Browser SPA]\nB[Spring Boot API]\nD[WebSocket Broker]\nC[(MySQL 8)]\nR[(Redis 7)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  R\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\nB -->|RedisTemplate · Pub-Sub| R\n\nclassDef client fill:#1e293b,stroke:#38bdf8,stroke-width:1.5px,color:#e5e7eb\nclassDef server fill:#020617,stroke:#7c7cff,stroke-width:1.5px,color:#e5e7eb\nclassDef data fill:#020617,stroke:#22c55e,stroke-width:1.5px,color:#e5e7eb\n\nclass A client\nclass B,D server\nclass C,R data"
-            },
-            "components": [
-                {
-                    "name": "Frontend SPA",
-                    "type": "frontend",
-                    "responsibilities": [
-                        "User authentication UI",
-                        "Chat and group management UI",
-                        "E2EE key generation and message encryption via WebCrypto API",
-                        "WebSocket connection and STOMP message handling",
-                        "Image upload and rendering",
-                        "Typing indicators and user presence"
-                    ],
-                    "tech": ["React 18", "TypeScript", "Vite 6", "Zustand", "CSS Modules", "Tailwind CSS", "SockJS", "STOMPJS"]
-                },
-                {
-                    "name": "Backend API",
-                    "type": "backend",
-                    "responsibilities": [
-                        "JWT issuance and Spring Security filter chain",
-                        "Google OAuth2 and email/password authentication with OTP",
-                        "User and group management",
-                        "Message persistence (server sees only ciphertext for private messages)",
-                        "Redis-backed image caching and rate limiting",
-                        "File handling",
-                        "WebSocket/STOMP message routing and broadcasting"
-                    ],
-                    "tech": [
-                        "Spring Boot 3.3.4",
-                        "Spring Security",
-                        "Spring WebSocket (STOMP)",
-                        "Spring Data JPA",
-                        "OAuth2 Client"
-                    ]
-                },
-                {
-                    "name": "Database",
-                    "type": "database",
-                    "responsibilities": [
-                        "Persist users, roles, messages, groups, and file metadata"
-                    ],
-                    "tech": ["MySQL 8"]
-                },
-                {
-                    "name": "Cache / Pub-Sub",
-                    "type": "cache",
-                    "responsibilities": [
-                        "Image caching",
-                        "E2EE public key distribution",
-                        "Per-user sliding window rate limiting",
-                        "Pub-sub message distribution"
-                    ],
-                    "tech": ["Redis 7"]
-                },
-                {
-                    "name": "WebSocket Broker",
-                    "type": "broker",
-                    "responsibilities": ["Topic-based and queue-based message broadcasting to /topic and /user/queue destinations"],
-                    "tech": ["Spring Simple Broker (in-memory)"]
-                },
-                {
-                    "name": "Infrastructure",
-                    "type": "infrastructure",
-                    "responsibilities": [
-                        "GCP VPC, subnet, firewall provisioning",
-                        "Two-VM compute instance provisioning",
-                        "k3s server and agent installation",
-                        "Security hardening (UFW, fail2ban, kernel params)",
-                        "Prometheus + Grafana deployment",
-                        "Kubernetes manifest application"
-                    ],
-                    "tech": ["Terraform (GCP)", "Ansible", "k3s", "GCP Compute Engine"]
-                },
-                {
-                    "name": "CI/CD Pipeline",
-                    "type": "cicd",
-                    "responsibilities": [
-                        "Run unit tests",
-                        "Trivy security scan on Docker images and IaC manifests",
-                        "SHA-tagged multi-stage Docker build and push",
-                        "kubectl rollout with smoke testing"
-                    ],
-                    "tech": ["GitHub Actions", "Trivy", "Docker Hub"]
-                },
-                {
-                    "name": "Observability",
-                    "type": "monitoring",
-                    "responsibilities": [
-                        "JVM heap and GC metrics",
-                        "HTTP p50/p95/p99 latency",
-                        "WebSocket connection count",
-                        "Redis hit/miss ratio",
-                        "MySQL connection pool",
-                        "HPA replica count"
-                    ],
-                    "tech": ["Prometheus", "Grafana", "Spring Boot Actuator"]
-                }
-            ],
-            "dataFlow": [
-                {
-                    "flowName": "Authentication (Email/Password)",
-                    "steps": [
-                        "User submits credentials",
-                        "Backend validates and sends OTP via SMTP",
-                        "User verifies OTP",
-                        "Backend issues JWT access + refresh tokens",
-                        "Tokens stored in secure browser cookies"
-                    ]
-                },
-                {
-                    "flowName": "Authentication (Google OAuth2)",
-                    "steps": [
-                        "User initiates Google OAuth2 flow",
-                        "Spring Security OAuth2 client handles callback",
-                        "Backend issues JWT access + refresh tokens",
-                        "Tokens stored in secure browser cookies"
-                    ]
-                },
-                {
-                    "flowName": "E2EE Key Exchange",
-                    "steps": [
-                        "User generates ECDH P-256 key pair via WebCrypto API on login",
-                        "Public key serialised and stored in Redis via REST",
-                        "Sender fetches recipient's public key from Redis",
-                        "Shared secret derived client-side via ECDH",
-                        "Messages encrypted with AES-GCM before transmission",
-                        "Server stores and forwards ciphertext only"
-                    ]
-                },
-                {
-                    "flowName": "Real-time Messaging",
-                    "steps": [
-                        "Client connects to WebSocket endpoint with JWT on STOMP CONNECT frame",
-                        "Message encrypted client-side (private chat) or sent plaintext (group)",
-                        "Message sent to /app destination",
-                        "Backend validates, persists, and applies rate limiting",
-                        "Message broadcast to /topic or /user/queue subscribers"
-                    ]
-                },
-                {
-                    "flowName": "CI/CD Deployment",
-                    "steps": [
-                        "Push to main branch triggers GitHub Actions workflow",
-                        "mvn test runs unit tests",
-                        "Trivy scans Docker images and IaC manifests",
-                        "Multi-stage Docker build produces SHA-tagged images",
-                        "Images pushed to Docker Hub",
-                        "kubectl rollout updates Kubernetes Deployments",
-                        "Smoke test hits /actuator/health to confirm liveness"
-                    ]
-                }
-            ],
-            "architectureRationale": "WebSocket/STOMP enables low-latency chat while REST handles authentication and data retrieval. Client-side E2EE ensures server compromise does not expose private message content. Terraform + Ansible + k3s provides reproducible infrastructure without managed service lock-in. In-memory STOMP broker is the known horizontal scaling bottleneck — RabbitMQ externalisation resolves it when needed."
-        },
-
-        "technologyStack": {
-            "backend": [
-                {
-                    "name": "Spring Boot",
-                    "version": "3.3.4",
-                    "purpose": "REST APIs, WebSocket/STOMP handling, security, JPA, application configuration",
-                    "tradeOffs": "Higher memory footprint than minimalist frameworks; monolith limits independent scaling"
-                },
-                {
-                    "name": "Spring Security + JWT",
-                    "version": "N/A",
-                    "purpose": "Stateless authentication, filter chain, OAuth2 client integration",
-                    "tradeOffs": "Requires careful filter ordering to permit WebSocket upgrade paths while still validating JWT on STOMP CONNECT"
-                },
-                {
-                    "name": "MySQL 8",
-                    "version": "8",
-                    "purpose": "Durable persistence for users, groups, messages, file metadata",
-                    "tradeOffs": "Single-node in current deployment; not sharded"
-                },
-                {
-                    "name": "Redis 7",
-                    "version": "7",
-                    "purpose": "Image caching, E2EE public key distribution, per-user rate limiting, pub-sub",
-                    "tradeOffs": "In-memory — data loss on restart without persistence config"
-                }
-            ],
-            "frontend": [
-                {
-                    "name": "React",
-                    "version": "18",
-                    "purpose": "Single-page application UI with feature-based directory structure",
-                    "tradeOffs": "Requires explicit state and WebSocket lifecycle management via Zustand stores"
-                },
-                {
-                    "name": "Vite",
-                    "version": "6",
-                    "purpose": "Fast development server and production build tooling",
-                    "tradeOffs": "Smaller ecosystem than Webpack for edge cases"
-                },
-                {
-                    "name": "TypeScript",
-                    "version": "N/A",
-                    "purpose": "Type safety across auth, chat, e2ee, socket, and group stores",
-                    "tradeOffs": "Adds compile step; initial setup overhead"
-                }
-            ],
-            "infrastructure": ["Terraform (GCP)", "Ansible", "k3s (Kubernetes)", "Docker", "Docker Compose", "GitHub Actions", "Traefik", "cert-manager", "Let's Encrypt", "Prometheus", "Grafana", "Trivy", "GCP Compute Engine", "GCP VPC"],
-            "rejectedAlternatives": [
-                {
-                    "option": "Managed real-time services (Pusher, Firebase)",
-                    "reasonRejected": "Vendor lock-in and recurring cost; also defeats the purpose of learning the infrastructure"
-                },
-                {
-                    "option": "Managed Kubernetes (GKE)",
-                    "reasonRejected": "Self-managed k3s demonstrates infrastructure understanding and reduces cost for a portfolio project"
-                },
-                {
-                    "option": "GraphQL",
-                    "reasonRejected": "REST + WebSocket is simpler and sufficient for the messaging use case"
-                },
-                {
-                    "option": "External STOMP broker (RabbitMQ)",
-                    "reasonRejected": "In-memory broker sufficient for current scale; externalisation is explicitly on the roadmap"
-                }
-            ]
-        },
-
-        "roadmap": {
-            "shortTerm": ["Activate GitHub Actions workflow (move .github-example to .github)", "Add unit and integration tests with JUnit 5 and @SpringBootTest", "Persist file storage across pod restarts"],
-            "midTerm": ["Message pagination", "Testcontainers-based integration tests for MySQL and Redis", "Pokeverse-style Flyway schema versioning"],
-            "longTerm": ["External STOMP broker (RabbitMQ) for horizontal scaling", "Multi-instance Redis cluster", "Real user traffic and load testing"]
-        }
+  "algoforge": {
+    "meta": {
+      "projectName": "AlgoForge",
+      "status": "building",
+      "codename": "algoforge-ai",
+      "version": "0.1.0",
+      "maintainers": [
+        "Raunak"
+      ],
+      "lastUpdated": "2026-11-19"
     },
-    "pokeverse": {
-        "meta": {
-            "projectName": "Pokeverse",
-            "codename": "pokeverse-play",
-            "version": "0.0.1-SNAPSHOT",
-            "status": "active",
-            "lastUpdated": "unknown",
-            "maintainers": ["Raunak"],
-            "repository": "https://github.com/Raunak7888/Pokeverse",
-            "license": "MIT",
-            "post": ""
+    "card": {
+      "order": 1,
+      "kind": "Featured · AI dev tool",
+      "tagline": "Paste code. Watch it think.",
+      "summary": "An AI-assisted tool that explains your code and then steps through it frame by frame. Still being built, and the code is open on GitHub.",
+      "tint": "oklch(0.66 0.17 295)",
+      "chips": [
+        "Next.js",
+        "Express",
+        "Prisma",
+        "Gemini"
+      ],
+      "bullets": [
+        "Step through execution frame by frame, with state changes shown live",
+        "AI code analysis, optimization tips and a place to ask your doubts",
+        "LangChain pipelines that return schema-compliant JSON",
+        "SHA-256 hashing spots repeated code and reuses stored analysis, cutting AI processing by about 60%"
+      ],
+      "metrics": [
+        {
+          "value": 60,
+          "suffix": "%",
+          "label": "less duplicate AI work"
         },
-        "images": [
-          "/uploads/pokeverse1.png",
-          "/uploads/pokeverse2.png",
-          "/uploads/pokeverse3.png",
-          "/uploads/pokeverse4.png"
-        ],
-        "executiveSummary": {
-            "oneLiner": "Pokeverse is a real-time multiplayer game platform providing shared infrastructure — authentication, room lifecycle, WebSocket event routing, chat, and state management — so individual game types can plug in without re-solving those problems each time.",
-            "problemStatement": "Every multiplayer game requires the same solved problems: player authentication, room creation and lifecycle management, real-time event distribution, chat, and persistent state. Building them from scratch every time is wasteful and produces inconsistent quality. Pokeverse centralises these into a reusable platform.",
-            "solutionOverview": "A Spring Boot platform backend exposes shared services for authentication, room management, real-time messaging via WebSocket/STOMP, and persistence. Individual game types plug in as modules and consume these services. A Pokémon Quiz game — supporting single-player and multiplayer modes — demonstrates the platform with room-scoped STOMP broadcasting and live session scoring. PostgreSQL handles durable persistence; Redis handles hot-path game state.",
-            "primaryUsers": [
-                "Players participating in real-time games",
-                "Hosts creating and managing multiplayer rooms",
-                "Administrators managing game content (RBAC on roadmap)"
-            ],
-            "keyCapabilities": [
-                "Centralised OAuth2 authentication with JWT access and refresh tokens",
-                "Reusable room creation, join/leave lifecycle, and session management",
-                "Real-time events via WebSocket/STOMP — topic-based and queue-based routing",
-                "Shared in-room chat system with persistence",
-                "Pluggable game module architecture — stable platform concerns separated from game-specific logic",
-                "Dual data store: PostgreSQL 17 (Flyway-managed) for durable state, Redis 7 for low-latency active session data",
-                "Pokémon Quiz: single-player with session tracking and analysis; multiplayer with room-scoped live gameplay"
-            ],
-            "knownLimitations": [
-                "Role-Based Access Control (RBAC) is not implemented; admin access is currently handled via request parameters",
-                "Only one game module (Pokémon Quiz) is currently implemented",
-                "No Kubernetes deployment yet — Docker Compose for local dev"
-            ]
+        {
+          "value": 3,
+          "label": "pipeline stages"
         },
-        "architecture": {
-            "overview": "A Next.js frontend communicates with a Spring Boot game platform via REST and WebSocket/STOMP. The platform exposes shared services for authentication, rooms, messaging, and persistence, while individual games reuse these services and implement only their game-specific logic. PostgreSQL 17 with Flyway stores durable data; Redis 7 handles fast state access for active game sessions.",
-            "diagram": {
-                "type": "text",
-                "content": "graph LR\n\nA[Next.js Client]\nB[Spring Boot Game Platform]\nD[WebSocket Broker]\nC[(PostgreSQL 17)]\nE[(Redis 7)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  E\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Flyway| C\nB -->|RedisTemplate| E"
-            },
-            "components": [
-                {
-                    "name": "Frontend Web App",
-                    "type": "frontend",
-                    "responsibilities": [
-                        "Authentication and session UI",
-                        "Game-specific UI rendering",
-                        "Multiplayer room creation, joining, and interaction",
-                        "WebSocket/STOMP event handling and game state display"
-                    ],
-                    "tech": [
-                        "Next.js 15.5.3",
-                        "React 19.1.0",
-                        "TypeScript",
-                        "Tailwind CSS 4",
-                        "STOMPJS",
-                        "SockJS"
-                    ]
-                },
-                {
-                    "name": "Game Platform Backend",
-                    "type": "backend",
-                    "responsibilities": [
-                        "Centralised OAuth2 authentication and JWT token issuance",
-                        "Reusable room creation, join/leave lifecycle, and session management",
-                        "Game-agnostic WebSocket/STOMP message routing",
-                        "Shared chat system with message persistence",
-                        "Game module orchestration and result persistence"
-                    ],
-                    "tech": [
-                        "Spring Boot 3.5.5",
-                        "Spring Security",
-                        "Spring WebSocket (STOMP)",
-                        "Spring Data JPA",
-                        "OAuth2 Client",
-                        "Flyway"
-                    ]
-                },
-                {
-                    "name": "Database",
-                    "type": "database",
-                    "responsibilities": [
-                        "Persist users, rooms, sessions, game data, and chat messages via Flyway-managed schema"
-                    ],
-                    "tech": ["PostgreSQL 17"]
-                },
-                {
-                    "name": "Cache / State Store",
-                    "type": "cache",
-                    "responsibilities": [
-                        "Low-latency state access for active game sessions",
-                        "Current question, live scores, and session data during gameplay"
-                    ],
-                    "tech": ["Redis 7"]
-                },
-                {
-                    "name": "WebSocket Broker",
-                    "type": "broker",
-                    "responsibilities": [
-                        "Topic- and queue-based real-time message distribution to room participants"
-                    ],
-                    "tech": ["Spring Simple Broker (in-memory)"]
-                }
-            ],
-            "dataFlow": [
-                {
-                    "flowName": "Authentication",
-                    "steps": [
-                        "User signs in via OAuth2",
-                        "Platform issues JWT access and refresh tokens",
-                        "Client authenticates all protected REST and WebSocket requests with JWT"
-                    ]
-                },
-                {
-                    "flowName": "Game Session (Single-Player)",
-                    "steps": [
-                        "Client creates a game session via REST",
-                        "Game module processes player actions and scores responses",
-                        "Platform persists results to PostgreSQL",
-                        "Session analysis exposed via REST endpoint"
-                    ]
-                },
-                {
-                    "flowName": "Multiplayer Gameplay",
-                    "steps": [
-                        "Host creates a room via REST; players join via room code",
-                        "Game start event broadcast to all room subscribers via STOMP topic",
-                        "Player answers sent to /app destination over WebSocket",
-                        "Platform validates answers and updates live scores in Redis",
-                        "Score updates broadcast to room topic in real time",
-                        "Final results persisted to PostgreSQL on game end"
-                    ]
-                },
-                {
-                    "flowName": "Room Chat",
-                    "steps": [
-                        "Client sends chat messages to the room channel via STOMP",
-                        "Platform persists messages to PostgreSQL",
-                        "Messages broadcast to all room participants"
-                    ]
-                }
-            ],
-            "architectureRationale": "The platform/module separation keeps stable concerns (auth, rooms, messaging, persistence) decoupled from game-specific logic, enabling new game types to be added without re-implementing infrastructure. Flyway-managed schema over ddl-auto=update ensures forward-only migrations safe for production. Redis vs PostgreSQL split is intentional: durable game history goes to PostgreSQL; transient active state that changes every few seconds stays in Redis."
-        },
-        "technologyStack": {
-            "backend": [
-                {
-                    "name": "Spring Boot",
-                    "version": "3.5.5",
-                    "purpose": "Platform backend — auth, room management, WebSocket routing, game module orchestration",
-                    "tradeOffs": "In-memory STOMP broker limits horizontal scaling; RabbitMQ externalisation on roadmap"
-                },
-                {
-                    "name": "Flyway",
-                    "version": "N/A",
-                    "purpose": "Forward-only schema versioning from project start",
-                    "tradeOffs": "More discipline required than ddl-auto=update, but necessary for anything resembling production"
-                },
-                {
-                    "name": "PostgreSQL",
-                    "version": "17",
-                    "purpose": "Durable persistence for users, rooms, sessions, game data, chat messages",
-                    "tradeOffs": "Single-node in current deployment"
-                },
-                {
-                    "name": "Redis",
-                    "version": "7",
-                    "purpose": "Low-latency game state for active sessions — current question, live scores, session data",
-                    "tradeOffs": "Transient by design; data loss acceptable since PostgreSQL holds the source of truth"
-                }
-            ],
-            "frontend": [
-                {
-                    "name": "Next.js",
-                    "version": "15.5.3",
-                    "purpose": "Full-stack React framework with routing, SSR, and API routes",
-                    "tradeOffs": "Heavier than a plain Vite SPA but appropriate for a multi-page game platform"
-                },
-                {
-                    "name": "React",
-                    "version": "19.1.0",
-                    "purpose": "Component-based UI for game rendering and room interaction",
-                    "tradeOffs": "React 19 concurrent features add complexity"
-                },
-                {
-                    "name": "Tailwind CSS",
-                    "version": "4",
-                    "purpose": "Utility-first styling with consistent design tokens",
-                    "tradeOffs": "Tailwind 4 is current-gen — some ecosystem tooling still catching up"
-                }
-            ],
-            "infrastructure": ["Docker", "Docker Compose"],
-            "rejectedAlternatives": [
-                {
-                    "option": "ddl-auto=update for schema management",
-                    "reasonRejected": "Unsafe for anything resembling production — Flyway provides deterministic, auditable migrations"
-                },
-                {
-                    "option": "Single data store (PostgreSQL only)",
-                    "reasonRejected": "Active game state changes every few seconds; reading from PostgreSQL on every game tick would destroy latency"
-                },
-                {
-                    "option": "Monolithic game logic",
-                    "reasonRejected": "Would require re-implementing auth, rooms, and messaging for every new game type — the entire point of the platform is to avoid this"
-                }
-            ]
-        },
-
-        "roadmap": {
-            "shortTerm": [
-                "Add proper README to the repository",
-                "Harden security rules for platform and WebSocket endpoints",
-                "Replace admin access via request parameters with proper authorization"
-            ],
-            "midTerm": [
-                "Add JWT resource-server validation",
-                "Abstract game-module interfaces for easier game type expansion",
-                "Deploy to a public URL alongside Hermes"
-            ],
-            "longTerm": [
-                "Externalise WebSocket broker (RabbitMQ) for horizontal scaling",
-                "Implement RBAC for admin and game content management",
-                "Support multiple concurrent game types"
-            ]
+        {
+          "value": "JSON",
+          "label": "visualizer contract"
         }
+      ],
+      "readout": "hover to fan out the sheets"
     },
-
-    "calculate": {
-        "meta": {
-            "projectName": "Calculate",
-            "codename": "calc",
-            "version": "0.1.0",
-            "status": "active",
-            "lastUpdated": "2026-02-05",
-            "maintainers": ["Raunak"],
-            "repository": "https://github.com/Raunak7888/Calculate",
-            "license": "MIT",
-            "post": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+    "presentation": {
+      "interaction": "layers"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/AlgoForge"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/algoforge1.webp",
+        "alt": "AlgoForge workspace screenshot",
+        "width": 1523,
+        "height": 735
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Node.js",
+        "category": "Backend"
+      },
+      {
+        "name": "Express.js",
+        "category": "Backend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Backend"
+      },
+      {
+        "name": "Prisma ORM",
+        "category": "Backend"
+      },
+      {
+        "name": "Next.js 16",
+        "category": "Frontend"
+      },
+      {
+        "name": "React 19",
+        "category": "Frontend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Frontend"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Frontend"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Database"
+      },
+      {
+        "name": "Redis",
+        "category": "Database"
+      },
+      {
+        "name": "Google Gemini API",
+        "category": "AI"
+      },
+      {
+        "name": "LangChain",
+        "category": "AI"
+      },
+      {
+        "name": "Vercel AI SDK",
+        "category": "AI"
+      },
+      {
+        "name": "pnpm Workspaces",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Git",
+        "category": "Infrastructure"
+      }
+    ],
+    "executiveSummary": {
+      "oneLiner": "AlgoForge turns source code into plain explanations and step-by-step visualizations, so you can see what your code is doing instead of guessing.",
+      "problemStatement": "Reading code is one thing. Seeing how it runs, one step at a time, is much harder. Most learners are left imagining what happens inside a loop or a recursive call.",
+      "solutionOverview": "AlgoForge keeps three jobs apart: analysing the code, generating visualization JSON, and drawing it on screen. The AI explains the code, ForgeCode turns that analysis into JSON, and the visualizer plays it back frame by frame. You can also ask follow-up questions about your own code.",
+      "primaryUsers": [
+        "Programming students",
+        "Software developers",
+        "Computer science learners",
+        "Anyone studying algorithms and data structures"
+      ],
+      "keyCapabilities": [
+        "AI source code analysis with structured explanations",
+        "Frame-by-frame algorithm visualization with real-time state changes",
+        "Optimization suggestions and doubt solving",
+        "LangChain pipelines that return schema-compliant JSON",
+        "ForgeCode: TypeScript layer that generates visualization JSON",
+        "Context-aware AI chat with follow-up questions about your code",
+        "Workspace drafts and explanation sessions",
+        "AI usage tracking with a separate visualization quota",
+        "SHA-256 deduplication to skip repeated analysis"
+      ],
+      "knownLimitations": [
+        "AI-generated analysis and visualizations may need a human double-check",
+        "Visualization accuracy depends on the generated structured data",
+        "AI provider availability and usage limits affect generation",
+        "ForgeCode output quality depends on the input context and instructions"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Make AI analysis more accurate",
+        "Make ForgeCode generation more reliable",
+        "Strengthen conversation context handling",
+        "Improve request cancellation and error handling",
+        "Finish the workspace and explanation session flows"
+      ],
+      "midTerm": [
+        "Make visualization generation more consistent",
+        "Choose AI providers smartly to keep costs down",
+        "Support more algorithms and data structures",
+        "Validate structured AI responses more strictly"
+      ],
+      "longTerm": [
+        "Support more programming languages",
+        "Expand what can be visualized",
+        "Add interactive debugging",
+        "Grow into a full code learning platform"
+      ]
+    },
+    "architecture": {
+      "overview": "A Next.js frontend talks to an Express backend. The backend handles authentication, the database, AI orchestration and usage tracking. AI providers produce structured analysis, and ForgeCode turns it into the JSON the visualizer plays.",
+      "components": [
+        {
+          "name": "Frontend Application",
+          "type": "frontend",
+          "responsibilities": [
+            "Code editor interface",
+            "AI chat interface",
+            "Interactive visualization rendering",
+            "Workspace and draft management",
+            "Explanation session interface",
+            "Markdown and code rendering"
+          ],
+          "tech": [
+            "Next.js 16",
+            "React 19",
+            "TypeScript",
+            "Tailwind CSS"
+          ]
         },
-        "images": [
-          "/uploads/calculate1.png",
-          "/uploads/calculate2.png",
-          "/uploads/calculate3.png",
-          "/uploads/calculate4.png",
-          "/uploads/calculate5.png"
-        ],
-        "executiveSummary": {
-            "oneLiner": "A scientific expression evaluator built from scratch using classic compiler techniques — tokenisation, implicit multiplication injection, Shunting-Yard postfix conversion, and stack-based evaluation. Supporting 50+ mathematical functions and 70+ operators with zero external math dependencies.",
-            "problemStatement": "Most calculator projects call eval() or a library. This project explores how calculators and programming language parsers actually work: what happens between the user typing '2 + 3 * sin(pi/4)^2' and a number appearing on screen?",
-            "solutionOverview": "A Python package exposes a StackQueueCalculator that tokenises input, injects implicit multiplication, converts to postfix via the Shunting-Yard algorithm, and evaluates results with a function registry covering arithmetic, trig, hyperbolic, logs, combinatorics, and constants. A Medium article explains the algorithm and implementation decisions publicly.",
-            "primaryUsers": [
-                "Developers and learners exploring parsing algorithms and DSA concepts",
-                "Students studying compiler techniques and stack-based evaluation",
-                "Developers wanting a programmable scientific calculator library"
-            ],
-            "keyCapabilities": [
-                "Expression tokenisation with implicit multiplication injection ('2pi' → '2 * pi')",
-                "Shunting-Yard algorithm for infix-to-postfix conversion with full precedence and associativity",
-                "Stack-based postfix (RPN) evaluation",
-                "50+ functions: arithmetic, trig, hyperbolic, logarithms, combinatorics (nPr, nCr, GCD, LCM), utility (abs, floor, ceil, hypot, atan2)",
-                "5 constants (π, e, τ, φ, ans), memory operations (M+, M-, MR, MC), and last-answer reference",
-                "Domain validation (no sqrt of negative, no division by zero) and overflow protection",
-                "100+ test cases across 9 categories",
-                "Zero external math library dependencies"
-            ],
-            "knownLimitations": [
-                "No CLI or GUI interface — usage is via Python API",
-                "No persistence layer for history or memory across runs",
-                "Random function ignores its argument",
-                "No complex-number support for invalid domains (e.g., sqrt(-1))"
-            ]
+        {
+          "name": "Backend API",
+          "type": "backend",
+          "responsibilities": [
+            "Authentication and authorization",
+            "API request handling",
+            "AI provider orchestration",
+            "Conversation management",
+            "Explanation session management",
+            "AI usage and quota management",
+            "Workspace and draft operations"
+          ],
+          "tech": [
+            "Node.js",
+            "Express.js",
+            "TypeScript"
+          ]
         },
-        "architecture": {
-            "overview": "A single-process Python library where expression processing flows through a linear pipeline: tokeniser → implicit multiplication injector → postfix converter → stack evaluator. Math function groups are modularised by domain (trig, hyperbolic, math) in a function registry. The StackQueueCalculator orchestrates the pipeline and maintains in-process memory and last-answer state.",
-            "diagram": {
-                "type": "text",
-                "content": "graph TB\n\nA[User Expression]\nB[Tokenizer]\nC[Implicit Multiplication Injector]\nD[Postfix Converter - Shunting-Yard]\nE[Stack Evaluator]\nF[Numeric Result]\n\nA --> B --> C --> D --> E --> F\n"
-            },
-            "components": [
-                {
-                    "name": "StackQueueCalculator",
-                    "type": "core",
-                    "responsibilities": [
-                        "Orchestrate tokenisation, postfix conversion, and stack evaluation",
-                        "Maintain in-process memory and last-answer state",
-                        "Register functions and constants into the function registry"
-                    ],
-                    "tech": ["Python 3.13+"]
-                },
-                {
-                    "name": "Tokenizer",
-                    "type": "parser",
-                    "responsibilities": [
-                        "Convert input string to typed tokens (numbers, operators, functions, constants)",
-                        "Distinguish unary negation from binary subtraction",
-                        "Identify named constants and function calls"
-                    ],
-                    "tech": ["Python"]
-                },
-                {
-                    "name": "Implicit Multiplication Injector",
-                    "type": "parser",
-                    "responsibilities": [
-                        "Insert missing * tokens without introducing ambiguity ('2pi' → '2 * pi', '2(3+4)' → '2 * (3+4)')"
-                    ],
-                    "tech": ["Python"]
-                },
-                {
-                    "name": "Postfix Converter",
-                    "type": "parser",
-                    "responsibilities": [
-                        "Apply Shunting-Yard algorithm to convert infix to RPN",
-                        "Respect operator precedence and associativity",
-                        "Handle parentheses, unary functions, and binary functions"
-                    ],
-                    "tech": ["Python"]
-                },
-                {
-                    "name": "Postfix Evaluator",
-                    "type": "evaluator",
-                    "responsibilities": [
-                        "Evaluate postfix expression via operand stack operations",
-                        "Dispatch to function registry for named unary and binary functions",
-                        "Domain validation and overflow protection"
-                    ],
-                    "tech": ["Python"]
-                },
-                {
-                    "name": "Function Modules",
-                    "type": "library",
-                    "responsibilities": [
-                        "Provide math, trig, and hyperbolic function implementations",
-                        "Safe domain validation checks for all 50+ functions",
-                        "Combinatorics with overflow protection (factorial of large numbers)"
-                    ],
-                    "tech": ["Python math standard library"]
-                }
-            ],
-            "dataFlow": [
-                {
-                    "flowName": "Expression Evaluation",
-                    "steps": [
-                        "User passes an expression string to evaluate()",
-                        "Tokeniser converts string into typed tokens",
-                        "Implicit multiplication injector inserts missing * operators",
-                        "Postfix converter applies Shunting-Yard and generates RPN sequence",
-                        "Stack evaluator computes final numeric result with domain validation"
-                    ]
-                },
-                {
-                    "flowName": "Memory Operations",
-                    "steps": [
-                        "User calls memory add/subtract/recall/clear",
-                        "Calculator updates in-process memory state",
-                        "Memory value available as operand in subsequent expressions"
-                    ]
-                }
-            ],
-            "architectureRationale": "The tokeniser → Shunting-Yard → postfix evaluation pipeline mirrors classic compiler front-end structure, keeping each stage's responsibility clear and independently testable. Zero external math dependencies keeps the project self-contained and the implementation educational — there is no abstraction hiding how it actually works."
+        {
+          "name": "AI Integration",
+          "type": "ai",
+          "responsibilities": [
+            "Source code analysis",
+            "Structured explanation generation",
+            "Visualization instruction generation",
+            "Context-aware conversations",
+            "Follow-up question handling"
+          ],
+          "tech": [
+            "Google Gemini API",
+            "LangChain",
+            "Vercel AI SDK"
+          ]
         },
-        "technologyStack": {
-            "backend": [
-                {
-                    "name": "Python",
-                    "version": ">=3.13",
-                    "purpose": "Core runtime, standard math utilities, and all parsing logic",
-                    "tradeOffs": "Single-process execution; no built-in UI; GIL limits true parallelism (irrelevant for this use case)"
-                },
-                {
-                    "name": "Colorama",
-                    "version": ">=0.4.6",
-                    "purpose": "Optional console output styling in test runner",
-                    "tradeOffs": "Not required for calculator logic; test-only dependency"
-                },
-                {
-                    "name": "uv",
-                    "version": "N/A",
-                    "purpose": "Fast Python package manager; pyproject.toml packaging with .python-version pinning",
-                    "tradeOffs": "Newer toolchain — less universal than pip but significantly faster"
-                }
-            ],
-            "frontend": [],
-            "infrastructure": [],
-            "rejectedAlternatives": [
-                {
-                    "option": "eval() for expression evaluation",
-                    "reasonRejected": "Security risk and defeats the entire educational purpose of the project"
-                },
-                {
-                    "option": "External parser library (PLY, lark)",
-                    "reasonRejected": "Same reason — the goal is to understand and implement the algorithm, not call it"
-                },
-                {
-                    "option": "Complex number support",
-                    "reasonRejected": "Would require a separate numeric type throughout the pipeline; on the long-term roadmap"
-                }
-            ]
+        {
+          "name": "ForgeCode Engine",
+          "type": "visualization-engine",
+          "responsibilities": [
+            "Receive current editor code",
+            "Receive AI analysis JSON",
+            "Receive AI visualizer execution JSON",
+            "Process conversation history and the latest user query",
+            "Use system instructions to generate visualization JSON",
+            "Regenerate visualization data whenever input changes"
+          ],
+          "tech": [
+            "TypeScript",
+            "JSON"
+          ]
         },
-        "roadmap": {
-            "shortTerm": [
-                "Add a minimal CLI runner",
-                "Expose evaluate_with_steps() in usage docs for educational use"
-            ],
-            "midTerm": [
-                "Add persistent history and session export",
-                "Provide a simple TUI or GUI"
-            ],
-            "longTerm": [
-                "Add complex number support",
-                "Introduce plugin system for custom functions"
-            ]
+        {
+          "name": "Database",
+          "type": "database",
+          "responsibilities": [
+            "User data persistence",
+            "Explanation session storage",
+            "Conversation history storage",
+            "Workspace draft persistence",
+            "AI usage tracking"
+          ],
+          "tech": [
+            "PostgreSQL",
+            "Prisma ORM"
+          ]
         }
+      ],
+      "dataFlow": [
+        {
+          "flowName": "Code Analysis",
+          "steps": [
+            "User submits source code",
+            "Frontend sends code to the backend",
+            "Backend hashes the code with SHA-256 and checks for stored analysis",
+            "If it is new, the AI provider analyses it",
+            "Structured analysis is returned",
+            "Frontend displays the explanation"
+          ]
+        },
+        {
+          "flowName": "Visualization Generation",
+          "steps": [
+            "Frontend provides the current editor code",
+            "AI analysis JSON is supplied",
+            "AI visualizer execution JSON is supplied",
+            "Conversation history and latest user query are supplied",
+            "ForgeCode processes the inputs using its system instructions",
+            "ForgeCode generates visualization JSON",
+            "Visualizer plays the JSON frame by frame",
+            "Edited code triggers regeneration"
+          ]
+        },
+        {
+          "flowName": "AI Conversation",
+          "steps": [
+            "User submits a query",
+            "Backend retrieves relevant conversation context",
+            "Backend sends role-based messages to the AI provider",
+            "AI generates a contextual response",
+            "Backend persists the conversation",
+            "Frontend displays the response"
+          ]
+        }
+      ],
+      "architectureRationale": "Keeping analysis, visualization generation and rendering separate makes each part easier to change. Structured JSON is the contract between the AI and the visualizer, and ForgeCode is the programmable layer that turns inputs into that JSON."
+    },
+    "technologyStack": {
+      "backend": [
+        "Node.js",
+        "Express.js",
+        "TypeScript",
+        "Prisma ORM"
+      ],
+      "frontend": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Redis"
+      ],
+      "ai": [
+        "Google Gemini API",
+        "LangChain",
+        "Vercel AI SDK"
+      ],
+      "infrastructure": [
+        "pnpm Workspaces",
+        "Git"
+      ]
+    },
+    "engineeringImprovements": [
+      {
+        "name": "SHA-256 Deduplication",
+        "purpose": "Spot repeated code and reuse stored analysis",
+        "reportedImpact": "About 60% less AI processing"
+      },
+      {
+        "name": "Separate Visualization Quota",
+        "purpose": "Track visualization usage apart from other AI features"
+      },
+      {
+        "name": "Workspace Drafts",
+        "purpose": "Keep your work safe between sessions"
+      },
+      {
+        "name": "AI Conversation Improvements",
+        "purpose": "Better context handling, role-based messages and request cancellation"
+      },
+      {
+        "name": "Explanation Session Management",
+        "purpose": "Pagination, renaming and deletion of sessions"
+      },
+      {
+        "name": "AIChatDrawer",
+        "purpose": "A dedicated drawer for chatting with the AI"
+      },
+      {
+        "name": "Markdown Code Rendering",
+        "purpose": "Easier-to-read AI explanations"
+      }
+    ]
+  },
+  "hermes": {
+    "meta": {
+      "projectName": "Hermes",
+      "status": "active",
+      "codename": "hermes-chat",
+      "version": "0.1.0",
+      "maintainers": [
+        "Raunak"
+      ],
+      "license": "MIT",
+      "lastUpdated": "2026-11-19"
+    },
+    "card": {
+      "order": 2,
+      "kind": "Full-stack app",
+      "tagline": "Private chats the server can't read.",
+      "summary": "A real-time chat app with end-to-end encrypted private messages, group chat and image sharing. It runs on a k3s cluster on GCP that I set up myself. Group messages are not end-to-end encrypted.",
+      "tint": "oklch(0.68 0.14 235)",
+      "chips": [
+        "Java",
+        "Spring Boot",
+        "React",
+        "TypeScript",
+        "k3s"
+      ],
+      "bullets": [
+        "Private chats: ECDH P-256 key exchange and AES-GCM per message, done in the browser",
+        "Real-time chat over WebSocket/STOMP with presence and typing indicators",
+        "Redis sliding-window rate limiting per user",
+        "Terraform and Ansible build the GCP cluster. The GitHub Actions pipeline with Trivy scans is written, just not switched on yet"
+      ],
+      "metrics": [
+        {
+          "value": 2,
+          "label": "GCP VMs"
+        },
+        {
+          "value": 24,
+          "suffix": "h",
+          "label": "message history"
+        },
+        {
+          "value": "AES-GCM",
+          "label": "private chat encryption"
+        }
+      ],
+      "readout": "hover or tap to watch the thread"
+    },
+    "presentation": {
+      "interaction": "conversation"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Hermes"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/hermes1.webp",
+        "alt": "Hermes chat interface showing a private conversation",
+        "width": 1600,
+        "height": 760
+      },
+      {
+        "src": "/uploads/hermes2.webp",
+        "alt": "Hermes screenshot 2",
+        "width": 1600,
+        "height": 761
+      },
+      {
+        "src": "/uploads/hermes3.webp",
+        "alt": "Hermes screenshot 3",
+        "width": 1600,
+        "height": 757
+      },
+      {
+        "src": "/uploads/hermes4.webp",
+        "alt": "Hermes screenshot 4",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/hermes5.webp",
+        "alt": "Hermes screenshot 5",
+        "width": 1600,
+        "height": 768
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Java 21",
+        "category": "Language"
+      },
+      {
+        "name": "Spring Boot",
+        "category": "Backend"
+      },
+      {
+        "name": "GCP",
+        "category": "Cloud"
+      },
+      {
+        "name": "Kubernetes (k3s)",
+        "category": "DevOps"
+      },
+      {
+        "name": "MySQL 8",
+        "category": "Database"
+      },
+      {
+        "name": "Redis 7",
+        "category": "Database/Caching"
+      },
+      {
+        "name": "React 18",
+        "category": "Frontend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Language"
+      },
+      {
+        "name": "Vite 6",
+        "category": "Frontend"
+      },
+      {
+        "name": "Zustand",
+        "category": "Frontend"
+      },
+      {
+        "name": "Docker",
+        "category": "DevOps"
+      },
+      {
+        "name": "Terraform",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Ansible",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "DevOps"
+      },
+      {
+        "name": "Traefik",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Prometheus",
+        "category": "Observability"
+      },
+      {
+        "name": "Grafana",
+        "category": "Observability"
+      }
+    ],
+    "executiveSummary": {
+      "oneLiner": "Hermes is a real-time chat app with end-to-end encrypted private chats and group chat, running on a k3s Kubernetes cluster on GCP that I built and automated myself.",
+      "problemStatement": "I wanted to build a chat system and solve the whole stack on my own: real-time messaging, private-by-design encryption, sign-in, cloud infrastructure, containers, delivery pipelines and monitoring, all without managed services doing the hard parts for me.",
+      "solutionOverview": "A Spring Boot backend serves REST APIs for sign-in and data, and WebSocket/STOMP for live messaging. Private messages are encrypted in the browser with the WebCrypto API, so the server only ever stores ciphertext. Terraform and Ansible set up the GCP infrastructure, k3s runs the app, and a GitHub Actions pipeline with Trivy scanning is ready to deploy it.",
+      "primaryUsers": [
+        "People who want private, real-time chat"
+      ],
+      "keyCapabilities": [
+        "End-to-end encrypted private chats: ECDH P-256 key exchange and AES-GCM per message via WebCrypto",
+        "Real-time private and group messaging over WebSocket/STOMP",
+        "Google OAuth2 and email/password sign-in with OTP verification and password reset",
+        "JWT access and refresh tokens in secure cookies",
+        "Secure image sharing with Redis caching",
+        "Live presence and typing indicators",
+        "Per-user sliding-window rate limiting in Redis",
+        "Group creation, membership and group chat",
+        "Kubernetes setup: Deployments, StatefulSets, HPA, NetworkPolicies, CronJob and cert-manager",
+        "CI/CD pipeline with Trivy scanning and smoke testing (written, not yet switched on)",
+        "Prometheus and Grafana monitoring"
+      ],
+      "knownLimitations": [
+        "Group messages are not end-to-end encrypted",
+        "The in-memory STOMP broker does not scale horizontally. RabbitMQ is on the roadmap",
+        "Local file storage does not survive pod restarts",
+        "Message history is limited to the last 24 hours"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Switch on the GitHub Actions workflow (move .github-example to .github)",
+        "Add unit and integration tests with JUnit 5 and @SpringBootTest",
+        "Keep uploaded files across pod restarts"
+      ],
+      "midTerm": [
+        "Message pagination",
+        "Testcontainers-based integration tests for MySQL and Redis",
+        "Flyway schema versioning, like in Pokeverse"
+      ],
+      "longTerm": [
+        "External STOMP broker (RabbitMQ) for horizontal scaling",
+        "Redis cluster with multiple instances",
+        "Real user traffic and load testing"
+      ]
+    },
+    "architecture": {
+      "overview": "A React/Vite app talks to a Spring Boot monolith over REST and WebSocket/STOMP. Private messages are encrypted in the browser with WebCrypto before they leave. Two GCP VMs run a k3s cluster, built with Terraform and configured with Ansible.",
+      "diagram": {
+        "type": "text",
+        "content": "graph LR\n\nA[Browser SPA]\nB[Spring Boot API]\nD[WebSocket Broker]\nC[(MySQL 8)]\nR[(Redis 7)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  R\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Hibernate| C\nB -->|RedisTemplate · Pub-Sub| R\n\nclassDef client fill:#1e293b,stroke:#38bdf8,stroke-width:1.5px,color:#e5e7eb\nclassDef server fill:#020617,stroke:#7c7cff,stroke-width:1.5px,color:#e5e7eb\nclassDef data fill:#020617,stroke:#22c55e,stroke-width:1.5px,color:#e5e7eb\n\nclass A client\nclass B,D server\nclass C,R data"
+      },
+      "components": [
+        {
+          "name": "Frontend SPA",
+          "type": "frontend",
+          "responsibilities": [
+            "Sign-in screens",
+            "Chat and group management UI",
+            "E2EE key generation and message encryption via WebCrypto",
+            "WebSocket connection and STOMP message handling",
+            "Image upload and display",
+            "Typing indicators and user presence"
+          ],
+          "tech": [
+            "React 18",
+            "TypeScript",
+            "Vite 6",
+            "Zustand",
+            "CSS Modules",
+            "Tailwind CSS",
+            "SockJS",
+            "STOMPJS"
+          ]
+        },
+        {
+          "name": "Backend API",
+          "type": "backend",
+          "responsibilities": [
+            "JWT issuing and the Spring Security filter chain",
+            "Google OAuth2 and email/password sign-in with OTP",
+            "User and group management",
+            "Message storage (private messages are ciphertext only)",
+            "Redis-backed image caching and rate limiting",
+            "File handling",
+            "WebSocket/STOMP routing and broadcasting"
+          ],
+          "tech": [
+            "Spring Boot 3.3.4",
+            "Spring Security",
+            "Spring WebSocket (STOMP)",
+            "Spring Data JPA",
+            "OAuth2 Client"
+          ]
+        },
+        {
+          "name": "Database",
+          "type": "database",
+          "responsibilities": [
+            "Store users, roles, messages, groups and file metadata"
+          ],
+          "tech": [
+            "MySQL 8"
+          ]
+        },
+        {
+          "name": "Cache / Pub-Sub",
+          "type": "cache",
+          "responsibilities": [
+            "Image caching",
+            "Sharing E2EE public keys",
+            "Per-user sliding-window rate limiting",
+            "Pub-sub message distribution"
+          ],
+          "tech": [
+            "Redis 7"
+          ]
+        },
+        {
+          "name": "WebSocket Broker",
+          "type": "broker",
+          "responsibilities": [
+            "Broadcast messages to /topic and /user/queue destinations"
+          ],
+          "tech": [
+            "Spring Simple Broker (in-memory)"
+          ]
+        },
+        {
+          "name": "Infrastructure",
+          "type": "infrastructure",
+          "responsibilities": [
+            "GCP VPC, subnet and firewall setup",
+            "Two-VM compute provisioning",
+            "k3s server and agent installation",
+            "Security hardening (UFW, fail2ban, kernel params)",
+            "Prometheus and Grafana deployment",
+            "Applying Kubernetes manifests"
+          ],
+          "tech": [
+            "Terraform (GCP)",
+            "Ansible",
+            "k3s",
+            "GCP Compute Engine"
+          ]
+        },
+        {
+          "name": "CI/CD Pipeline",
+          "type": "cicd",
+          "responsibilities": [
+            "Run unit tests",
+            "Trivy scan of Docker images and IaC manifests",
+            "SHA-tagged multi-stage Docker build and push",
+            "kubectl rollout with a smoke test"
+          ],
+          "tech": [
+            "GitHub Actions",
+            "Trivy",
+            "Docker Hub"
+          ]
+        },
+        {
+          "name": "Observability",
+          "type": "monitoring",
+          "responsibilities": [
+            "JVM heap and GC metrics",
+            "HTTP p50/p95/p99 latency",
+            "WebSocket connection count",
+            "Redis hit/miss ratio",
+            "MySQL connection pool",
+            "HPA replica count"
+          ],
+          "tech": [
+            "Prometheus",
+            "Grafana",
+            "Spring Boot Actuator"
+          ]
+        }
+      ],
+      "dataFlow": [
+        {
+          "flowName": "Sign-in (Email/Password)",
+          "steps": [
+            "User submits credentials",
+            "Backend validates and sends an OTP by email",
+            "User verifies the OTP",
+            "Backend issues JWT access and refresh tokens",
+            "Tokens are stored in secure browser cookies"
+          ]
+        },
+        {
+          "flowName": "Sign-in (Google OAuth2)",
+          "steps": [
+            "User starts the Google OAuth2 flow",
+            "Spring Security's OAuth2 client handles the callback",
+            "Backend issues JWT access and refresh tokens",
+            "Tokens are stored in secure browser cookies"
+          ]
+        },
+        {
+          "flowName": "E2EE Key Exchange",
+          "steps": [
+            "On login, the browser generates an ECDH P-256 key pair via WebCrypto",
+            "The public key is stored in Redis through a REST call",
+            "The sender fetches the recipient's public key from Redis",
+            "A shared secret is derived in the browser with ECDH",
+            "Messages are encrypted with AES-GCM before sending",
+            "The server stores and forwards ciphertext only"
+          ]
+        },
+        {
+          "flowName": "Real-time Messaging",
+          "steps": [
+            "Client connects to the WebSocket endpoint with its JWT on the STOMP CONNECT frame",
+            "Private messages are encrypted in the browser; group messages are sent as plain text",
+            "Message is sent to an /app destination",
+            "Backend validates, saves and rate-limits it",
+            "Message is broadcast to /topic or /user/queue subscribers"
+          ]
+        },
+        {
+          "flowName": "CI/CD Deployment (written, not yet active)",
+          "steps": [
+            "A push to main triggers the GitHub Actions workflow",
+            "mvn test runs the unit tests",
+            "Trivy scans Docker images and IaC manifests",
+            "Multi-stage Docker build makes SHA-tagged images",
+            "Images are pushed to Docker Hub",
+            "kubectl rollout updates the Kubernetes Deployments",
+            "A smoke test hits /actuator/health to confirm the app is up"
+          ]
+        }
+      ],
+      "architectureRationale": "WebSocket/STOMP keeps chat fast, while REST handles sign-in and data. Encrypting in the browser means even a compromised server can't read private messages. Terraform, Ansible and k3s give a repeatable setup with no managed-service lock-in. The in-memory STOMP broker is the known scaling bottleneck, and RabbitMQ is the planned fix."
+    },
+    "technologyStack": {
+      "backend": [
+        {
+          "name": "Spring Boot",
+          "version": "3.3.4",
+          "purpose": "REST APIs, WebSocket/STOMP, security, JPA and configuration",
+          "tradeOffs": "Heavier on memory than minimal frameworks; a monolith can't scale one piece on its own"
+        },
+        {
+          "name": "Spring Security + JWT",
+          "version": "N/A",
+          "purpose": "Stateless sign-in, the filter chain and OAuth2 client",
+          "tradeOffs": "Filter order has to be right so WebSocket upgrades pass while JWT is still checked on STOMP CONNECT"
+        },
+        {
+          "name": "MySQL 8",
+          "version": "8",
+          "purpose": "Durable storage for users, groups, messages and file metadata",
+          "tradeOffs": "Single node for now; not sharded"
+        },
+        {
+          "name": "Redis 7",
+          "version": "7",
+          "purpose": "Image caching, E2EE public keys, per-user rate limiting and pub-sub",
+          "tradeOffs": "In-memory, so data is lost on restart without persistence configured"
+        }
+      ],
+      "frontend": [
+        {
+          "name": "React",
+          "version": "18",
+          "purpose": "Single-page UI with a feature-based folder structure",
+          "tradeOffs": "State and WebSocket lifecycle must be managed explicitly, done here with Zustand stores"
+        },
+        {
+          "name": "Vite",
+          "version": "6",
+          "purpose": "Fast dev server and production builds",
+          "tradeOffs": "Smaller ecosystem than Webpack for edge cases"
+        },
+        {
+          "name": "TypeScript",
+          "version": "N/A",
+          "purpose": "Type safety across the auth, chat, e2ee, socket and group stores",
+          "tradeOffs": "Adds a compile step and some setup effort"
+        }
+      ],
+      "infrastructure": [
+        "Terraform (GCP)",
+        "Ansible",
+        "k3s (Kubernetes)",
+        "Docker",
+        "Docker Compose",
+        "GitHub Actions",
+        "Traefik",
+        "cert-manager",
+        "Let's Encrypt",
+        "Prometheus",
+        "Grafana",
+        "Trivy",
+        "GCP Compute Engine",
+        "GCP VPC"
+      ],
+      "rejectedAlternatives": [
+        {
+          "option": "Managed real-time services (Pusher, Firebase)",
+          "reasonRejected": "Vendor lock-in and ongoing cost, and it would skip the very infrastructure I wanted to learn"
+        },
+        {
+          "option": "Managed Kubernetes (GKE)",
+          "reasonRejected": "Self-managed k3s teaches more and costs less for a portfolio project"
+        },
+        {
+          "option": "GraphQL",
+          "reasonRejected": "REST plus WebSocket is simpler and enough for messaging"
+        },
+        {
+          "option": "External STOMP broker (RabbitMQ)",
+          "reasonRejected": "The in-memory broker is fine at this scale; RabbitMQ is on the roadmap"
+        }
+      ]
     }
+  },
+  "pokeverse": {
+    "meta": {
+      "projectName": "Pokeverse",
+      "status": "active",
+      "codename": "pokeverse-play",
+      "version": "0.0.1-SNAPSHOT",
+      "maintainers": [
+        "Raunak"
+      ],
+      "license": "MIT",
+      "lastUpdated": "2026-11-19"
+    },
+    "card": {
+      "order": 3,
+      "kind": "Game platform",
+      "tagline": "One platform, many multiplayer games.",
+      "summary": "A real-time multiplayer platform that handles the shared parts (sign-in, rooms, live events, chat and state), so a new game only has to bring its own rules. One game exists so far: a Pokémon quiz.",
+      "tint": "oklch(0.72 0.16 75)",
+      "chips": [
+        "Java",
+        "Spring Boot",
+        "Next.js",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "bullets": [
+        "Live multiplayer quiz matches with synchronized rounds",
+        "Event-driven game engine for player actions, scoring and round progression",
+        "PostgreSQL 17 with Flyway for history, Redis for live scores",
+        "Game modules plug in and bring only their own rules"
+      ],
+      "metrics": [
+        {
+          "value": 2,
+          "label": "data stores"
+        },
+        {
+          "value": 1,
+          "label": "game module"
+        },
+        {
+          "value": "STOMP",
+          "label": "room events"
+        }
+      ],
+      "readout": "move over it to shift the layers"
+    },
+    "presentation": {
+      "interaction": "depth"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Pokeverse"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/pokeverse1.webp",
+        "alt": "Pokeverse Pokémon Quiz game screen",
+        "width": 1600,
+        "height": 764
+      },
+      {
+        "src": "/uploads/pokeverse2.webp",
+        "alt": "Pokeverse screenshot 2",
+        "width": 1600,
+        "height": 771
+      },
+      {
+        "src": "/uploads/pokeverse3.webp",
+        "alt": "Pokeverse screenshot 3",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/pokeverse4.webp",
+        "alt": "Pokeverse screenshot 4",
+        "width": 1600,
+        "height": 769
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Java",
+        "category": "Language"
+      },
+      {
+        "name": "Spring Boot 3.5.5",
+        "category": "Backend"
+      },
+      {
+        "name": "PostgreSQL 17",
+        "category": "Database"
+      },
+      {
+        "name": "Redis 7",
+        "category": "Database/Caching"
+      },
+      {
+        "name": "Next.js",
+        "category": "Frontend"
+      },
+      {
+        "name": "React",
+        "category": "Frontend"
+      },
+      {
+        "name": "Zustand",
+        "category": "Frontend"
+      },
+      {
+        "name": "Docker",
+        "category": "DevOps"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Language"
+      },
+      {
+        "name": "Tailwind CSS 4",
+        "category": "Frontend"
+      }
+    ],
+    "executiveSummary": {
+      "oneLiner": "Pokeverse is a real-time multiplayer game platform that provides the shared basics (sign-in, rooms, live events, chat and state), so each new game can plug in without rebuilding them.",
+      "problemStatement": "Every multiplayer game needs the same things: players who can sign in, rooms they can join, live events, chat and saved state. Rebuilding them for every game is wasteful and leads to uneven quality. Pokeverse puts them in one reusable platform.",
+      "solutionOverview": "A Spring Boot backend offers shared services for sign-in, rooms, live messaging over WebSocket/STOMP and storage. Games plug in as modules and use those services. The Pokémon Quiz shows it off with single-player and multiplayer modes, room-scoped broadcasting and live scoring. PostgreSQL keeps the history; Redis holds the fast-changing game state.",
+      "primaryUsers": [
+        "Players in real-time games",
+        "Hosts who create and run rooms",
+        "Admins who manage game content (RBAC on the roadmap)"
+      ],
+      "keyCapabilities": [
+        "OAuth2 sign-in with JWT access and refresh tokens",
+        "Reusable room creation, join/leave and session handling",
+        "Live events over WebSocket/STOMP, topic-based and queue-based",
+        "Shared in-room chat that is saved",
+        "Event-driven game engine that coordinates player actions, scoring and round progression",
+        "Pluggable game modules, with platform concerns kept separate from game rules",
+        "Two data stores: PostgreSQL 17 (Flyway-managed) for durable data, Redis 7 for fast live state",
+        "Pokémon Quiz: single-player with session tracking and analysis, and room-based multiplayer"
+      ],
+      "knownLimitations": [
+        "Role-based access control (RBAC) is not built yet; admin access currently uses request parameters",
+        "Only one game module (Pokémon Quiz) exists so far",
+        "No Kubernetes deployment yet; Docker Compose is used for local development"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Write a proper README for the repository",
+        "Tighten security rules for platform and WebSocket endpoints",
+        "Replace admin-by-request-parameter with real authorization"
+      ],
+      "midTerm": [
+        "Add JWT resource-server validation",
+        "Define cleaner game-module interfaces so new games are easier to add",
+        "Deploy to a public URL"
+      ],
+      "longTerm": [
+        "Move the WebSocket broker out to RabbitMQ for horizontal scaling",
+        "Build RBAC for admins and game content",
+        "Run several game types at once"
+      ]
+    },
+    "architecture": {
+      "overview": "A Next.js frontend talks to a Spring Boot game platform over REST and WebSocket/STOMP. The platform owns sign-in, rooms, messaging and storage, while each game only adds its own rules. PostgreSQL 17 with Flyway stores durable data, and Redis 7 holds fast state for active games.",
+      "diagram": {
+        "type": "text",
+        "content": "graph LR\n\nA[Next.js Client]\nB[Spring Boot Game Platform]\nD[WebSocket Broker]\nC[(PostgreSQL 17)]\nE[(Redis 7)]\n\nsubgraph Client_Layer[Client Layer]\n  A\nend\n\nsubgraph Application_Layer[Application Layer]\n  B\n  D\nend\n\nsubgraph Persistence_Layer[Persistence Layer]\n  C\n  E\nend\n\nA -->|REST · HTTP/JSON| B\nA -->|WebSocket · STOMP| D\nD -->|Broadcast| A\nB -->|JPA · Flyway| C\nB -->|RedisTemplate| E"
+      },
+      "components": [
+        {
+          "name": "Frontend Web App",
+          "type": "frontend",
+          "responsibilities": [
+            "Sign-in and session screens",
+            "Game screens",
+            "Creating, joining and playing in multiplayer rooms",
+            "WebSocket/STOMP event handling and live game state, kept in sync with Zustand"
+          ],
+          "tech": [
+            "Next.js 15.5.3",
+            "React 19.1.0",
+            "TypeScript",
+            "Zustand",
+            "Tailwind CSS 4",
+            "STOMPJS",
+            "SockJS"
+          ]
+        },
+        {
+          "name": "Game Platform Backend",
+          "type": "backend",
+          "responsibilities": [
+            "OAuth2 sign-in and JWT issuing",
+            "Reusable room creation, join/leave and session handling",
+            "Game-agnostic WebSocket/STOMP routing",
+            "Shared chat with saved messages",
+            "Game module orchestration and result saving"
+          ],
+          "tech": [
+            "Spring Boot 3.5.5",
+            "Spring Security",
+            "Spring WebSocket (STOMP)",
+            "Spring Data JPA",
+            "OAuth2 Client",
+            "Flyway"
+          ]
+        },
+        {
+          "name": "Database",
+          "type": "database",
+          "responsibilities": [
+            "Store users, rooms, sessions, game data and chat messages with a Flyway-managed schema"
+          ],
+          "tech": [
+            "PostgreSQL 17"
+          ]
+        },
+        {
+          "name": "Cache / State Store",
+          "type": "cache",
+          "responsibilities": [
+            "Fast state for active games",
+            "Current question, live scores and session data during play"
+          ],
+          "tech": [
+            "Redis 7"
+          ]
+        },
+        {
+          "name": "WebSocket Broker",
+          "type": "broker",
+          "responsibilities": [
+            "Topic- and queue-based live messages to everyone in a room"
+          ],
+          "tech": [
+            "Spring Simple Broker (in-memory)"
+          ]
+        }
+      ],
+      "dataFlow": [
+        {
+          "flowName": "Sign-in",
+          "steps": [
+            "User signs in with OAuth2",
+            "Platform issues JWT access and refresh tokens",
+            "Client uses the JWT for all protected REST and WebSocket requests"
+          ]
+        },
+        {
+          "flowName": "Game Session (Single-Player)",
+          "steps": [
+            "Client creates a game session over REST",
+            "Game module handles player actions and scores answers",
+            "Platform saves the results to PostgreSQL",
+            "Session analysis is available through a REST endpoint"
+          ]
+        },
+        {
+          "flowName": "Multiplayer Gameplay",
+          "steps": [
+            "Host creates a room over REST; players join with a room code",
+            "Game start event is broadcast to the room over a STOMP topic",
+            "Player answers go to an /app destination over WebSocket",
+            "Platform checks answers and updates live scores in Redis",
+            "Score updates are broadcast to the room in real time",
+            "Final results are saved to PostgreSQL when the game ends"
+          ]
+        },
+        {
+          "flowName": "Room Chat",
+          "steps": [
+            "Client sends a chat message to the room channel over STOMP",
+            "Platform saves it to PostgreSQL",
+            "Message is broadcast to everyone in the room"
+          ]
+        }
+      ],
+      "architectureRationale": "Keeping the stable parts (sign-in, rooms, messaging, storage) apart from game rules means a new game doesn't have to rebuild any of them. Flyway migrations beat ddl-auto=update for safe, forward-only changes. The Redis and PostgreSQL split is on purpose: history goes to PostgreSQL, while state that changes every few seconds stays in Redis."
+    },
+    "technologyStack": {
+      "backend": [
+        {
+          "name": "Spring Boot",
+          "version": "3.5.5",
+          "purpose": "Platform backend: sign-in, rooms, WebSocket routing and game module orchestration",
+          "tradeOffs": "The in-memory STOMP broker limits horizontal scaling; RabbitMQ is on the roadmap"
+        },
+        {
+          "name": "Flyway",
+          "version": "N/A",
+          "purpose": "Forward-only schema versioning from day one",
+          "tradeOffs": "Takes more discipline than ddl-auto=update, but is needed for anything close to production"
+        },
+        {
+          "name": "PostgreSQL",
+          "version": "17",
+          "purpose": "Durable storage for users, rooms, sessions, game data and chat",
+          "tradeOffs": "Single node for now"
+        },
+        {
+          "name": "Redis",
+          "version": "7",
+          "purpose": "Fast state for active games: current question, live scores and session data",
+          "tradeOffs": "Temporary by design; losing it is acceptable because PostgreSQL holds the source of truth"
+        }
+      ],
+      "frontend": [
+        {
+          "name": "Next.js",
+          "version": "15.5.3",
+          "purpose": "React framework with routing, SSR and API routes",
+          "tradeOffs": "Heavier than a plain Vite app, but a good fit for a multi-page game platform"
+        },
+        {
+          "name": "React",
+          "version": "19.1.0",
+          "purpose": "Component-based UI for games and rooms",
+          "tradeOffs": "React 19's concurrent features add some complexity"
+        },
+        {
+          "name": "Tailwind CSS",
+          "version": "4",
+          "purpose": "Utility-first styling with consistent design tokens",
+          "tradeOffs": "Tailwind 4 is new, so some tooling is still catching up"
+        }
+      ],
+      "infrastructure": [
+        "Docker",
+        "Docker Compose"
+      ],
+      "rejectedAlternatives": [
+        {
+          "option": "ddl-auto=update for schema management",
+          "reasonRejected": "Unsafe for anything near production. Flyway gives predictable, auditable migrations"
+        },
+        {
+          "option": "Single data store (PostgreSQL only)",
+          "reasonRejected": "Active game state changes every few seconds, and hitting PostgreSQL on every tick would hurt latency"
+        },
+        {
+          "option": "Monolithic game logic",
+          "reasonRejected": "Every new game would need its own sign-in, rooms and messaging, which defeats the point of a platform"
+        }
+      ]
+    }
+  },
+  "calculate": {
+    "meta": {
+      "projectName": "Calculate",
+      "status": "active",
+      "codename": "calc",
+      "version": "0.1.0",
+      "maintainers": [
+        "Raunak"
+      ],
+      "license": "MIT",
+      "lastUpdated": "2026-11-19"
+    },
+    "card": {
+      "order": 4,
+      "kind": "Python library",
+      "tagline": "A scientific calculator with no eval(), on purpose.",
+      "summary": "A scientific expression evaluator built from scratch with classic compiler ideas. It answers one curious question: what really happens between typing an expression and seeing a number?",
+      "tint": "oklch(0.68 0.17 10)",
+      "chips": [
+        "Python 3.13",
+        "Shunting-Yard",
+        "RPN",
+        "uv"
+      ],
+      "bullets": [
+        "Tokenizer, implicit multiplication, Shunting-Yard and a stack evaluator",
+        "50+ functions and 70+ operators with domain checks",
+        "100+ test cases and no external math libraries",
+        "Explained in a public Medium article"
+      ],
+      "metrics": [
+        {
+          "value": 50,
+          "suffix": "+",
+          "label": "functions"
+        },
+        {
+          "value": 70,
+          "suffix": "+",
+          "label": "operators"
+        },
+        {
+          "value": 100,
+          "suffix": "+",
+          "label": "test cases"
+        }
+      ],
+      "readout": "hover to browse the screenshots"
+    },
+    "presentation": {
+      "interaction": "filmstrip"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Calculate"
+      },
+      {
+        "kind": "post",
+        "label": "Article",
+        "href": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/calculate1.webp",
+        "alt": "Calculate expression evaluator test output",
+        "width": 1600,
+        "height": 762
+      },
+      {
+        "src": "/uploads/calculate2.webp",
+        "alt": "Calculate screenshot 2",
+        "width": 1600,
+        "height": 768
+      },
+      {
+        "src": "/uploads/calculate3.webp",
+        "alt": "Calculate screenshot 3",
+        "width": 1600,
+        "height": 772
+      },
+      {
+        "src": "/uploads/calculate4.webp",
+        "alt": "Calculate screenshot 4",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/calculate5.webp",
+        "alt": "Calculate screenshot 5",
+        "width": 1600,
+        "height": 764
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Python 3.13+",
+        "category": "Language"
+      },
+      {
+        "name": "Shunting-Yard Algorithm",
+        "category": "Algorithm"
+      },
+      {
+        "name": "Postfix (RPN) Evaluation",
+        "category": "Algorithm"
+      },
+      {
+        "name": "Stack & Queue Data Structures",
+        "category": "Data Structures"
+      }
+    ],
+    "executiveSummary": {
+      "oneLiner": "A scientific expression evaluator built from scratch: tokenising, adding hidden multiplication signs, converting to postfix with Shunting-Yard, then evaluating with a stack. It has 50+ functions, 70+ operators and no external math libraries.",
+      "problemStatement": "Most calculator projects just call eval() or a library. This one asks how calculators and parsers actually work: what happens between typing '2 + 3 * sin(pi/4)^2' and a number appearing?",
+      "solutionOverview": "A Python package exposes a StackQueueCalculator. It tokenises the input, injects implicit multiplication, converts to postfix with Shunting-Yard, and evaluates the result using a function registry covering arithmetic, trig, hyperbolic, logs, combinatorics and constants. A Medium article explains the algorithm and the choices behind it.",
+      "primaryUsers": [
+        "Developers and learners curious about parsing and DSA",
+        "Students studying compiler techniques and stack-based evaluation",
+        "Developers who want a programmable scientific calculator"
+      ],
+      "keyCapabilities": [
+        "Tokenisation with implicit multiplication ('2pi' becomes '2 * pi')",
+        "Shunting-Yard conversion from infix to postfix with full precedence and associativity",
+        "Stack-based postfix (RPN) evaluation",
+        "50+ functions: arithmetic, trig, hyperbolic, logarithms, combinatorics (nPr, nCr, GCD, LCM) and utilities (abs, floor, ceil, hypot, atan2)",
+        "5 constants (π, e, τ, φ, ans), memory operations (M+, M-, MR, MC) and last-answer reference",
+        "Domain checks (no sqrt of a negative, no division by zero) and overflow protection",
+        "100+ test cases across 9 categories",
+        "No external math dependencies"
+      ],
+      "knownLimitations": [
+        "No CLI or GUI; it is used through the Python API",
+        "History and memory are not saved between runs",
+        "The random function ignores its argument",
+        "No complex numbers, so sqrt(-1) is rejected"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Add a small CLI runner",
+        "Show evaluate_with_steps() in the usage docs for learning"
+      ],
+      "midTerm": [
+        "Save history and export sessions",
+        "Add a simple TUI or GUI"
+      ],
+      "longTerm": [
+        "Support complex numbers",
+        "Add a plugin system for custom functions"
+      ]
+    },
+    "architecture": {
+      "overview": "A single-process Python library where an expression flows through a straight pipeline: tokeniser, implicit multiplication injector, postfix converter, stack evaluator. Math functions are grouped by domain (trig, hyperbolic, math) in a registry. StackQueueCalculator runs the pipeline and keeps memory and the last answer.",
+      "diagram": {
+        "type": "text",
+        "content": "graph TB\n\nA[User Expression]\nB[Tokenizer]\nC[Implicit Multiplication Injector]\nD[Postfix Converter - Shunting-Yard]\nE[Stack Evaluator]\nF[Numeric Result]\n\nA --> B --> C --> D --> E --> F\n"
+      },
+      "components": [
+        {
+          "name": "StackQueueCalculator",
+          "type": "core",
+          "responsibilities": [
+            "Run tokenisation, postfix conversion and stack evaluation",
+            "Keep memory and the last answer",
+            "Register functions and constants in the function registry"
+          ],
+          "tech": [
+            "Python 3.13+"
+          ]
+        },
+        {
+          "name": "Tokenizer",
+          "type": "parser",
+          "responsibilities": [
+            "Turn the input string into typed tokens (numbers, operators, functions, constants)",
+            "Tell unary negation apart from binary subtraction",
+            "Spot named constants and function calls"
+          ],
+          "tech": [
+            "Python"
+          ]
+        },
+        {
+          "name": "Implicit Multiplication Injector",
+          "type": "parser",
+          "responsibilities": [
+            "Insert missing * tokens without causing ambiguity ('2pi' becomes '2 * pi', '2(3+4)' becomes '2 * (3+4)')"
+          ],
+          "tech": [
+            "Python"
+          ]
+        },
+        {
+          "name": "Postfix Converter",
+          "type": "parser",
+          "responsibilities": [
+            "Use Shunting-Yard to turn infix into RPN",
+            "Respect operator precedence and associativity",
+            "Handle parentheses, unary functions and binary functions"
+          ],
+          "tech": [
+            "Python"
+          ]
+        },
+        {
+          "name": "Postfix Evaluator",
+          "type": "evaluator",
+          "responsibilities": [
+            "Evaluate the postfix expression with an operand stack",
+            "Call the function registry for named unary and binary functions",
+            "Check domains and guard against overflow"
+          ],
+          "tech": [
+            "Python"
+          ]
+        },
+        {
+          "name": "Function Modules",
+          "type": "library",
+          "responsibilities": [
+            "Provide math, trig and hyperbolic functions",
+            "Domain checks for all 50+ functions",
+            "Combinatorics with overflow protection (factorial of large numbers)"
+          ],
+          "tech": [
+            "Python math standard library"
+          ]
+        }
+      ],
+      "dataFlow": [
+        {
+          "flowName": "Expression Evaluation",
+          "steps": [
+            "Pass an expression string to evaluate()",
+            "The tokeniser turns it into typed tokens",
+            "The injector adds any missing * operators",
+            "The converter applies Shunting-Yard to produce an RPN sequence",
+            "The stack evaluator computes the result, checking domains along the way"
+          ]
+        },
+        {
+          "flowName": "Memory Operations",
+          "steps": [
+            "Call memory add, subtract, recall or clear",
+            "The calculator updates its in-process memory",
+            "The memory value can be used as an operand in later expressions"
+          ]
+        }
+      ],
+      "architectureRationale": "The tokeniser, Shunting-Yard and postfix pipeline mirrors the front end of a classic compiler, so each stage has one clear job and can be tested alone. With no external math libraries, nothing hides how it works, which is the whole point."
+    },
+    "technologyStack": {
+      "backend": [
+        {
+          "name": "Python",
+          "version": ">=3.13",
+          "purpose": "Runtime, standard math utilities and all parsing logic",
+          "tradeOffs": "Single process with no built-in UI; the GIL limits parallelism, which doesn't matter here"
+        },
+        {
+          "name": "Colorama",
+          "version": ">=0.4.6",
+          "purpose": "Optional coloured output in the test runner",
+          "tradeOffs": "Not needed for the calculator itself; test-only"
+        },
+        {
+          "name": "uv",
+          "version": "N/A",
+          "purpose": "Fast Python package manager with pyproject.toml packaging and .python-version pinning",
+          "tradeOffs": "Newer than pip and less universal, but much faster"
+        }
+      ],
+      "frontend": [],
+      "infrastructure": [],
+      "rejectedAlternatives": [
+        {
+          "option": "eval() for expression evaluation",
+          "reasonRejected": "A security risk, and it would skip the whole learning point"
+        },
+        {
+          "option": "External parser library (PLY, lark)",
+          "reasonRejected": "The goal is to build the algorithm, not call it"
+        },
+        {
+          "option": "Complex number support",
+          "reasonRejected": "It needs a separate numeric type through the whole pipeline; it's on the long-term roadmap"
+        }
+      ]
+    }
+  }
 }

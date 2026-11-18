@@ -1,0 +1,77 @@
+/* Design tokens and cross-cutting polish. Loaded after design-system.css and redesign.css. */
+
+:root {
+    /* three radius levels */
+    --ds-radius-sm: 0.75rem;
+    --ds-radius-md: 1.25rem;
+    --ds-radius-lg: 2rem;
+    /* shared hard-shadow tokens (neo-brutalist) */
+    --ds-shadow-sm: 3px 3px 0 0 var(--foreground);
+    --ds-shadow-md: 6px 6px 0 0 var(--foreground);
+    --ds-shadow-lg: 9px 9px 0 0 var(--foreground);
+    --ds-border: 2px;
+}
+
+html {
+    scroll-padding-top: 5rem;
+}
+
+/* View Transitions: the circular reveal is driven from JS (lib/view-transition.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+    z-index: 1;
+}
+::view-transition-new(root) {
+    z-index: 2;
+}
+
+@layer base {
+    :focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+}
+
+/* Shared card primitive. */
+.ds-card {
+    border: var(--ds-border) solid var(--foreground);
+    border-radius: var(--ds-radius-md);
+    background: var(--background);
+    box-shadow: var(--ds-shadow-md);
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+.ds-card--lift:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--ds-shadow-lg);
+}
+
+/* Timeline spine used by the Experience section. */
+.ds-spine {
+    position: relative;
+}
+.ds-spine::before {
+    content: "";
+    position: absolute;
+    left: 0.4rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    border-left: 2px dashed color-mix(in oklab, var(--foreground) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .ds-card--lift:hover {
+        transform: none;
+    }
+}
