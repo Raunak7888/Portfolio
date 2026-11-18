@@ -3,7 +3,51 @@
         "firstName": "Raunak",
         "secondName": "Yadav",
         "fullName": "Raunak Yadav",
-        "email": "raunakyadav7888@gmail.com"
+        "email": "raunakyadav7888@gmail.com",
+        "eyebrow": "Open to full-stack roles",
+        "greeting": "Hello, I'm",
+        "role": {
+            "before": "Full-Stack",
+            "highlight": "Developer"
+        },
+        "intro": {
+            "before": "I turn",
+            "emphasis": "hard problems",
+            "middle": "into",
+            "after": "people love."
+        },
+        "rotatorWords": [
+            "products",
+            "APIs",
+            "interfaces",
+            "systems"
+        ],
+        "stickers": [
+            {
+                "label": "Next.js",
+                "tilt": -4
+            },
+            {
+                "label": "TypeScript",
+                "tilt": 3
+            },
+            {
+                "label": "AI agents",
+                "tilt": -2
+            },
+            {
+                "label": "Spring Boot",
+                "tilt": 4
+            }
+        ],
+        "primaryCta": {
+            "label": "See Hermes, my main project",
+            "href": "#projects"
+        },
+        "secondaryCta": {
+            "label": "Get in touch",
+            "href": "#contact"
+        }
     },
     "heroSection": {
         "description": "A Java-focused Full-Stack Engineer specializing in high-performance backends and clean, maintainable frontends. I build software that solves real problems without the fluff.",
@@ -42,408 +86,464 @@
                 "label": "Growth",
                 "text": "Deepening system design intuition, distributed systems patterns, and the gap between 'it works on my machine' and 'it works under load at 3am on a Tuesday.' That's the interesting part."
             }
+        ],
+        "greeting": "Hey, I'm Raunak",
+        "headingTop": "Curious about",
+        "headingBottom": "how things work.",
+        "paragraph": "I'm a BCA graduate and full-stack developer. I started with Java and Spring Boot, then moved into React and TypeScript. I enjoy building things, trying new ideas, and figuring out how everything fits together.",
+        "half": "I like knowing why something works, not just that it does.",
+        "currently": "Currently exploring",
+        "topics": [
+            "AI",
+            "system design",
+            "new ideas"
+        ],
+        "cta": {
+            "label": "A little more about me",
+            "href": "#about"
+        },
+        "pillars": [
+            {
+                "id": "understand",
+                "iconKey": "view",
+                "kicker": "How I think",
+                "title": "Understand first",
+                "text": "I like figuring out the problem before jumping into a solution. Simple and clear is usually better.",
+                "emoji": "🦆",
+                "backTitle": "Rubber duck approved",
+                "backText": "Sometimes I explain bugs to a duck. Surprisingly, it helps more than you'd think.",
+                "tint": "oklch(0.72 0.16 75)",
+                "tilt": -2
+            },
+            {
+                "id": "stack",
+                "iconKey": "layers",
+                "kicker": "How I build",
+                "title": "A bit of everything",
+                "text": "From APIs and databases to user interfaces, I enjoy bringing all the pieces together.",
+                "emoji": "🧩",
+                "backTitle": "Pieces that fit",
+                "backText": "There's something satisfying about seeing everything finally work together.",
+                "tint": "oklch(0.68 0.14 235)",
+                "tilt": 1.5
+            },
+            {
+                "id": "learn",
+                "iconKey": "refresh",
+                "kicker": "How I learn",
+                "title": "Learn by doing",
+                "text": "I learn by trying things, making mistakes, and figuring out how to fix them.",
+                "emoji": "🐛",
+                "backTitle": "Bugs happen",
+                "backText": "Every bug has something to teach. Some just take longer to explain themselves.",
+                "tint": "oklch(0.68 0.17 10)",
+                "tilt": 2
+            },
+            {
+                "id": "next",
+                "iconKey": "rocket",
+                "kicker": "What's next",
+                "title": "Always growing",
+                "text": "There's always something new to learn, and I like keeping that curiosity alive.",
+                "emoji": "🔭",
+                "backTitle": "What's on the horizon?",
+                "backText": "Exploring AI, system design, and building things that can grow with more users.",
+                "tint": "oklch(0.66 0.17 295)",
+                "tilt": -1.5
+            }
+        ],
+        "mascotLines": [
+            "Hey! I'm Blob 👋",
+            "Go on, move the cards!",
+            "Psst... try flipping one.",
+            "I help Raunak find bugs. Sometimes.",
+            "Flip all four for a surprise!",
+            "Hehe, that tickles!"
         ]
     },
-    "projects": [
-        {
-            "id": "hermes",
-            "title": "Hermes",
-            "tagline": "Production-grade real-time encrypted chat — private messaging, group chats, and a two-VM Kubernetes cluster on GCP to run it all.",
-            "category": "Real-Time Systems / DevOps",
-            "description": "Hermes is a full-stack, end-to-end encrypted real-time messaging platform supporting private and group chat, deployed on a self-managed k3s Kubernetes cluster on GCP — provisioned from zero via Terraform and Ansible. The server never sees plaintext private message content. The CI/CD pipeline catches it before you do.",
-            "accent": "#7C7CFF",
-            "iconKey": "message_circle",
-            "images": [
-                "/uploads/hermes1.webp",
-                "/uploads/hermes2.webp",
-                "/uploads/hermes3.webp",
-                "/uploads/hermes4.webp",
-                "/uploads/hermes5.webp"
-            ],
-            "highlights": [
-                "End-to-end encrypted messaging using WebCrypto, ECDH P-256, and AES-GCM. Server never sees plaintext messages.",
-                "Self-managed k3s cluster on GCP provisioned with Terraform and configured through Ansible automation.",
-                "GitHub Actions CI/CD with security scanning, Docker builds, Kubernetes rollouts, and observability monitoring."
-            ],
-            "technologies": [
-                { "name": "Java 21", "category": "Language" },
-                { "name": "Spring Boot", "category": "Backend" },
-                { "name": "GCP", "category": "Cloud" },
-                { "name": "Kubernetes (k3s)", "category": "DevOps" },
-                { "name": "MySQL 8", "category": "Database" },
-                { "name": "Redis 7", "category": "Database/Caching" },
-                { "name": "React 18", "category": "Frontend" },
-                { "name": "TypeScript", "category": "Language" },
-                { "name": "Vite 6", "category": "Frontend" },
-                { "name": "Zustand", "category": "Frontend" },
-                { "name": "Docker", "category": "DevOps" },
-                { "name": "Terraform", "category": "Infrastructure" },
-                { "name": "Ansible", "category": "Infrastructure" },
-                { "name": "GitHub Actions", "category": "DevOps" },
-                { "name": "Traefik", "category": "Infrastructure" },
-                { "name": "Prometheus", "category": "Observability" },
-                { "name": "Grafana", "category": "Observability" }
-            ],
-            "metrics": [],
-            "links": {
-                "github": "https://github.com/Raunak7888/Hermes",
-                "live": "https://23.236.54.241.nip.io/"
-            },
-            "status": "Live"
-        },
-        {
-            "id": "pokeverse",
-            "title": "Pokeverse",
-            "tagline": "A real-time multiplayer game platform built to host multiple interactive games under a shared infrastructure — so you only solve auth, rooms, and WebSockets once.",
-            "category": "Real-Time Multiplayer Game Platform",
-            "description": "Pokeverse centralises the solved problems every multiplayer game re-invents — authentication, room lifecycle, real-time event routing, chat, and state management — into a reusable platform backend. Individual game types plug in as modules. A Pokémon Quiz demonstrates it in both single-player and multiplayer modes using the shared infrastructure.",
-            "accent": "#22C55E",
-            "iconKey": "gamepad-2",
-            "images": [
-                "/uploads/pokeverse1.webp",
-                "/uploads/pokeverse2.webp",
-                "/uploads/pokeverse3.webp",
-                "/uploads/pokeverse4.webp"
-            ],
-            "highlights": [
-                "Reusable multiplayer platform handling authentication, rooms, messaging, persistence, and real-time event routing.",
-                "PostgreSQL stores durable game data while Redis powers low-latency active session management.",
-                "Pokémon Quiz module supports single-player and multiplayer gameplay with live scoring and WebSocket updates."
-            ],
-            "technologies": [
-                { "name": "Java", "category": "Language" },
-                { "name": "Spring Boot 3.5.5", "category": "Backend" },
-                { "name": "PostgreSQL 17", "category": "Database" },
-                { "name": "Redis 7", "category": "Database/Caching" },
-                { "name": "Next.js", "category": "Frontend" },
-                { "name": "React", "category": "Frontend" },
-                { "name": "Docker", "category": "DevOps" },
-                { "name": "TypeScript", "category": "Language" },
-                { "name": "Tailwind CSS 4", "category": "Frontend" }
-            ],
-            "metrics": [],
-            "links": {
-                "github": "https://github.com/Raunak7888/Pokeverse",
-                "live": ""
-            },
-            "status": "Not Live"
-        },
-        {
-            "id": "calculate",
-            "title": "Calculate",
-            "tagline": "A scientific expression evaluator built with compiler techniques — because calling eval() is cheating.",
-            "category": "Algorithms / Parsing / Compiler",
-            "description": "A scientific expression evaluator built from scratch using classic compiler techniques — tokenisation, implicit multiplication injection, Shunting-Yard postfix conversion, and stack-based evaluation. Supports 50+ mathematical functions and 70+ operators with zero external math dependencies. Comes with a Medium article explaining how it works, because the implementation alone is only half the point.",
-            "accent": "#F59E0B",
-            "iconKey": "calculator",
-            "images": [
-                "/uploads/calculate1.webp",
-                "/uploads/calculate2.webp",
-                "/uploads/calculate3.webp",
-                "/uploads/calculate4.webp",
-                "/uploads/calculate5.webp"
-            ],
-            "highlights": [
-                "Built from scratch using tokenization, Shunting-Yard conversion, and stack-based postfix evaluation.",
-                "Supports 50+ functions and 70+ operators without relying on external math libraries.",
-                "Includes 100+ tests and a published Medium article explaining implementation decisions."
-            ],
-            "technologies": [
-                { "name": "Python 3.13+", "category": "Language" },
-                { "name": "Shunting-Yard Algorithm", "category": "Algorithm" },
-                { "name": "Postfix (RPN) Evaluation", "category": "Algorithm" },
-                {
-                    "name": "Stack & Queue Data Structures",
-                    "category": "Data Structures"
-                }
-            ],
-            "metrics": [],
-            "links": {
-                "github": "https://github.com/Raunak7888/Calculate",
-                "live": ""
-            },
-            "status": "Not Live"
-        }
-    ],
     "skills": {
-        "tech_types": ["Language", "Framework", "Database", "Tool", "Security"],
+        "levels": [
+            "Learning",
+            "Comfortable",
+            "Strong",
+            "Daily driver"
+        ],
+        "categories": [
+            {
+                "id": "languages",
+                "label": "Languages",
+                "blurb": "What I write most of my code in.",
+                "tint": "oklch(0.72 0.16 75)"
+            },
+            {
+                "id": "backend",
+                "label": "Backend",
+                "blurb": "Where the data and the logic live.",
+                "tint": "oklch(0.68 0.17 10)"
+            },
+            {
+                "id": "frontend",
+                "label": "Frontend",
+                "blurb": "What people actually see and touch.",
+                "tint": "oklch(0.68 0.14 235)"
+            },
+            {
+                "id": "tooling",
+                "label": "Infra & delivery",
+                "blurb": "How Hermes gets built, shipped and run.",
+                "tint": "oklch(0.66 0.17 295)"
+            }
+        ],
         "skills": [
             {
-                "id": "javascript",
-                "type": "tech",
-                "data": {
-                    "label": "JavaScript",
-                    "icon_id": "SiJavascript",
-                    "category": "Language",
-                    "scalability": "Moderate",
-                    "debuggability": "Moderate",
-                    "consistency": "Low",
-                    "description": "Dynamic, event-driven language powering the web; flexible but prone to runtime errors without strong constraints."
-                }
+                "id": "java",
+                "name": "Java",
+                "mark": "Ja",
+                "cat": "languages",
+                "level": 3,
+                "note": "Where I started, and what I use for every backend. It taught me to think in types, objects and structure.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "spring",
+                    "rest",
+                    "sql"
+                ]
             },
             {
                 "id": "typescript",
-                "type": "tech",
-                "data": {
-                    "label": "TypeScript",
-                    "icon_id": "SiTypescript",
-                    "category": "Language",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Statically typed superset of JavaScript. Dominant language across Hermes frontend, Pokeverse frontend, and the portfolio — 51%, 82%, and 94% of those repos respectively."
-                }
+                "name": "TypeScript",
+                "mark": "TS",
+                "cat": "languages",
+                "level": 4,
+                "note": "Types catch my mistakes before users do. I reach for it on every frontend.",
+                "usedIn": "This portfolio, Hermes UI, AlgoForge",
+                "related": [
+                    "react",
+                    "next",
+                    "javascript"
+                ]
             },
             {
-                "id": "java",
-                "type": "tech",
-                "data": {
-                    "label": "Java",
-                    "icon_id": "FaJava",
-                    "category": "Language",
-                    "scalability": "Very High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Primary language for all backend work. Spring Boot 3.3.4 in Hermes, Spring Boot 3.5.5 in Pokeverse — production-grade, not tutorial-grade."
-                }
+                "id": "javascript",
+                "name": "JavaScript",
+                "mark": "JS",
+                "cat": "languages",
+                "level": 3,
+                "note": "The language underneath it all. I like knowing what the compiler is hiding.",
+                "related": [
+                    "typescript",
+                    "react",
+                    "next"
+                ]
             },
             {
                 "id": "python",
-                "type": "tech",
-                "data": {
-                    "label": "Python",
-                    "icon_id": "SiPython",
-                    "category": "Language",
-                    "scalability": "Moderate",
-                    "debuggability": "Moderate",
-                    "consistency": "Moderate",
-                    "description": "100% of the Calculate project — 600+ lines, 100+ test cases, proper packaging with pyproject.toml. Used when Java would be overkill."
-                }
+                "name": "Python",
+                "mark": "Py",
+                "cat": "languages",
+                "level": 2,
+                "note": "For small, sharp tools. Calculate is a parser and evaluator with 100+ tests.",
+                "usedIn": "Calculate",
+                "related": [
+                    "java",
+                    "typescript",
+                    "docker"
+                ]
             },
             {
-                "id": "react",
-                "type": "tech",
-                "data": {
-                    "label": "React",
-                    "icon_id": "SiReact",
-                    "category": "Framework",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "Component-based UI library powering Hermes (React 18), Pokeverse (React 19.1.0), and the portfolio (React 19.1.0). Multiple production frontends, not just hello-world."
-                }
+                "id": "spring",
+                "name": "Spring Boot",
+                "mark": "Sb",
+                "cat": "backend",
+                "level": 3,
+                "note": "REST, WebSocket/STOMP, Security and JPA. My go-to backend, learned by building and breaking things.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "java",
+                    "rest",
+                    "sql",
+                    "redis"
+                ]
             },
             {
-                "id": "nextjs",
-                "type": "tech",
-                "data": {
-                    "label": "Next.js",
-                    "icon_id": "SiNextdotjs",
-                    "category": "Framework",
-                    "scalability": "Very High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "React framework providing routing, SSR, and production-grade tooling. Live on Vercel for the portfolio; Pokeverse frontend runs Next.js 15.5.3."
-                }
+                "id": "rest",
+                "name": "REST APIs",
+                "mark": "API",
+                "cat": "backend",
+                "level": 3,
+                "note": "Clear routes, predictable responses, plus JWT and Google OAuth2 sign-in.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "spring",
+                    "next",
+                    "sql"
+                ]
             },
             {
-                "id": "tailwind",
-                "type": "tech",
-                "data": {
-                    "label": "Tailwind CSS",
-                    "icon_id": "SiTailwindcss",
-                    "category": "Framework",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Utility-first CSS framework enforcing design consistency. Tailwind 4 in Pokeverse and the portfolio — current-gen, not the tutorial version."
-                }
-            },
-            {
-                "id": "springboot",
-                "type": "tech",
-                "data": {
-                    "label": "Spring Boot",
-                    "icon_id": "SiSpringboot",
-                    "category": "Framework",
-                    "scalability": "Very High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Opinionated Java framework for production-ready backend services. Two separate projects: 3.3.4 in Hermes, 3.5.5 in Pokeverse. WebSocket, Security, JPA, OAuth2 — the whole stack."
-                }
-            },
-            {
-                "id": "postgresql",
-                "type": "tech",
-                "data": {
-                    "label": "PostgreSQL",
-                    "icon_id": "SiPostgresql",
-                    "category": "Database",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "Very High",
-                    "description": "PostgreSQL 17 with Flyway-managed schema versioning in Pokeverse. Chosen over MySQL here for its stronger constraint system and richer query capabilities."
-                }
-            },
-            {
-                "id": "mysql",
-                "type": "tech",
-                "data": {
-                    "label": "MySQL",
-                    "icon_id": "SiMysql",
-                    "category": "Database",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "MySQL 8 with JPA/Hibernate in Hermes. Schema covers users, roles, messages, groups, and file metadata. Nightly backup CronJob in Kubernetes because data loss is not a feature."
-                }
+                "id": "sql",
+                "name": "SQL",
+                "mark": "SQL",
+                "cat": "backend",
+                "level": 2,
+                "note": "MySQL in Hermes. PostgreSQL with Flyway migrations in Pokeverse.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "spring",
+                    "rest",
+                    "java"
+                ]
             },
             {
                 "id": "redis",
-                "type": "tech",
-                "data": {
-                    "label": "Redis",
-                    "icon_id": "SiRedis",
-                    "category": "Database",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "Moderate",
-                    "description": "Redis 7 in both projects — image caching, per-user sliding window rate limiting, pub-sub, and E2EE public key distribution in Hermes; low-latency active game session state in Pokeverse."
-                }
+                "name": "Redis",
+                "mark": "Rd",
+                "cat": "backend",
+                "level": 2,
+                "note": "Rate limiting, caching and live game state.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "spring",
+                    "rest",
+                    "docker"
+                ]
+            },
+            {
+                "id": "react",
+                "name": "React",
+                "mark": "Re",
+                "cat": "frontend",
+                "level": 4,
+                "note": "Where I fell for the frontend. Small components that compose into whole screens.",
+                "usedIn": "This portfolio, Hermes, Pokeverse",
+                "related": [
+                    "typescript",
+                    "next",
+                    "tailwind"
+                ]
+            },
+            {
+                "id": "next",
+                "name": "Next.js",
+                "mark": "Nx",
+                "cat": "frontend",
+                "level": 4,
+                "note": "Routing, rendering and deployment in one place, so I can focus on the product.",
+                "usedIn": "This portfolio, Pokeverse, AlgoForge",
+                "related": [
+                    "react",
+                    "typescript",
+                    "tailwind"
+                ]
+            },
+            {
+                "id": "tailwind",
+                "name": "Tailwind CSS",
+                "mark": "Tw",
+                "cat": "frontend",
+                "level": 4,
+                "note": "Utility classes keep spacing and colour consistent without leaving the markup.",
+                "usedIn": "This portfolio, Pokeverse",
+                "related": [
+                    "react",
+                    "next",
+                    "framer"
+                ]
+            },
+            {
+                "id": "framer",
+                "name": "Framer Motion",
+                "mark": "Fm",
+                "cat": "frontend",
+                "level": 3,
+                "note": "Springs and gestures that respond to the visitor instead of looping on their own.",
+                "usedIn": "This portfolio",
+                "related": [
+                    "react",
+                    "tailwind",
+                    "typescript"
+                ]
             },
             {
                 "id": "docker",
-                "type": "tech",
-                "data": {
-                    "label": "Docker",
-                    "icon_id": "SiDocker",
-                    "category": "Tool",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "Multi-stage builds, non-root users, minimal base images in Hermes. Docker Compose for local dev. The kind of Dockerfile hygiene that makes security reviewers nod."
-                }
+                "name": "Docker",
+                "mark": "Dk",
+                "cat": "tooling",
+                "level": 3,
+                "note": "Multi-stage builds, non-root users and Compose for local development.",
+                "usedIn": "Hermes, Pokeverse",
+                "related": [
+                    "kubernetes",
+                    "ci",
+                    "spring"
+                ]
             },
             {
                 "id": "kubernetes",
-                "type": "tech",
-                "data": {
-                    "label": "Kubernetes",
-                    "icon_id": "SiKubernetes",
-                    "category": "Tool",
-                    "scalability": "Very High",
-                    "debuggability": "Low",
-                    "consistency": "High",
-                    "description": "k3s on GCP in Hermes — Deployments, StatefulSets, Ingress, NetworkPolicies, HPA, CronJob, ConfigMaps, Secrets, cert-manager. Default-deny NetworkPolicies. Two-VM cluster, managed from scratch."
-                }
+                "name": "Kubernetes (k3s)",
+                "mark": "K8",
+                "cat": "tooling",
+                "level": 2,
+                "note": "A two-VM k3s cluster on GCP: deployments, ingress and default-deny network policies.",
+                "usedIn": "Hermes",
+                "related": [
+                    "docker",
+                    "terraform",
+                    "ci"
+                ]
+            },
+            {
+                "id": "ci",
+                "name": "GitHub Actions",
+                "mark": "CI",
+                "cat": "tooling",
+                "level": 2,
+                "note": "A pipeline for Hermes: tests, Trivy scan, Docker build and rollout. Written, not yet switched on.",
+                "usedIn": "Hermes",
+                "related": [
+                    "docker",
+                    "kubernetes",
+                    "terraform"
+                ]
             },
             {
                 "id": "terraform",
-                "type": "tech",
-                "data": {
-                    "label": "Terraform",
-                    "icon_id": "SiTerraform",
-                    "category": "Tool",
-                    "scalability": "Very High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "GCP provider in Hermes — VPC, subnet, firewall rules, two compute instances. HCL is 1.7% of the Hermes repo; it provisions 100% of the infrastructure."
-                }
-            },
-            {
-                "id": "ansible",
-                "type": "tech",
-                "data": {
-                    "label": "Ansible",
-                    "icon_id": "SiAnsible",
-                    "category": "Tool",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "Hermes playbooks: bootstrap, kubernetes, deploy-k8s, monitoring, and security. Automates everything from package installation to UFW hardening to k3s cluster formation."
-                }
-            },
-            {
-                "id": "githubactions",
-                "type": "tech",
-                "data": {
-                    "label": "GitHub Actions",
-                    "icon_id": "SiGithubactions",
-                    "category": "Tool",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "Full CI/CD pipeline in Hermes: unit tests → Trivy scan (images + IaC) → SHA-tagged multi-stage Docker build → push to Docker Hub → kubectl rollout → smoke test. Every step earns its place."
-                }
-            },
-            {
-                "id": "prometheus",
-                "type": "tech",
-                "data": {
-                    "label": "Prometheus",
-                    "icon_id": "SiPrometheus",
-                    "category": "Observability",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Scrapes /actuator/prometheus in Hermes. Feeds Grafana dashboards covering JVM heap/GC, HTTP latency percentiles, WebSocket connections, Redis hit/miss, MySQL pool, and HPA replica count."
-                }
-            },
-            {
-                "id": "grafana",
-                "type": "tech",
-                "data": {
-                    "label": "Grafana",
-                    "icon_id": "SiGrafana",
-                    "category": "Observability",
-                    "scalability": "High",
-                    "debuggability": "High",
-                    "consistency": "High",
-                    "description": "Deployed via Ansible in Hermes. Dashboards cover the full operational picture — not just 'is it up', but 'is it healthy under load.'"
-                }
-            },
-            {
-                "id": "git",
-                "type": "tech",
-                "data": {
-                    "label": "Git",
-                    "icon_id": "SiGit",
-                    "category": "Tool",
-                    "scalability": "High",
-                    "debuggability": "Moderate",
-                    "consistency": "High",
-                    "description": "Distributed version control system enabling collaboration, history tracking, and safe iteration."
-                }
-            },
-            {
-                "id": "jwt",
-                "type": "tech",
-                "data": {
-                    "label": "JWT",
-                    "icon_id": "SiJsonwebtokens",
-                    "category": "Security",
-                    "scalability": "High",
-                    "debuggability": "Low",
-                    "consistency": "Moderate",
-                    "description": "Stateless token format for authentication. Dual-token (access + refresh) in Pokeverse; stateless in Hermes. Cookie-based storage. Filter chain integration — not bolted on as an afterthought."
-                }
-            },
-            {
-                "id": "oauth2",
-                "type": "tech",
-                "data": {
-                    "label": "OAuth 2.0",
-                    "icon_id": "TbBrandOauth",
-                    "category": "Security",
-                    "scalability": "Very High",
-                    "debuggability": "Low",
-                    "consistency": "High",
-                    "description": "Google OAuth2 social login in both Hermes and Pokeverse. Hermes supports hybrid email/password + OAuth2. Pokeverse centralises it as a platform service shared across game modules."
-                }
+                "name": "Terraform & Ansible",
+                "mark": "Tf",
+                "cat": "tooling",
+                "level": 2,
+                "note": "Terraform builds the GCP network and VMs. Ansible sets up k3s, hardening and monitoring.",
+                "usedIn": "Hermes",
+                "related": [
+                    "kubernetes",
+                    "docker",
+                    "ci"
+                ]
             }
         ]
     },
     "footer": {
-        "note": "Everything's open source. Take it, build better."
-    }
+        "note": "Everything's open source. Take it, build better.",
+        "availability": "Open to new projects",
+        "copyright": "All rights reserved."
+    },
+    "site": {
+        "location": "Delhi NCR, India",
+        "timezone": "Asia/Kolkata",
+        "stack": [
+            "Java",
+            "Spring Boot",
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Tailwind CSS",
+            "Docker",
+            "Kubernetes",
+            "GCP",
+            "Terraform",
+            "Ansible",
+            "GitHub Actions"
+        ]
+    },
+    "sections": {
+        "skills": {
+            "index": "02",
+            "badge": "Skills",
+            "headingTop": "The toolbox",
+            "headingBottom": "I build with.",
+            "hintFine": "Click a tile, or move with the arrow keys.",
+            "hintTouch": "Tap a tile to see how I use it.",
+            "emptyTitle": "Pick a tile",
+            "emptyText": "See how I use it and what it pairs with.",
+            "done": "Whole toolbox explored 🎉",
+            "allBlurb": "Everything in the box."
+        },
+        "projects": {
+            "index": "03",
+            "badge": "Projects",
+            "headingTop": "Things I've",
+            "headingBottom": "built.",
+            "hintFine": "Scroll",
+            "hintTouch": "Swipe down through the builds.",
+            "outroTitle": "There is more where this came from.",
+            "outroText": "Every repo, commit and experiment lives on my GitHub.",
+            "outroCta": "Open GitHub",
+            "comingSoon": "Public link coming soon",
+            "caseStudy": "Read case study"
+        },
+        "experience": {
+            "index": "04",
+            "badge": "Experience",
+            "headingTop": "Where I've",
+            "headingBottom": "learned.",
+            "educationLabel": "Education",
+            "writingLabel": "Writing"
+        },
+        "contact": {
+            "index": "05",
+            "badge": "Contact",
+            "headingTop": "Got an idea?",
+            "headingBottom": "Say hi.",
+            "intro": "Have a project, a role or a question? Email me directly, or use the form. I read every message myself and usually reply within a day.",
+            "primaryCta": "Email me",
+            "copyLabel": "Copy email",
+            "copiedLabel": "Copied",
+            "availability": "Open to full-stack roles",
+            "replyTime": "Usually within a day",
+            "formTitle": "Send a message",
+            "topicsLabel": "What is it about?",
+            "topics": [
+                {
+                    "id": "idea",
+                    "label": "An idea"
+                },
+                {
+                    "id": "job",
+                    "label": "A job"
+                },
+                {
+                    "id": "team",
+                    "label": "Teaming up"
+                },
+                {
+                    "id": "hi",
+                    "label": "Just hello"
+                }
+            ],
+            "submitLabel": "Send message",
+            "successTitle": "Message sent",
+            "successText": "Thanks for writing. I will reply soon."
+        }
+    },
+    "experience": [
+        {
+            "role": "Software Developer Intern",
+            "org": "ILN Global",
+            "period": "2026",
+            "summary": "Frontend and backend work on Tatito Health+, a healthcare platform with a Django backend and a JavaScript frontend.",
+            "points": [
+                "Built a clinic version of an existing hospital dashboard.",
+                "Reworked the doctor page: appointment booking, fee discounts and reviews. Booking now happens only after payment succeeds.",
+                "Working on Doctor Management: automatic, unique doctor IDs."
+            ],
+            "stack": [
+                "JavaScript",
+                "Vite",
+                "Django"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Computer Applications (BCA)",
+            "school": "DAV Institute of Management, Faridabad",
+            "year": "2026"
+        }
+    ],
+    "writing": [
+        {
+            "title": "How I built a better calculator using the Shunting-Yard algorithm",
+            "source": "Medium",
+            "href": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+        }
+    ]
 }

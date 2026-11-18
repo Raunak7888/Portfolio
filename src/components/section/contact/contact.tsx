@@ -76,7 +76,7 @@ function CopyEmail() {
 
     return (
         <Button onClick={copy} variant="outline">
-            <span aria-live="polite">{copied ? "Copied" : site.email}</span>
+            <span aria-live="polite" className="w-47">{copied ? "Copied" : site.email}</span>
         </Button>
     );
 }
@@ -157,7 +157,7 @@ export default function Contact() {
                     className="flex flex-col items-start gap-[clamp(0.75rem,2.6vh,1.5rem)]"
                 >
                     <motion.div variants={fade}>
-                        <Eyebrow index="05">Contact</Eyebrow>
+                        <Eyebrow index="">Contact Me</Eyebrow>
                     </motion.div>
 
                     <Headline reduce={reduce} size="xl" toptext="Got an idea?" bottomtext="Say hi." />

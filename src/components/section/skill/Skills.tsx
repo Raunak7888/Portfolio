@@ -56,6 +56,9 @@ import { clamp } from "@/lib/utils";
 
 const tintOf = (skill: Skill) => CAT_BY_ID[skill.cat].tint;
 
+/* Up to four rows fit one screen. More skills let the section grow. */
+const FIXED = SKILLS.length <= COLS * 4;
+
 /* ==========================================================================
    MOTION VARIANTS
    One entrance: the heading wipes in, then the tiles pop onto the board.
@@ -575,14 +578,14 @@ export default function Skills() {
             id="skills"
             ref={sectionRef}
             
-            className="relative box-border flex min-h-svh w-full  flex-col overflow-hidden border-t border-border bg-background px-4 pb-6 pt-12 sm:px-6 lg:h-svh lg:pb-8 lg:pt-16"
+            className={`relative box-border flex min-h-svh w-full  flex-col overflow-hidden border-t border-border bg-background px-4 pb-6 pt-12 sm:px-6 ${FIXED ? "lg:h-svh" : "lg:min-h-svh"} lg:pb-8 lg:pt-16`}
         >
             <Shapes reduce={reduce} />
 
             <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col gap-5 lg:min-h-0 lg:gap-7">
                 {/* ---------- header ---------- */}
                 <SectionHeader
-                    index="02"
+                    index=""
                     label={copy.badge}
                     top={copy.headingTop}
                     bottom={copy.headingBottom}
@@ -603,7 +606,7 @@ export default function Skills() {
                                 <ul
                                     ref={gridRef}
                                     onKeyDown={onGridKey}
-                                    className="grid grid-cols-4 gap-2 sm:gap-3 lg:h-full lg:grid-rows-4 lg:gap-4"
+                                    className={`grid grid-cols-4 gap-2 sm:gap-3 lg:gap-4 ${FIXED ? "lg:h-full lg:grid-rows-4" : ""}`}
                                 >
                                     <AnimatePresence mode="popLayout" initial={false}>
                                         {visible.map((skill, i) => (
@@ -622,6 +625,7 @@ export default function Skills() {
                                                 reduce={reduce}
                                                 fine={fine}
                                                 onSelect={pick}
+                                                fixedGrid={FIXED}
                                             />
                                         ))}
                                     </AnimatePresence>

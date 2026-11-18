@@ -18,7 +18,7 @@ test("no horizontal scrolling", async ({ page }) => {
 test("contact form shows validation errors", async ({ page }) => {
     await page.goto("/");
     await page.locator("#contact").scrollIntoViewIfNeeded();
-    await page.getByRole("button", { name: /post it/i }).click();
+    await page.getByRole("button", { name: /send message/i }).click();
     await expect(page.getByText("What should I call you?")).toBeVisible();
 });
 

@@ -9,7 +9,7 @@ import { copy, TOTAL, type Project } from "@/content/projects";
 import { useMinWidth } from "@/hooks/useMinWidth";
 import { pad2 } from "@/lib/utils";
 import { LinkIcon, Metrics, Sparkle, StatusChip } from "./ProjectParts";
-import { visualFor } from "./visuals";
+import ProjectMedia from "./media/ProjectMedia";
 
 /*
  * STICKY STACK GEOMETRY (desktop, lg+)
@@ -81,8 +81,8 @@ export default function ProjectStage({
     const dim = useTransform(exit, [0, 1], [0, 0.6]);
     const numY = useTransform(enter, [0, 1], ["22%", "0%"]);
     const numX = useTransform(exit, [0, 1], ["0%", "-8%"]);
-    console.log(project);
-    const Visual = visualFor(project.id);
+    
+    
     const covered = live && !last;
     const tintVars = { "--tint": project.tint, "--on-tint": "oklch(0.2 0 0)", zIndex: index + 1 } as CSSProperties;
 
@@ -166,7 +166,7 @@ export default function ProjectStage({
 
                             {/* ---------- visual ---------- */}
                             <div className="min-w-0">
-                                <Visual project={project} enter={enter} exit={exit} live={live} reduce={reduce} />
+                                <ProjectMedia project={project} enter={enter} exit={exit} live={live} reduce={reduce} />
                             </div>
                         </div>
 

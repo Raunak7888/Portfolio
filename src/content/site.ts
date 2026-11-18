@@ -1,23 +1,28 @@
-import data from "@/Data/Data.json";
+import { portfolio } from "./data";
 
-const s = data.heroSection.socialLinks;
+const links = portfolio.heroSection.socialLinks;
+const LABELS: Record<string, string> = {
+    githubUrl: "GitHub",
+    linkedInUrl: "LinkedIn",
+    instagramUrl: "Instagram",
+    twitterUrl: "X",
+    youtubeUrl: "YouTube",
+};
 
-/** One source of truth for identity, links and navigation. */
+/** Identity, links and the tech ticker. All values come from Data.json. */
 export const site = {
-    firstName: data.hero.firstName,
-    fullName: data.hero.fullName,
-    email: data.hero.email,
-    location: "Delhi NCR, India",
-    timezone: "Asia/Kolkata",
-    social: [
-        { label: "GitHub", href: s.githubUrl },
-        { label: "LinkedIn", href: s.linkedInUrl },
-        { label: "Instagram", href: s.instagramUrl },
-    ],
-    stack: [
-        "Java", "Spring Boot", "React", "Next.js", "TypeScript", "Tailwind CSS",
-        "Docker", "Kubernetes", "GCP", "Terraform", "Ansible", "GitHub Actions",
-    ],
+    firstName: portfolio.hero.firstName,
+    fullName: portfolio.hero.fullName,
+    email: portfolio.hero.email,
+    location: portfolio.site.location,
+    timezone: portfolio.site.timezone,
+    social: Object.entries(links)
+        .filter(([k, v]) => k !== "gmailUrl" && typeof v === "string" && v)
+        .map(([k, v]) => ({
+            label: LABELS[k] ?? k.replace(/Url$/, "").replace(/^./, (c) => c.toUpperCase()),
+            href: v,
+        })),
+    stack: portfolio.site.stack,
     nav: [
         { label: "Home", href: "#home" },
         { label: "About", href: "#about" },

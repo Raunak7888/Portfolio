@@ -47,3 +47,6 @@ backups/
 playwright-report/
 test-results/
 .env
+
+# portfolio-refinement backups
+.portfolio-backups/

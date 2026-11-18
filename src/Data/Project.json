@@ -2,22 +2,167 @@
   "hermes": {
     "meta": {
       "projectName": "Hermes",
+      "status": "live",
       "codename": "hermes-chat",
       "version": "0.1.0",
-      "status": "active",
-      "lastUpdated": "2026-02-04",
-      "maintainers": ["Raunak"],
-      "live": "https://23.236.54.241.nip.io/",
-      "repository": "https://github.com/Raunak7888/Hermes",
+      "maintainers": [
+        "Raunak"
+      ],
       "license": "MIT",
-      "post": ""
+      "lastUpdated": "2026-02-04"
     },
-    "images": [
-      "/uploads/hermes1.webp",
-      "/uploads/hermes2.webp",
-      "/uploads/hermes3.webp",
-      "/uploads/hermes4.webp",
-      "/uploads/hermes5.webp"
+    "card": {
+      "order": 1,
+      "kind": "Featured · Full-stack app",
+      "tagline": "Private chats the server cannot read.",
+      "summary": "A real-time chat platform with end-to-end encrypted private messages and group chat. It runs on a self-managed k3s cluster on GCP that I provisioned and configured myself. Group messages are not end-to-end encrypted.",
+      "tint": "oklch(0.68 0.14 235)",
+      "chips": [
+        "Java",
+        "Spring Boot",
+        "React",
+        "TypeScript",
+        "k3s"
+      ],
+      "bullets": [
+        "Private chats: ECDH P-256 key exchange and AES-GCM per message, in the browser",
+        "Real-time chat over WebSocket/STOMP with presence and typing indicators",
+        "Redis sliding-window rate limiting per user",
+        "Terraform and Ansible provision the GCP cluster. A GitHub Actions pipeline with Trivy scans is written and not yet switched on"
+      ],
+      "metrics": [
+        {
+          "value": 2,
+          "label": "GCP VMs"
+        },
+        {
+          "value": 24,
+          "suffix": "h",
+          "label": "message history"
+        },
+        {
+          "value": "AES-GCM",
+          "label": "private chat encryption"
+        }
+      ],
+      "readout": "hover or tap to watch the thread"
+    },
+    "presentation": {
+      "interaction": "conversation"
+    },
+    "links": [
+      {
+        "kind": "live",
+        "label": "Live demo",
+        "href": "https://23.236.54.241.nip.io/"
+      },
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Hermes"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/hermes1.webp",
+        "alt": "Hermes chat interface showing a private conversation",
+        "width": 1600,
+        "height": 760
+      },
+      {
+        "src": "/uploads/hermes2.webp",
+        "alt": "Hermes screenshot 2",
+        "width": 1600,
+        "height": 761
+      },
+      {
+        "src": "/uploads/hermes3.webp",
+        "alt": "Hermes screenshot 3",
+        "width": 1600,
+        "height": 757
+      },
+      {
+        "src": "/uploads/hermes4.webp",
+        "alt": "Hermes screenshot 4",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/hermes5.webp",
+        "alt": "Hermes screenshot 5",
+        "width": 1600,
+        "height": 768
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Java 21",
+        "category": "Language"
+      },
+      {
+        "name": "Spring Boot",
+        "category": "Backend"
+      },
+      {
+        "name": "GCP",
+        "category": "Cloud"
+      },
+      {
+        "name": "Kubernetes (k3s)",
+        "category": "DevOps"
+      },
+      {
+        "name": "MySQL 8",
+        "category": "Database"
+      },
+      {
+        "name": "Redis 7",
+        "category": "Database/Caching"
+      },
+      {
+        "name": "React 18",
+        "category": "Frontend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Language"
+      },
+      {
+        "name": "Vite 6",
+        "category": "Frontend"
+      },
+      {
+        "name": "Zustand",
+        "category": "Frontend"
+      },
+      {
+        "name": "Docker",
+        "category": "DevOps"
+      },
+      {
+        "name": "Terraform",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Ansible",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "DevOps"
+      },
+      {
+        "name": "Traefik",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Prometheus",
+        "category": "Observability"
+      },
+      {
+        "name": "Grafana",
+        "category": "Observability"
+      }
     ],
     "executiveSummary": {
       "oneLiner": "Hermes is a full-stack, end-to-end encrypted real-time messaging platform supporting private and group chat, deployed on a self-managed k3s Kubernetes cluster on GCP — built, provisioned, and automated entirely from scratch.",
@@ -43,6 +188,23 @@
         "In-memory STOMP broker does not scale horizontally — RabbitMQ externalisation is on the roadmap",
         "Local file storage is not persistent across pod restarts",
         "Message history limited to last 24 hours"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Activate GitHub Actions workflow (move .github-example to .github)",
+        "Add unit and integration tests with JUnit 5 and @SpringBootTest",
+        "Persist file storage across pod restarts"
+      ],
+      "midTerm": [
+        "Message pagination",
+        "Testcontainers-based integration tests for MySQL and Redis",
+        "Pokeverse-style Flyway schema versioning"
+      ],
+      "longTerm": [
+        "External STOMP broker (RabbitMQ) for horizontal scaling",
+        "Multi-instance Redis cluster",
+        "Real user traffic and load testing"
       ]
     },
     "architecture": {
@@ -100,7 +262,9 @@
           "responsibilities": [
             "Persist users, roles, messages, groups, and file metadata"
           ],
-          "tech": ["MySQL 8"]
+          "tech": [
+            "MySQL 8"
+          ]
         },
         {
           "name": "Cache / Pub-Sub",
@@ -111,7 +275,9 @@
             "Per-user sliding window rate limiting",
             "Pub-sub message distribution"
           ],
-          "tech": ["Redis 7"]
+          "tech": [
+            "Redis 7"
+          ]
         },
         {
           "name": "WebSocket Broker",
@@ -119,7 +285,9 @@
           "responsibilities": [
             "Topic-based and queue-based message broadcasting to /topic and /user/queue destinations"
           ],
-          "tech": ["Spring Simple Broker (in-memory)"]
+          "tech": [
+            "Spring Simple Broker (in-memory)"
+          ]
         },
         {
           "name": "Infrastructure",
@@ -148,7 +316,11 @@
             "SHA-tagged multi-stage Docker build and push",
             "kubectl rollout with smoke testing"
           ],
-          "tech": ["GitHub Actions", "Trivy", "Docker Hub"]
+          "tech": [
+            "GitHub Actions",
+            "Trivy",
+            "Docker Hub"
+          ]
         },
         {
           "name": "Observability",
@@ -161,7 +333,11 @@
             "MySQL connection pool",
             "HPA replica count"
           ],
-          "tech": ["Prometheus", "Grafana", "Spring Boot Actuator"]
+          "tech": [
+            "Prometheus",
+            "Grafana",
+            "Spring Boot Actuator"
+          ]
         }
       ],
       "dataFlow": [
@@ -301,42 +477,127 @@
           "reasonRejected": "In-memory broker sufficient for current scale; externalisation is explicitly on the roadmap"
         }
       ]
-    },
-    "roadmap": {
-      "shortTerm": [
-        "Activate GitHub Actions workflow (move .github-example to .github)",
-        "Add unit and integration tests with JUnit 5 and @SpringBootTest",
-        "Persist file storage across pod restarts"
-      ],
-      "midTerm": [
-        "Message pagination",
-        "Testcontainers-based integration tests for MySQL and Redis",
-        "Pokeverse-style Flyway schema versioning"
-      ],
-      "longTerm": [
-        "External STOMP broker (RabbitMQ) for horizontal scaling",
-        "Multi-instance Redis cluster",
-        "Real user traffic and load testing"
-      ]
     }
   },
   "pokeverse": {
     "meta": {
       "projectName": "Pokeverse",
+      "status": "active",
       "codename": "pokeverse-play",
       "version": "0.0.1-SNAPSHOT",
-      "status": "active",
-      "lastUpdated": "unknown",
-      "maintainers": ["Raunak"],
-      "repository": "https://github.com/Raunak7888/Pokeverse",
-      "license": "MIT",
-      "post": ""
+      "maintainers": [
+        "Raunak"
+      ],
+      "license": "MIT"
     },
-    "images": [
-      "/uploads/pokeverse1.webp",
-      "/uploads/pokeverse2.webp",
-      "/uploads/pokeverse3.webp",
-      "/uploads/pokeverse4.webp"
+    "card": {
+      "order": 2,
+      "kind": "Game platform",
+      "tagline": "One platform, many multiplayer games.",
+      "summary": "A real-time multiplayer platform that provides the shared parts (authentication, rooms, event routing, chat and state) so each new game only has to bring its own rules. One game module exists so far.",
+      "tint": "oklch(0.72 0.16 75)",
+      "chips": [
+        "Java",
+        "Spring Boot",
+        "Next.js",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "bullets": [
+        "Shared auth, rooms, chat and event routing for every game",
+        "PostgreSQL 17 with Flyway for history, Redis for live scores",
+        "Pokémon Quiz in single-player and room-based multiplayer",
+        "Game modules plug in and bring only their own rules"
+      ],
+      "metrics": [
+        {
+          "value": 2,
+          "label": "data stores"
+        },
+        {
+          "value": 1,
+          "label": "game module"
+        },
+        {
+          "value": "STOMP",
+          "label": "room events"
+        }
+      ],
+      "readout": "move over it to shift the layers"
+    },
+    "presentation": {
+      "interaction": "depth"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Pokeverse"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/pokeverse1.webp",
+        "alt": "Pokeverse Pokémon Quiz game screen",
+        "width": 1600,
+        "height": 764
+      },
+      {
+        "src": "/uploads/pokeverse2.webp",
+        "alt": "Pokeverse screenshot 2",
+        "width": 1600,
+        "height": 771
+      },
+      {
+        "src": "/uploads/pokeverse3.webp",
+        "alt": "Pokeverse screenshot 3",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/pokeverse4.webp",
+        "alt": "Pokeverse screenshot 4",
+        "width": 1600,
+        "height": 769
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Java",
+        "category": "Language"
+      },
+      {
+        "name": "Spring Boot 3.5.5",
+        "category": "Backend"
+      },
+      {
+        "name": "PostgreSQL 17",
+        "category": "Database"
+      },
+      {
+        "name": "Redis 7",
+        "category": "Database/Caching"
+      },
+      {
+        "name": "Next.js",
+        "category": "Frontend"
+      },
+      {
+        "name": "React",
+        "category": "Frontend"
+      },
+      {
+        "name": "Docker",
+        "category": "DevOps"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Language"
+      },
+      {
+        "name": "Tailwind CSS 4",
+        "category": "Frontend"
+      }
     ],
     "executiveSummary": {
       "oneLiner": "Pokeverse is a real-time multiplayer game platform providing shared infrastructure — authentication, room lifecycle, WebSocket event routing, chat, and state management — so individual game types can plug in without re-solving those problems each time.",
@@ -360,6 +621,23 @@
         "Role-Based Access Control (RBAC) is not implemented; admin access is currently handled via request parameters",
         "Only one game module (Pokémon Quiz) is currently implemented",
         "No Kubernetes deployment yet — Docker Compose for local dev"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Add proper README to the repository",
+        "Harden security rules for platform and WebSocket endpoints",
+        "Replace admin access via request parameters with proper authorization"
+      ],
+      "midTerm": [
+        "Add JWT resource-server validation",
+        "Abstract game-module interfaces for easier game type expansion",
+        "Deploy to a public URL alongside Hermes"
+      ],
+      "longTerm": [
+        "Externalise WebSocket broker (RabbitMQ) for horizontal scaling",
+        "Implement RBAC for admin and game content management",
+        "Support multiple concurrent game types"
       ]
     },
     "architecture": {
@@ -412,7 +690,9 @@
           "responsibilities": [
             "Persist users, rooms, sessions, game data, and chat messages via Flyway-managed schema"
           ],
-          "tech": ["PostgreSQL 17"]
+          "tech": [
+            "PostgreSQL 17"
+          ]
         },
         {
           "name": "Cache / State Store",
@@ -421,7 +701,9 @@
             "Low-latency state access for active game sessions",
             "Current question, live scores, and session data during gameplay"
           ],
-          "tech": ["Redis 7"]
+          "tech": [
+            "Redis 7"
+          ]
         },
         {
           "name": "WebSocket Broker",
@@ -429,7 +711,9 @@
           "responsibilities": [
             "Topic- and queue-based real-time message distribution to room participants"
           ],
-          "tech": ["Spring Simple Broker (in-memory)"]
+          "tech": [
+            "Spring Simple Broker (in-memory)"
+          ]
         }
       ],
       "dataFlow": [
@@ -519,7 +803,10 @@
           "tradeOffs": "Tailwind 4 is current-gen — some ecosystem tooling still catching up"
         }
       ],
-      "infrastructure": ["Docker", "Docker Compose"],
+      "infrastructure": [
+        "Docker",
+        "Docker Compose"
+      ],
       "rejectedAlternatives": [
         {
           "option": "ddl-auto=update for schema management",
@@ -534,43 +821,121 @@
           "reasonRejected": "Would require re-implementing auth, rooms, and messaging for every new game type — the entire point of the platform is to avoid this"
         }
       ]
-    },
-    "roadmap": {
-      "shortTerm": [
-        "Add proper README to the repository",
-        "Harden security rules for platform and WebSocket endpoints",
-        "Replace admin access via request parameters with proper authorization"
-      ],
-      "midTerm": [
-        "Add JWT resource-server validation",
-        "Abstract game-module interfaces for easier game type expansion",
-        "Deploy to a public URL alongside Hermes"
-      ],
-      "longTerm": [
-        "Externalise WebSocket broker (RabbitMQ) for horizontal scaling",
-        "Implement RBAC for admin and game content management",
-        "Support multiple concurrent game types"
-      ]
     }
   },
   "calculate": {
     "meta": {
       "projectName": "Calculate",
+      "status": "active",
       "codename": "calc",
       "version": "0.1.0",
-      "status": "active",
-      "lastUpdated": "2026-02-05",
-      "maintainers": ["Raunak"],
-      "repository": "https://github.com/Raunak7888/Calculate",
+      "maintainers": [
+        "Raunak"
+      ],
       "license": "MIT",
-      "post": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+      "lastUpdated": "2026-02-05"
     },
-    "images": [
-      "/uploads/calculate1.webp",
-      "/uploads/calculate2.webp",
-      "/uploads/calculate3.webp",
-      "/uploads/calculate4.webp",
-      "/uploads/calculate5.webp"
+    "card": {
+      "order": 3,
+      "kind": "Python library",
+      "tagline": "A scientific calculator with no eval(), on purpose.",
+      "summary": "A scientific expression evaluator built from scratch with classic compiler techniques. It explores what really happens between typing an expression and seeing a number.",
+      "tint": "oklch(0.68 0.17 10)",
+      "chips": [
+        "Python 3.13",
+        "Shunting-Yard",
+        "RPN",
+        "uv"
+      ],
+      "bullets": [
+        "Tokenizer, implicit multiplication, Shunting-Yard, stack evaluator",
+        "50+ functions and 70+ operators with domain checks",
+        "100+ test cases and no external math dependencies",
+        "Explained in a public Medium article"
+      ],
+      "metrics": [
+        {
+          "value": 50,
+          "suffix": "+",
+          "label": "functions"
+        },
+        {
+          "value": 70,
+          "suffix": "+",
+          "label": "operators"
+        },
+        {
+          "value": 100,
+          "suffix": "+",
+          "label": "test cases"
+        }
+      ],
+      "readout": "hover to browse the screenshots"
+    },
+    "presentation": {
+      "interaction": "filmstrip"
+    },
+    "links": [
+      {
+        "kind": "repo",
+        "label": "Source",
+        "href": "https://github.com/Raunak7888/Calculate"
+      },
+      {
+        "kind": "post",
+        "label": "Article",
+        "href": "https://medium.com/@raunakyadav7888/how-i-built-a-better-calculator-using-the-shunting-yard-algorithm-b359b8826045"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/uploads/calculate1.webp",
+        "alt": "Calculate expression evaluator test output",
+        "width": 1600,
+        "height": 762
+      },
+      {
+        "src": "/uploads/calculate2.webp",
+        "alt": "Calculate screenshot 2",
+        "width": 1600,
+        "height": 768
+      },
+      {
+        "src": "/uploads/calculate3.webp",
+        "alt": "Calculate screenshot 3",
+        "width": 1600,
+        "height": 772
+      },
+      {
+        "src": "/uploads/calculate4.webp",
+        "alt": "Calculate screenshot 4",
+        "width": 1600,
+        "height": 770
+      },
+      {
+        "src": "/uploads/calculate5.webp",
+        "alt": "Calculate screenshot 5",
+        "width": 1600,
+        "height": 764
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Python 3.13+",
+        "category": "Language"
+      },
+      {
+        "name": "Shunting-Yard Algorithm",
+        "category": "Algorithm"
+      },
+      {
+        "name": "Postfix (RPN) Evaluation",
+        "category": "Algorithm"
+      },
+      {
+        "name": "Stack & Queue Data Structures",
+        "category": "Data Structures"
+      }
     ],
     "executiveSummary": {
       "oneLiner": "A scientific expression evaluator built from scratch using classic compiler techniques — tokenisation, implicit multiplication injection, Shunting-Yard postfix conversion, and stack-based evaluation. Supporting 50+ mathematical functions and 70+ operators with zero external math dependencies.",
@@ -598,6 +963,20 @@
         "No complex-number support for invalid domains (e.g., sqrt(-1))"
       ]
     },
+    "roadmap": {
+      "shortTerm": [
+        "Add a minimal CLI runner",
+        "Expose evaluate_with_steps() in usage docs for educational use"
+      ],
+      "midTerm": [
+        "Add persistent history and session export",
+        "Provide a simple TUI or GUI"
+      ],
+      "longTerm": [
+        "Add complex number support",
+        "Introduce plugin system for custom functions"
+      ]
+    },
     "architecture": {
       "overview": "A single-process Python library where expression processing flows through a linear pipeline: tokeniser → implicit multiplication injector → postfix converter → stack evaluator. Math function groups are modularised by domain (trig, hyperbolic, math) in a function registry. The StackQueueCalculator orchestrates the pipeline and maintains in-process memory and last-answer state.",
       "diagram": {
@@ -613,7 +992,9 @@
             "Maintain in-process memory and last-answer state",
             "Register functions and constants into the function registry"
           ],
-          "tech": ["Python 3.13+"]
+          "tech": [
+            "Python 3.13+"
+          ]
         },
         {
           "name": "Tokenizer",
@@ -623,7 +1004,9 @@
             "Distinguish unary negation from binary subtraction",
             "Identify named constants and function calls"
           ],
-          "tech": ["Python"]
+          "tech": [
+            "Python"
+          ]
         },
         {
           "name": "Implicit Multiplication Injector",
@@ -631,7 +1014,9 @@
           "responsibilities": [
             "Insert missing * tokens without introducing ambiguity ('2pi' → '2 * pi', '2(3+4)' → '2 * (3+4)')"
           ],
-          "tech": ["Python"]
+          "tech": [
+            "Python"
+          ]
         },
         {
           "name": "Postfix Converter",
@@ -641,7 +1026,9 @@
             "Respect operator precedence and associativity",
             "Handle parentheses, unary functions, and binary functions"
           ],
-          "tech": ["Python"]
+          "tech": [
+            "Python"
+          ]
         },
         {
           "name": "Postfix Evaluator",
@@ -651,7 +1038,9 @@
             "Dispatch to function registry for named unary and binary functions",
             "Domain validation and overflow protection"
           ],
-          "tech": ["Python"]
+          "tech": [
+            "Python"
+          ]
         },
         {
           "name": "Function Modules",
@@ -661,7 +1050,9 @@
             "Safe domain validation checks for all 50+ functions",
             "Combinatorics with overflow protection (factorial of large numbers)"
           ],
-          "tech": ["Python math standard library"]
+          "tech": [
+            "Python math standard library"
+          ]
         }
       ],
       "dataFlow": [
@@ -723,35 +1114,122 @@
           "reasonRejected": "Would require a separate numeric type throughout the pipeline; on the long-term roadmap"
         }
       ]
-    },
-    "roadmap": {
-      "shortTerm": [
-        "Add a minimal CLI runner",
-        "Expose evaluate_with_steps() in usage docs for educational use"
-      ],
-      "midTerm": [
-        "Add persistent history and session export",
-        "Provide a simple TUI or GUI"
-      ],
-      "longTerm": [
-        "Add complex number support",
-        "Introduce plugin system for custom functions"
-      ]
     }
   },
   "algoforge": {
     "meta": {
       "projectName": "AlgoForge",
+      "status": "building",
       "codename": "algoforge-ai",
       "version": "0.1.0",
-      "status": "in-development",
-      "maintainers": ["Raunak"],
-      "repository": "",
-      "live": "",
-      "license": ""
+      "maintainers": [
+        "Raunak"
+      ]
     },
-    "images": [
-      "/uploads/algoforge1.webp"
+    "card": {
+      "order": 4,
+      "kind": "In development · AI dev tool",
+      "tagline": "Code in, explanation and visualization out.",
+      "summary": "Work in progress. An AI-assisted code understanding tool that aims to turn source code into structured explanations and algorithm visualizations. No public link yet.",
+      "tint": "oklch(0.66 0.17 295)",
+      "chips": [
+        "Next.js",
+        "Express",
+        "Prisma",
+        "Gemini"
+      ],
+      "bullets": [
+        "Separate stages: analysis, visualization JSON, rendering",
+        "ForgeCode turns code and AI analysis into visualizer JSON",
+        "Workspace drafts, explanation sessions and usage quotas",
+        "SHA-256 deduplication, reported at about 60% less duplicate processing"
+      ],
+      "metrics": [
+        {
+          "value": 60,
+          "suffix": "%",
+          "label": "reported less duplicate work"
+        },
+        {
+          "value": 3,
+          "label": "pipeline stages"
+        },
+        {
+          "value": "JSON",
+          "label": "visualizer contract"
+        }
+      ],
+      "readout": "hover to fan out the sheets"
+    },
+    "presentation": {
+      "interaction": "layers"
+    },
+    "links": [],
+    "screenshots": [
+      {
+        "src": "/uploads/algoforge1.webp",
+        "alt": "AlgoForge workspace screenshot",
+        "width": 1523,
+        "height": 735
+      }
+    ],
+    "technologies": [
+      {
+        "name": "Node.js",
+        "category": "Backend"
+      },
+      {
+        "name": "Express.js",
+        "category": "Backend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Backend"
+      },
+      {
+        "name": "Prisma ORM",
+        "category": "Backend"
+      },
+      {
+        "name": "Next.js 16",
+        "category": "Frontend"
+      },
+      {
+        "name": "React 19",
+        "category": "Frontend"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Frontend"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Frontend"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Database"
+      },
+      {
+        "name": "Redis",
+        "category": "Database"
+      },
+      {
+        "name": "Google Gemini API",
+        "category": "AI"
+      },
+      {
+        "name": "Vercel AI Sdk",
+        "category": "AI"
+      },
+      {
+        "name": "pnpm Workspaces",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Git",
+        "category": "Infrastructure"
+      }
     ],
     "executiveSummary": {
       "oneLiner": "An AI-powered code understanding platform that transforms source code into structured explanations and interactive algorithm visualizations.",
@@ -780,6 +1258,28 @@
         "Visualization accuracy depends on generated structured data",
         "AI provider availability and usage limits affect generation",
         "ForgeCode generation quality depends on input context and instructions"
+      ]
+    },
+    "roadmap": {
+      "shortTerm": [
+        "Improve AI analysis accuracy",
+        "Improve ForgeCode generation reliability",
+        "Strengthen conversation context management",
+        "Improve AI request cancellation and error handling",
+        "Complete workspace and explanation session workflows",
+        "Improve visualization rendering"
+      ],
+      "midTerm": [
+        "Improve visualization generation consistency",
+        "Optimize AI provider selection and costs",
+        "Expand supported algorithms and data structures",
+        "Improve structured AI response validation"
+      ],
+      "longTerm": [
+        "Support more programming languages",
+        "Expand visualization capabilities",
+        "Introduce advanced interactive debugging",
+        "Develop a comprehensive code learning platform"
       ]
     },
     "architecture": {
@@ -965,29 +1465,6 @@
         "name": "Markdown Code Rendering",
         "purpose": "Improve readability of AI-generated explanations"
       }
-    ],
-    "roadmap": {
-      "shortTerm": [
-        "Improve AI analysis accuracy",
-        "Improve ForgeCode generation reliability",
-        "Strengthen conversation context management",
-        "Improve AI request cancellation and error handling",
-        "Complete workspace and explanation session workflows",
-        "Improve visualization rendering"
-      ],
-      "midTerm": [
-        "Improve visualization generation consistency",
-        "Optimize AI provider selection and costs",
-        "Expand supported algorithms and data structures",
-        "Improve structured AI response validation"
-      ],
-      "longTerm": [
-        "Support more programming languages",
-        "Expand visualization capabilities",
-        "Introduce advanced interactive debugging",
-        "Develop a comprehensive code learning platform"
-      ]
-    }
+    ]
   }
-
 }

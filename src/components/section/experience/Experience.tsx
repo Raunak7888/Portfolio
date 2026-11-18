@@ -2,7 +2,7 @@
 // redesign.sh:v1
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, Variants, type MotionValue } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { copy, education, experience, writing } from "@/content/experience";
@@ -32,6 +32,7 @@ function Point({ text, i, n, progress, reduce }: { text: string; i: number; n: n
 function Chapter({ job, index, total, reduce }: { job: Job; index: number; total: number; reduce: boolean }) {
     const article = useRef<HTMLElement>(null);
     const list = useRef<HTMLUListElement>(null);
+    const points = job.points ?? [];
 
     const { scrollYProgress: whole } = useScroll({ target: article, offset: ["start end", "end start"] });
     const numY = useTransform(whole, [0, 1], ["-8%", "14%"]);
@@ -48,7 +49,7 @@ function Chapter({ job, index, total, reduce }: { job: Job; index: number; total
                 <motion.p
                     aria-label={job.period}
                     style={reduce ? undefined : { y: numY }}
-                    className="ed-outline-text mt-2 text-[clamp(4.5rem,9.5vw,9rem)] font-semibold leading-[0.9] tracking-tight [overflow-wrap:anywhere]"
+                    className=" mt-2 text-[clamp(4.5rem,9.5vw,9rem)] font-semibold leading-[0.9] tracking-tight [overflow-wrap:anywhere]"
                 >
                     {job.period}
                 </motion.p>
@@ -74,8 +75,8 @@ function Chapter({ job, index, total, reduce }: { job: Job; index: number; total
                         className="absolute bottom-2 left-5 top-2 w-px origin-top -translate-x-1/2 bg-primary"
                     />
                     <ul ref={list} className="flex flex-col gap-6">
-                        {job.points.map((p, i) => (
-                            <Point key={p} text={p} i={i} n={job.points.length} progress={rail} reduce={reduce} />
+                        {points.map((p, i) => (
+                            <Point key={p} text={p} i={i} n={points.length} progress={rail} reduce={reduce} />
                         ))}
                     </ul>
                 </div>
@@ -83,7 +84,7 @@ function Chapter({ job, index, total, reduce }: { job: Job; index: number; total
                 <Reveal>
                     <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-muted-foreground">
                         <li className="text-foreground">Built with</li>
-                        {job.stack.map((s, i) => (
+                        {(job.stack ?? []).map((s, i) => (
                             <li key={s} className="flex items-center gap-3">
                                 {i > 0 && <span aria-hidden>/</span>}
                                 <span className="ed-link cursor-default hover:text-foreground">{s}</span>
@@ -99,10 +100,34 @@ function Chapter({ job, index, total, reduce }: { job: Job; index: number; total
 export default function Experience() {
     const reduce = !!useReducedMotion();
 
+    // Stagger container animation variants for smooth entry when scrolled into view
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.1,
+            },
+        },
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: reduce ? 0 : 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1], // Custom smooth cubic-bezier easing
+            },
+        },
+    };
+
     return (
         <section id="experience" className="relative border-t border-border bg-background px-4 py-20 sm:px-6 lg:py-28">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 lg:gap-16">
-                <SectionHeader index="04" label={copy.badge} top={copy.headingTop} bottom={copy.headingBottom} reduce={reduce} />
+                <SectionHeader index="" label={copy.badge} top={copy.headingTop} bottom={copy.headingBottom} reduce={reduce} />
 
                 <div className="flex flex-col gap-16">
                     {experience.map((job, i) => (
@@ -110,35 +135,67 @@ export default function Experience() {
                     ))}
                 </div>
 
-                {/* ---------- margin notes ---------- */}
-                <div className="grid gap-10 border-t border-border pt-10 md:grid-cols-2 md:gap-14">
-                    <Reveal>
-                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Education · {education.year}</p>
-                        <h3 className="ds-serif mt-3 text-3xl italic leading-tight sm:text-4xl">{education.degree}</h3>
-                        <p className="mt-3 text-base text-muted-foreground">{education.school}</p>
-                    </Reveal>
+                {/* ---------- margin notes: education & writing animated entry ---------- */}
+                <motion.div 
+                    variants={reduce ? undefined : containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="grid gap-12 border-t border-border pt-14 lg:grid-cols-2 lg:gap-16"
+                >
+                    {/* Education Column */}
+                    <motion.div variants={itemVariants}>
+                        <div className="flex items-center gap-3">
+                            <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">01</span>
+                            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Education</p>
+                        </div>
+                        <ul className="mt-8 flex flex-col gap-10">
+                            {education.map((entry) => (
+                                <li 
+                                    key={`${entry.degree}-${entry.school}`}
+                                    className="group relative pl-6 border-l border-border/60 hover:border-primary transition-colors duration-300"
+                                >
+                                    <div className="absolute -left-[1px] top-1.5 size-0.5 rounded-full bg-border group-hover:bg-primary transition-colors duration-300" />
+                                    <p className="font-mono text-xs tracking-wider text-muted-foreground">{entry.year}</p>
+                                    <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl mt-2 group-hover:text-primary transition-colors duration-300">
+                                        {entry.degree}
+                                    </h3>
+                                    <p className="mt-2 text-sm sm:text-base text-muted-foreground">{entry.school}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </motion.div>
 
-                    <Reveal delay={0.1}>
-                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Writing</p>
-                        <ul className="mt-3 flex flex-col gap-5">
+                    {/* Writing Column */}
+                    <motion.div variants={itemVariants}>
+                        <div className="flex items-center gap-3">
+                            <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">02</span>
+                            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Writing & Articles</p>
+                        </div>
+                        <ul className="mt-8 flex flex-col gap-6">
                             {writing.map((w) => (
                                 <li key={w.href}>
                                     <a
                                         href={w.href}
                                         target="_blank"
                                         rel="noreferrer noopener"
-                                        className="group inline-flex flex-col gap-1 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                        className="group relative flex flex-col gap-1.5 p-4 -mx-4 rounded-lg transition-colors duration-300 hover:bg-muted/40 outline-none focus-visible:ring-1 focus-visible:ring-primary"
                                     >
-                                        <span className="ed-link text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{w.title}</span>
-                                        <span className="text-sm text-muted-foreground">
-                                            {w.source} <span aria-hidden className="inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-mono text-xs text-muted-foreground">{w.source}</span>
+                                            <span aria-hidden className="text-muted-foreground transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary">
+                                                ↗
+                                            </span>
+                                        </div>
+                                        <span className="text-lg font-medium leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors duration-300 sm:text-xl">
+                                            {w.title}
                                         </span>
                                     </a>
                                 </li>
                             ))}
                         </ul>
-                    </Reveal>
-                </div>
+                    </motion.div>
+                </motion.div>
             </div>
         </section>
     );

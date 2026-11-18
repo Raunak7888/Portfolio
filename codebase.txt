@@ -4706,7 +4706,7 @@ export default function ProjectStage({
     const dim = useTransform(exit, [0, 1], [0, 0.6]);
     const numY = useTransform(enter, [0, 1], ["22%", "0%"]);
     const numX = useTransform(exit, [0, 1], ["0%", "-8%"]);
-
+    console.log(project);
     const Visual = visualFor(project.id);
     const covered = live && !last;
     const tintVars = { "--tint": project.tint, "--on-tint": "oklch(0.2 0 0)", zIndex: index + 1 } as CSSProperties;
@@ -5176,6 +5176,7 @@ export function AlgoForgeVisual({ project, enter, exit, live }: VisualProps) {
         <div>
             <div className="relative hidden aspect-[5/4] w-full lg:block">
                 {shots.map((src, k) => (
+                  
                     <ShotCard
                         key={src}
                         src={src}

@@ -77,6 +77,7 @@ export default function SkillTile({
     reduce,
     fine,
     onSelect,
+    fixedGrid = true,
 }: {
     skill: Skill;
     index: number;
@@ -89,6 +90,7 @@ export default function SkillTile({
     reduce: boolean;
     fine: boolean;
     onSelect: (id: string) => void;
+    fixedGrid?: boolean;
 }) {
     const tint = CAT_BY_ID[skill.cat].tint;
     const tilt = [-1.6, 1.2, -0.8, 1.6][index % 4];
@@ -131,7 +133,7 @@ export default function SkillTile({
             exit="exit"
             transition={reduce ? { duration: 0 } : { layout: softSpring }}
             style={vars}
-            className="relative aspect-square min-h-0 lg:aspect-auto"
+            className={`relative aspect-square min-h-0 ${fixedGrid ? "lg:aspect-auto" : ""}`}
         >
             <motion.button
                 type="button"

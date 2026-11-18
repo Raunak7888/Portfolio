@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "eslint",
         "typecheck": "tsc --noEmit",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "validate:content": "node scripts/validate-content.mjs"
     },
     "dependencies": {
         "@hugeicons/core-free-icons": "^4.2.0",

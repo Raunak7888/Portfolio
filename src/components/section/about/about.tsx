@@ -140,7 +140,6 @@ function Greeting({ reduce }: { reduce: boolean }) {
             transition={spring}
             className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 py-1.5 pl-4 pr-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
-            <span aria-hidden className="ds-eyebrow text-primary">01</span>
             {about.greeting}
             <motion.span
                 aria-hidden

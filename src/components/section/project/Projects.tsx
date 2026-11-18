@@ -48,7 +48,7 @@ export default function Projects() {
         <section id="projects" className="relative isolate box-border w-full overflow-x-clip border-t border-border bg-background pt-12 sm:pt-16">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <SectionHeader
-                    index="03"
+                    index=""
                     label={copy.badge}
                     top={copy.headingTop}
                     bottom={copy.headingBottom}

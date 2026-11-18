@@ -4,6 +4,8 @@ import "@/styles/design-system.css";
 import "@/styles/redesign.css";
 import "@/styles/polish.css";
 import "@/styles/editorial.css";
+import "@/styles/links.css";
+import "@/styles/project-media.css";
 import { Instrument_Serif, JetBrains_Mono, Outfit, Bungee, Nunito, Mitr, Modak, Jersey_25, Luckiest_Guy, Madimi_One, Krona_One, Aclonica, Mogra, Lemon, Piedra, Poetsen_One } from "next/font/google";
 import { Providers } from "@/components/Provider";
 import data from "@/Data/Data.json";

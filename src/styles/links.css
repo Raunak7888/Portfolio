@@ -1,0 +1,65 @@
+/* One link system. Underline reveal for text links, a small nudge for list links. */
+.lnk {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 0% 1px;
+    padding-bottom: 2px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lnk:hover,
+.lnk:focus-visible {
+    background-position: 0 100%;
+    background-size: 100% 1px;
+}
+.lnk-nudge {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+}
+.lnk-nudge:hover,
+.lnk-nudge:focus-visible {
+    transform: translateX(4px);
+}
+.lnk-lift {
+    display: inline-flex;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lnk-lift:hover,
+.lnk-lift:focus-visible {
+    transform: translateY(-2px);
+}
+.lnk-arrow {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lnk:hover .lnk-arrow,
+.lnk:focus-visible .lnk-arrow,
+.lnk-nudge:hover .lnk-arrow,
+.lnk-nudge:focus-visible .lnk-arrow {
+    transform: translate(2px, -2px);
+}
+.lnk:focus-visible,
+.lnk-nudge:focus-visible,
+.lnk-lift:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+    .lnk,
+    .lnk-nudge,
+    .lnk-lift,
+    .lnk-arrow {
+        transition: none;
+    }
+    .lnk-nudge:hover,
+    .lnk-nudge:focus-visible,
+    .lnk-lift:hover,
+    .lnk-lift:focus-visible,
+    .lnk:hover .lnk-arrow,
+    .lnk-nudge:hover .lnk-arrow {
+        transform: none;
+    }
+}

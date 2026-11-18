@@ -1,36 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import AnimatedLink from "@/components/ui/AnimatedLink";
 import Eyebrow from "@/components/ui/Eyebrow";
 import PlayButton from "@/components/ui/PlayButton";
-import raw from "@/Data/Project.json";
-import Link from "next/link";
-
-
-type Study = {
-    meta: { projectName: string; status?: string; live?: string; repository?: string; post?: string };
-    images?: string[];
-    executiveSummary: {
-        oneLiner: string;
-        problemStatement: string;
-        solutionOverview: string;
-        keyCapabilities: string[];
-        knownLimitations: string[];
-    };
-    roadmap?: { shortTerm?: string[]; midTerm?: string[]; longTerm?: string[] };
-};
-
-const studies = raw as unknown as Record<string, Study>;
+import { RECORDS, STATUS } from "@/content/projects";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-    return Object.keys(studies).map((slug) => ({ slug }));
+    return Object.keys(RECORDS).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
-    const s = studies[slug];
+    const s = RECORDS[slug];
     if (!s) return {};
     return {
         title: s.meta.projectName,
@@ -58,41 +42,41 @@ function List({ title, items }: { title: string; items?: string[] }) {
 
 export default async function CaseStudy({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const s = studies[slug];
+    const s = RECORDS[slug];
     if (!s) notFound();
     const { meta, executiveSummary: e, roadmap } = s;
+    const links = s.links ?? [];
+    const shots = s.screenshots ?? [];
+
+    const groups = new Map<string, string[]>();
+    for (const t of s.technologies ?? []) {
+        const key = t.category ?? "Other";
+        groups.set(key, [...(groups.get(key) ?? []), t.name]);
+    }
 
     return (
         <article className="mx-auto max-w-3xl px-4 pb-24 pt-28 sm:px-6">
-            <Link href="/#projects" className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+            <AnimatedLink href="/#projects" arrow={false} className="text-sm font-medium text-muted-foreground hover:text-foreground">
                 ← Back to projects
-            </Link>
+            </AnimatedLink>
 
             <div className="mt-6">
-                <Eyebrow>{meta.status ? `Status: ${meta.status}` : "Case study"}</Eyebrow>
+                <Eyebrow>{STATUS[meta.status] ? `Status: ${STATUS[meta.status].label}` : "Case study"}</Eyebrow>
             </div>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl">
                 <span className="ds-serif text-primary">{meta.projectName}</span>
             </h1>
             <p className="mt-5 text-lg leading-8 text-muted-foreground">{e.oneLiner}</p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-                {meta.live ? (
-                    <PlayButton href={meta.live} variant="solid" external>
-                        Live demo
-                    </PlayButton>
-                ) : null}
-                {meta.repository ? (
-                    <PlayButton href={meta.repository} external>
-                        Source
-                    </PlayButton>
-                ) : null}
-                {meta.post ? (
-                    <PlayButton href={meta.post} external>
-                        Article
-                    </PlayButton>
-                ) : null}
-            </div>
+            {links.length > 0 && (
+                <div className="mt-6 flex flex-wrap gap-3">
+                    {links.map((l, i) => (
+                        <PlayButton key={l.href} href={l.href} variant={i === 0 ? "solid" : "outline"} external>
+                            {l.label}
+                        </PlayButton>
+                    ))}
+                </div>
+            )}
 
             <section className="mt-10">
                 <h2 className="text-2xl font-semibold tracking-tight">The problem</h2>
@@ -106,23 +90,47 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
             <List title="What it does" items={e.keyCapabilities} />
             <List title="Known limitations" items={e.knownLimitations} />
 
-            {s.images && s.images.length > 0 ? (
+            {groups.size > 0 && (
+                <section className="mt-10">
+                    <h2 className="text-2xl font-semibold tracking-tight">Built with</h2>
+                    <dl className="mt-4 flex flex-col gap-4">
+                        {[...groups.entries()].map(([cat, names]) => (
+                            <div key={cat} className="grid gap-2 sm:grid-cols-[9rem_1fr]">
+                                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground sm:pt-1.5">{cat}</dt>
+                                <dd>
+                                    <ul className="flex flex-wrap gap-1.5">
+                                        {names.map((n) => (
+                                            <li key={n} className="inline-flex h-7 items-center rounded-full border border-border px-3 text-xs font-medium text-foreground/80">
+                                                {n}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                </section>
+            )}
+
+            {shots.length > 0 && (
                 <section className="mt-10">
                     <h2 className="text-2xl font-semibold tracking-tight">Screenshots</h2>
                     <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                        {s.images.map((src, i) => (
+                        {shots.map((shot) => (
                             <img
-                                key={src}
-                                src={src}
-                                alt={`${meta.projectName} screenshot ${i + 1}`}
+                                key={shot.src}
+                                src={shot.src}
+                                alt={shot.alt}
+                                width={shot.width}
+                                height={shot.height}
                                 loading="lazy"
                                 decoding="async"
-                                className="w-full rounded-[var(--ds-radius-sm)] border border-border"
+                                className="h-auto w-full rounded-[var(--ds-radius-sm)] border border-border"
                             />
                         ))}
                     </div>
                 </section>
-            ) : null}
+            )}
 
             <List title="Next up" items={roadmap?.shortTerm} />
             <List title="Later" items={[...(roadmap?.midTerm ?? []), ...(roadmap?.longTerm ?? [])]} />

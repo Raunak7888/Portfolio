@@ -16,7 +16,7 @@ export default function Marquee({
         >
             {items.map((item, i) => (
                 <li key={`${item}-${i}`} className="flex items-center">
-                    <span className="ds-eyebrow px-6 text-muted-foreground transition-colors hover:text-foreground">
+                    <span className="ds-eyebrow px-6 text-muted-foreground">
                         {item}
                     </span>
                     <span aria-hidden className="text-primary">✦</span>
